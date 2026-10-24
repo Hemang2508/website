@@ -1,0 +1,14 @@
+{
+  "name": "t57-digital-lending-video",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Silent 9:16 animated explainer: Digital-Lending Safeguards (T57)",
+  "scripts": {
+    "render": "node render/render.mjs",
+    "stills": "node render/render.mjs --stills 5,13,23,40,47,60,68,85,95,105"
+  },
+  "devDependencies": {
+    "playwright": "^1.40.0"
+  }
+}
