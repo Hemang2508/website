@@ -4,7 +4,8 @@
 (function () {
   const { reveal } = Anim;
 
-  const TEXTBOOK = "[Author(s). (Year). <i>Title of prescribed textbook</i> (Edition). Publisher.] Insert verified details.";
+  // Placeholder only: no textbook details have been verified, so none are shown.
+  const TEXTBOOK = "[Details to be added: author(s), year, title, edition, publisher]";
   const IS_PLACEHOLDER = TEXTBOOK.trim().startsWith("[");
 
   const REFS = [
@@ -30,7 +31,7 @@
             </div>`).join("")}
         </div>
 
-        <div class="abs small" data-ref="disc" style="left:80px;top:1100px;width:920px;font-size:26px">All app names, lenders, payment requests and loan figures shown are <b style="color:var(--text-2)">fictional and illustrative</b>. Educational content for T57, not financial or legal advice.</div>
+        <div class="abs small" data-ref="disc" style="left:80px;top:1100px;width:920px;font-size:29px">All app names, lenders, payment requests and loan figures shown are <b style="color:var(--text-2)">fictional and illustrative</b>. Educational content for T57, not financial or legal advice.</div>
 
         <div class="abs" data-ref="sign" style="left:80px;top:1300px;width:920px;display:flex;align-items:center;gap:22px">
           <span style="font:700 26px/1 var(--mono);color:#0a0a0a;background:var(--gold);padding:12px 18px;border-radius:10px;letter-spacing:.06em">T57</span>

@@ -3,9 +3,10 @@
    across KFS → APR → fees → EMI & schedule, each with a short explanation.
 
    Illustrative maths (reducing balance, 12 monthly instalments):
-     principal ₹50,000 · interest 18% p.a. · processing fee ₹1,000 + 18% GST = ₹1,180
-     EMI = ₹4,584 · total repaid = ₹55,008 · net disbursed = ₹48,820
-     APR (monthly IRR × 12 on the net amount) ≈ 22.6% p.a. */
+     principal ₹50,000 · interest 18% p.a. · processing fee ₹1,000 + 18% GST = ₹1,180 (deducted upfront)
+     EMI = ₹4,584 (exact 4,583.9996) · 12 × ₹4,584 = ₹55,008 repaid · net disbursed = ₹50,000 − ₹1,180 = ₹48,820
+     interest = ₹5,008 (schedule below sums to it) · total cost of credit = ₹5,008 + ₹1,180 = ₹6,188 = ₹55,008 − ₹48,820
+     APR (monthly IRR × 12 on the net amount) = 22.63% ≈ 22.6% p.a. */
 (function () {
   const { reveal, prog, lerp, Ease, Icons } = Anim;
 
@@ -17,10 +18,10 @@
     { k: "kfs",  label: "Key Facts Statement (KFS)", value: "VIEW  ›", cls: "green", icon: true },
     { k: "amt",  label: "Loan amount",                value: "₹50,000" },
     { k: "rate", label: "Interest rate (reducing)",   value: "18.0% p.a." },
-    { k: "fee",  label: "Processing fee (incl. GST)", value: "₹1,180" },
-    { k: "net",  label: "Net amount disbursed",       value: "₹48,820" },
+    { k: "fee",  label: "Processing fee (₹1,000 + 18% GST)", value: "₹1,180" },
+    { k: "net",  label: "Net disbursed (₹50,000 − ₹1,180)", value: "₹48,820" },
     { k: "apr",  label: "APR (all-inclusive)",        value: "≈ 22.6% p.a.", cls: "gold" },
-    { k: "emi",  label: "Repayment: 12 monthly EMIs", value: "₹55,008 total" },
+    { k: "emi",  label: "Repayment: 12 × ₹4,584",     value: "₹55,008 total" },
   ];
   const SCHED = [[750, 3834], [692, 3892], [634, 3950], [575, 4009], [515, 4069], [454, 4130], [392, 4192], [329, 4255], [265, 4319], [200, 4384], [134, 4450], [68, 4516]];
   const CHART_Y = ROW0 + ROWS.length * ROWH + 14;
@@ -30,11 +31,11 @@
     { rect: [20, ROW0 + 0 * ROWH - 4, 880, ROWH + 8], tag: "KFS", head: "KEY FACTS STATEMENT",
       text: "A standardised summary of the loan's key terms, given to you <b class='white'>before you sign</b> the loan contract." },
     { rect: [20, ROW0 + 5 * ROWH - 4, 880, ROWH + 8], tag: "APR", head: "ANNUAL PERCENTAGE RATE",
-      text: "The <b class='white'>all-inclusive annual cost</b> of the loan: interest plus fees and charges. Here, 18% interest becomes ≈ 22.6% APR." },
+      text: "The <b class='white'>all-inclusive annual cost</b>: interest plus fees and charges. Here, 18% interest + ₹1,180 fee ≈ <b class='gold'>22.6% APR</b>." },
     { rect: [20, ROW0 + 3 * ROWH - 4, 880, ROWH + 8], tag: "FEES", head: "APPLICABLE FEES",
-      text: "Fees and charges <b class='white'>not disclosed in the KFS cannot be charged</b> later. Check processing, penal and other charges." },
+      text: "₹1,000 + 18% GST = ₹1,180, deducted upfront. Charges <b class='white'>not disclosed in the KFS cannot be levied</b> later." },
     { rect: [20, 130, 880, 1070 - 130 - 18], tag: "EMI", head: "EMI & REPAYMENT SCHEDULE",
-      text: "How many instalments, how much, and when. Here you <b class='white'>receive ₹48,820 and repay ₹55,008</b>." },
+      text: "12 × ₹4,584 = <b class='white'>₹55,008 repaid for ₹48,820 received</b>: a total cost of ₹6,188." },
   ];
 
   Scene.define("cost", {
@@ -49,7 +50,7 @@
         <div class="abs card" data-ref="card" style="left:${CARD.left}px;top:${CARD.top}px;width:${CARD.w}px;height:${CARD.h}px">
           <div class="abs" style="left:40px;right:40px;top:34px;display:flex;align-items:center">
             <span class="label" style="color:var(--text-2)">LOAN OFFER</span>
-            <span class="tag" style="margin-left:auto;color:#ff8a83;font-size:18px">ILLUSTRATIVE · NOT A REAL OFFER</span>
+            <span class="tag" style="margin-left:auto;color:#ff8a83;font-size:22px">ILLUSTRATIVE EXAMPLE</span>
           </div>
           <div class="abs" style="left:40px;top:96px;font:600 26px/1 var(--sans);color:var(--text-2)">Lender: <b class="white">Example Finance Ltd</b> <span style="color:var(--muted)">(fictional NBFC)</span></div>
           <div class="abs" data-ref="hero" style="left:40px;top:150px;display:flex;align-items:baseline;gap:18px">
@@ -69,22 +70,22 @@
                 <div style="height:${(100 * int) / (int + pri)}%;background:var(--gold)"></div><div style="flex:1;background:rgba(255,255,255,.22)"></div>
               </div>`).join("")}
           </div>
-          <div class="abs label" data-ref="legend" style="left:40px;top:${CHART_Y + 92}px;font-size:18px"><span class="gold">■</span> INTEREST &nbsp;&nbsp; <span style="color:#777">■</span> PRINCIPAL &nbsp;&nbsp; · &nbsp; MONTHS 1–12</div>
+          <div class="abs label" data-ref="legend" style="left:40px;top:${CHART_Y + 90}px;font-size:21px"><span class="gold">■</span> INTEREST &nbsp;&nbsp; <span style="color:#777">■</span> PRINCIPAL &nbsp;&nbsp; · &nbsp; MONTHS 1–12</div>
           <div class="abs" data-ref="spot" style="left:0;top:0;border:3px solid var(--gold-2);border-radius:18px;box-shadow:0 0 0 2000px rgba(0,0,0,.0),0 0 40px rgba(244,211,124,.45),inset 0 0 30px rgba(244,211,124,.12);pointer-events:none"></div>
         </div>
 
-        <div class="abs card gold-edge" data-ref="cap" style="left:80px;top:1480px;width:920px;height:200px;padding:28px 36px">
+        <div class="abs card gold-edge" data-ref="cap" style="left:80px;top:1474px;width:920px;height:236px;padding:28px 36px">
           ${SPOTS.map((s, i) => `
             <div class="abs" data-ref="cap${i}" style="left:36px;right:36px;top:28px">
-              <div style="display:flex;align-items:center;gap:16px"><span class="tag" style="color:var(--gold);font-size:18px">${s.tag}</span><span class="label" style="color:var(--text);font-size:22px">${s.head}</span></div>
-              <div class="body" style="margin-top:16px;font-size:28px;line-height:1.35">${s.text}</div>
+              <div style="display:flex;align-items:center;gap:16px"><span class="tag" style="color:var(--gold);font-size:21px">${s.tag}</span><span class="label" style="color:var(--text);font-size:24px">${s.head}</span></div>
+              <div class="body" style="margin-top:16px;font-size:31px;line-height:1.36;color:var(--text)">${s.text}</div>
             </div>`).join("")}
         </div>
 
         <div class="abs" data-ref="verdict" style="left:80px;top:760px;width:920px;text-align:center">
           <div class="label" style="color:var(--green);font-size:24px">RULE OF THUMB</div>
           <div class="h1" style="margin-top:30px;font-size:104px">DON'T JUDGE<br>A LOAN BY<br><span class="gold">EMI ALONE.</span></div>
-          <div class="lead" data-ref="verdictSub" style="margin-top:40px">Compare the <b class="white">APR</b> and the <b class="white">total amount payable</b> in the KFS.<br><span class="small" style="font-size:26px">Also note the cooling-off (look-up) period, during which you can exit by repaying the principal and proportionate APR, without penalty.</span></div>
+          <div class="lead" data-ref="verdictSub" style="margin-top:40px">Compare the <b class="white">APR</b> and the <b class="white">total amount payable</b> in the KFS.<br><span class="small" style="font-size:29px">Also note the cooling-off (look-up) period, during which you can exit by repaying the principal and proportionate APR, without penalty.</span></div>
         </div>
       `;
     },

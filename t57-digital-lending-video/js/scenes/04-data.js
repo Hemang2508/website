@@ -1,13 +1,15 @@
 /* SCENE 4: DATA PRIVACY AND FUND FLOWS
-   Part A: privacy shield + permission controls → "CHECK PERMISSIONS."
+   Part A: privacy shield + permission controls + three principles of
+           responsible data collection (need-based, consent, your control)
+           → "CHECK PERMISSIONS."
    Part B: money-flow diagram (lender ⇄ borrower), no pass-through accounts,
            suspicious payment request, regulatory-exception qualifier. */
 (function () {
   const { reveal, prog, draw, along, lerp, Ease, Icons } = Anim;
 
   const K = {
-    kicker: 0.3, titleA: 0.6, shield: 1.2, panel: 2.0, perms: [2.6, 3.0, 3.4, 3.8, 4.2], flip: [4.8, 5.2, 5.6], consent: 6.4, checkA: 7.4,
-    outA: 9.4, titleB: 9.9, lender: 10.3, borrower: 10.6, flowDraw: 11.0, platform: 12.4, lines: [13.6, 14.5, 15.4], scam: 15.9, stamp: 16.7, note: 17.4, scamOut: 18.7,
+    kicker: 0.3, titleA: 0.6, shield: 1.0, intro: 1.4, panel: 2.0, perms: [2.5, 2.8, 3.1, 3.4, 3.7], flip: [4.3, 4.7, 5.1], principles: [5.7, 6.6, 7.5], checkA: 8.6, checkSub: 9.1,
+    outA: 10.9, titleB: 11.4, lender: 11.8, borrower: 12.1, flowDraw: 12.5, platform: 13.7, lines: [14.7, 15.5, 16.3], scam: 16.8, stamp: 17.5, note: 18.0, scamOut: 19.4,
   };
 
   const PERMS = [
@@ -18,9 +20,15 @@
     { icon: "pin", name: "Location", rule: "ONE-TIME · WITH CONSENT", color: "gold" },
   ];
 
+  const PRINCIPLES = [
+    { title: "NEED-BASED", text: "Only the data the loan actually requires" },
+    { title: "EXPLICIT CONSENT", text: "Given in advance, purpose disclosed" },
+    { title: "YOUR CONTROL", text: "Deny, revoke consent, request deletion" },
+  ];
+
   Scene.define("data", {
     title: "Data & fund flows",
-    base: 20,
+    base: 21,
     build(root) {
       root.innerHTML = `
         <div class="abs kicker" data-ref="kicker" style="left:80px;top:212px">STEP 03 · HOW IS YOUR DATA USED?</div>
@@ -29,7 +37,7 @@
 
         <!-- ===== Part A ===== -->
         <div class="abs" data-ref="partA" style="left:0;top:0;width:1080px;height:1920px">
-          <svg class="abs" data-ref="shield" width="240" height="260" viewBox="0 0 240 260" style="left:420px;top:390px;overflow:visible">
+          <svg class="abs" data-ref="shield" width="150" height="163" viewBox="0 0 240 260" style="left:80px;top:384px;overflow:visible">
             <defs><radialGradient id="shg" cx="50%" cy="40%" r="60%"><stop offset="0" stop-color="rgba(60,255,142,.25)"/><stop offset="1" stop-color="rgba(60,255,142,0)"/></radialGradient></defs>
             <path data-ref="shFill" d="M120 12 30 46v66c0 62 38 108 90 130 52-22 90-68 90-130V46z" fill="url(#shg)"/>
             <path data-ref="shPath" d="M120 12 30 46v66c0 62 38 108 90 130 52-22 90-68 90-130V46z" fill="none" stroke="var(--green)" stroke-width="5" stroke-linejoin="round"/>
@@ -38,33 +46,44 @@
             <circle data-ref="lkDot" cx="120" cy="143" r="6" fill="var(--gold)"/>
           </svg>
 
-          <div class="abs card" data-ref="panel" style="left:80px;top:690px;width:920px;height:620px;padding:30px 40px">
-            <div style="display:flex;align-items:center"><span class="label" style="color:var(--text-2)">APP PERMISSIONS</span><span class="label" style="margin-left:auto;font-size:18px">ILLUSTRATIVE SETTINGS SCREEN</span></div>
+          <div class="abs" data-ref="intro" style="left:270px;top:396px;width:730px">
+            <div class="label" style="color:var(--green)">RESPONSIBLE DATA COLLECTION</div>
+            <div class="lead" style="margin-top:14px;font-size:34px;color:var(--text)">Collect only what the loan needs, and only with your consent.</div>
+          </div>
+
+          <div class="abs card" data-ref="panel" style="left:80px;top:588px;width:920px;height:584px;padding:28px 40px">
+            <div style="display:flex;align-items:center"><span class="label" style="color:var(--text-2)">APP PERMISSIONS</span><span class="label" style="margin-left:auto;font-size:21px;color:#ff8a83">ILLUSTRATIVE EXAMPLE</span></div>
             ${PERMS.map((p, i) => `
-              <div class="abs" data-ref="perm${i}" style="left:40px;right:40px;top:${88 + i * 104}px;height:96px;display:flex;align-items:center;gap:22px;border-bottom:1.5px solid rgba(255,255,255,.07)">
+              <div class="abs" data-ref="perm${i}" style="left:40px;right:40px;top:${80 + i * 98}px;height:92px;display:flex;align-items:center;gap:22px;border-bottom:1.5px solid rgba(255,255,255,.07)">
                 <div class="icon-ring ${p.color}" style="width:64px;height:64px;border-radius:18px;color:var(--${p.color === "red" ? "red" : "gold"})">${Anim.Icons[p.icon](34)}</div>
                 <div style="flex:1">
                   <div style="font:600 30px/1.1 var(--sans)">${p.name}</div>
-                  <div style="margin-top:8px;font:600 18px/1 var(--mono);letter-spacing:.12em;color:var(--${p.color === "red" ? "red" : "gold"})">${p.rule}</div>
+                  <div style="margin-top:8px;font:600 21px/1 var(--mono);letter-spacing:.1em;color:var(--${p.color === "red" ? "red" : "gold"})">${p.rule}</div>
                 </div>
                 ${p.flip !== undefined
                   ? `<div data-ref="tg${i}" style="position:relative;width:96px;height:52px;border-radius:26px;background:var(--green)"><div data-ref="knob${i}" style="position:absolute;top:5px;left:5px;width:42px;height:42px;border-radius:50%;background:#fff"></div></div>`
-                  : `<span class="tag" style="color:var(--gold);font-size:17px">ASK</span>`}
+                  : `<span class="tag" style="color:var(--gold);font-size:20px">ASK</span>`}
               </div>`).join("")}
           </div>
 
-          <div class="abs body" data-ref="consent" style="left:80px;top:1340px;width:920px;font-size:30px">Collection should be <b class="white">need-based</b> and made with your <b class="white">explicit consent</b>. You can refuse, <b class="white">revoke consent</b> and ask for <b class="white">deletion</b> of your data.</div>
-          <div class="abs h3 green" data-ref="checkA" style="left:80px;top:1540px;font-size:64px">CHECK PERMISSIONS.</div>
+          ${PRINCIPLES.map((p, i) => `
+            <div class="abs" data-ref="pr${i}" style="left:80px;top:${1202 + i * 86}px;width:920px;height:74px;display:flex;align-items:center;gap:22px;border-bottom:1.5px solid rgba(255,255,255,.08)">
+              <span style="flex:none;font:700 28px/1 var(--mono);color:var(--gold)">0${i + 1}</span>
+              <span style="flex:none;width:300px;font:800 30px/1.1 var(--sans);color:var(--green)">${p.title}</span>
+              <span style="font:500 29px/1.25 var(--sans);color:var(--text)">${p.text}</span>
+            </div>`).join("")}
+          <div class="abs h3 green" data-ref="checkA" style="left:80px;top:1496px;font-size:64px">CHECK PERMISSIONS.</div>
+          <div class="abs body" data-ref="checkSub" style="left:80px;top:1584px;width:920px;font-size:30px">Review what an app asks for <b class="white">before</b> you install it or accept a loan.</div>
         </div>
 
         <!-- ===== Part B ===== -->
         <div class="abs card gold-edge" data-ref="lender" style="left:190px;top:400px;width:700px;height:150px;display:flex;align-items:center;gap:26px;padding:0 36px">
           <div class="icon-ring gold" style="width:88px;height:88px;color:var(--gold)">${Icons.bank(50)}</div>
-          <div><div style="font:800 38px/1.1 var(--sans)">REGULATED LENDER</div><div class="label" style="margin-top:10px;font-size:19px">RE'S OWN BANK ACCOUNT</div></div>
+          <div><div style="font:800 38px/1.1 var(--sans)">REGULATED LENDER</div><div class="label" style="margin-top:10px;font-size:22px">RE'S OWN BANK ACCOUNT</div></div>
         </div>
         <div class="abs card" data-ref="borrower" style="left:190px;top:860px;width:700px;height:150px;display:flex;align-items:center;gap:26px;padding:0 36px">
           <div class="icon-ring green" style="width:88px;height:88px;color:var(--green)">${Icons.user(50)}</div>
-          <div><div style="font:800 38px/1.1 var(--sans)">BORROWER</div><div class="label" style="margin-top:10px;font-size:19px">YOUR OWN BANK ACCOUNT</div></div>
+          <div><div style="font:800 38px/1.1 var(--sans)">BORROWER</div><div class="label" style="margin-top:10px;font-size:22px">YOUR OWN BANK ACCOUNT</div></div>
         </div>
         <svg class="abs" width="1080" height="1920" style="left:0;top:0;pointer-events:none;overflow:visible">
           <path data-ref="fDown" d="M400 556 L400 852" stroke="var(--gold)" stroke-width="4" fill="none"/>
@@ -75,7 +94,7 @@
         </svg>
         <div class="abs label" data-ref="lDown" style="left:120px;top:676px;width:250px;text-align:right;color:var(--gold);font-size:24px">DISBURSAL ↓</div>
         <div class="abs label" data-ref="lUp" style="left:710px;top:676px;width:260px;color:var(--green);font-size:24px">↑ REPAYMENT</div>
-        <div class="abs label" data-ref="lDirect" style="left:430px;top:690px;width:220px;text-align:center;font-size:17px;line-height:1.5;color:var(--text-2)">DIRECT<br>ACCOUNT-TO-<br>ACCOUNT</div>
+        <div class="abs label" data-ref="lDirect" style="left:430px;top:690px;width:220px;text-align:center;font-size:20px;line-height:1.45;color:var(--text-2)">DIRECT<br>ACCOUNT-TO-<br>ACCOUNT</div>
 
         <div class="abs" data-ref="platform" style="left:190px;top:1050px;width:700px;height:110px;border:2px dashed rgba(255,95,86,.55);border-radius:22px;display:flex;align-items:center;gap:22px;padding:0 30px;background:rgba(255,95,86,.05)">
           <div class="icon-ring red" style="width:62px;height:62px;border-radius:50%;color:var(--red)">${Icons.x(30)}</div>
@@ -88,12 +107,12 @@
 
         <div class="abs" data-ref="dim" style="left:60px;top:380px;width:960px;height:660px;border-radius:30px;background:rgba(5,5,5,.72)"></div>
         <div class="abs card red-edge" data-ref="scam" style="left:200px;top:590px;width:680px;padding:28px 34px;background:#140b0b">
-          <div class="label" style="color:#ff8a83;font-size:19px">PAYMENT REQUEST · FICTIONAL EXAMPLE</div>
+          <div class="label" style="color:#ff8a83;font-size:21px">ILLUSTRATIVE EXAMPLE · PAYMENT REQUEST</div>
           <div style="margin-top:14px;font:700 32px/1.25 var(--sans)">Pay ₹2,999 "release fee" to this personal UPI ID to unlock your loan</div>
           <div data-ref="stamp" class="abs" style="right:-18px;top:-26px;transform:rotate(8deg);border:4px solid var(--red);color:var(--red);font:800 26px/1 var(--mono);letter-spacing:.14em;padding:10px 14px;border-radius:10px;background:#0b0b0b">SUSPICIOUS</div>
         </div>
 
-        <div class="abs small" data-ref="note" style="left:80px;top:1478px;width:920px;font-size:24px;padding-top:18px;border-top:1.5px solid var(--line)">* General rule under RBI's Digital Lending Directions: disbursals and repayments move directly between the borrower's and the regulated entity's bank accounts. <b style="color:var(--text-2)">Specified regulatory exceptions may apply.</b></div>
+        <div class="abs small" data-ref="note" style="left:80px;top:1478px;width:920px;font-size:27px;padding-top:18px;border-top:1.5px solid var(--line)">* General rule under RBI's Digital Lending Directions: disbursals and repayments move directly between the borrower's and the regulated entity's bank accounts. <b style="color:var(--text-2)">Specified regulatory exceptions may apply.</b></div>
       `;
     },
     update(t, r) {
@@ -120,8 +139,10 @@
         r["knob" + i].style.transform = `translateX(${lerp(44, 0, f).toFixed(1)}px)`;
         r["tg" + i].style.background = f > 0.5 ? "#3a3a3d" : "var(--green)";
       });
-      reveal(r.consent, t, K.consent, { dy: 24 });
+      reveal(r.intro, t, K.intro, { dx: -30, dy: 0 });
+      K.principles.forEach((s, i) => reveal(r["pr" + i], t, s, { dx: -40, dy: 0, dur: 0.8 }));
       reveal(r.checkA, t, K.checkA, { dy: 40, blur: 8 });
+      reveal(r.checkSub, t, K.checkSub, { dy: 20 });
       reveal(r.partA, t, 0, { end: K.outA, dur: 0.01, dy: 0, outDur: 0.6 });
 
       // ---- Part B

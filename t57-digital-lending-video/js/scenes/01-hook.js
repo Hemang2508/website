@@ -43,7 +43,7 @@
             <div data-ref="ripple" style="position:absolute;left:280px;top:888px;width:20px;height:20px;margin:-10px 0 0 -10px;border-radius:50%;border:4px solid #fff"></div>
           </div>
         </div>
-        <div class="abs label" data-ref="fict" style="left:0;width:1080px;text-align:center;top:1688px;color:#76756f">ILLUSTRATION · FICTIONAL APP AND OFFER</div>
+        <div class="abs label" data-ref="fict" style="left:0;width:1080px;text-align:center;top:1688px;color:#76756f">ILLUSTRATIVE EXAMPLE · FICTIONAL APP AND OFFER</div>
 
         <div class="abs kicker" data-ref="ask" style="left:80px;top:850px">BEFORE YOU TAP, ASK</div>
         ${QUESTIONS.map((q, i) => `

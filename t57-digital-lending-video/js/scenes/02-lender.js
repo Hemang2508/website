@@ -14,9 +14,9 @@
       <div style="display:flex;align-items:center;gap:26px">
         <div class="icon-ring ${tagColor}" style="width:92px;height:92px;color:var(--${tagColor})">${icon}</div>
         <div style="flex:1">
-          <div class="label" style="color:var(--${tagColor});font-size:19px;margin-bottom:10px">${tag}</div>
+          <div class="label" style="color:var(--${tagColor});font-size:22px;margin-bottom:10px">${tag}</div>
           <div style="font:800 40px/1.05 var(--sans);letter-spacing:-.01em">${title}</div>
-          <div class="small" style="margin-top:8px;font-size:23px">${sub}</div>
+          <div class="small" style="margin-top:8px;font-size:25px">${sub}</div>
         </div>
       </div>
       <div style="margin-top:22px;display:flex;flex-direction:column;gap:10px">
