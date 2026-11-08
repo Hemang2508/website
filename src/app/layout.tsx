@@ -1,6 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import "@fontsource-variable/inter";
 import "@fontsource-variable/plus-jakarta-sans";
+import "@fontsource/instrument-serif/latin-400.css";
+import "@fontsource/instrument-serif/latin-400-italic.css";
 import "./globals.css";
 import { StoreProvider } from "@/lib/store";
 import { DemoBar, Navbar } from "@/components/layout/Navbar";

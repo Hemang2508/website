@@ -10,19 +10,19 @@ const COLS: { title: string; links: [string, string][] }[] = [
 
 export function Footer() {
   return (
-    <footer className="surface-dark relative mt-24 overflow-hidden text-white">
-      <div className="grid-faint pointer-events-none absolute inset-0" aria-hidden />
+    <footer className="relative mt-24 overflow-hidden bg-ink text-white [main:has(#for-creators)+&]:mt-0">
+      <p className="pointer-events-none absolute -bottom-[0.2em] left-1/2 -translate-x-1/2 select-none whitespace-nowrap font-display text-[clamp(6rem,22vw,20rem)] font-extrabold leading-none tracking-[-0.06em] text-transparent [-webkit-text-stroke:1px_rgba(255,255,255,0.08)]" aria-hidden>RTG Live</p>
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col gap-6 border-b border-white/10 py-12 md:flex-row md:items-end md:justify-between">
           <div>
-            <p className="font-display text-display-md text-white">Where Ideas Meet <span className="text-gradient">Influence.</span></p>
+            <p className="font-display text-display-md text-white">Where Ideas <em className="font-serif font-normal italic text-teal-400">meet</em> Influence.</p>
             <p className="mt-3 max-w-lg text-[15px] text-white/60">A creator ecosystem for discovery, paid conversations, product feedback, communities, regional experiences and brand collaborations.</p>
           </div>
           <Link href="/explore" className="inline-flex items-center gap-2 self-start rounded-xl bg-white px-5 py-3 text-sm font-semibold text-navy transition hover:bg-white/90 md:self-auto">
             Explore creators <ArrowUpRight className="h-4 w-4" />
           </Link>
         </div>
-        <div className="grid grid-cols-1 gap-10 py-12 sm:grid-cols-2 md:grid-cols-[1.4fr_1fr_1fr_1fr]">
+        <div className="grid grid-cols-1 gap-10 pb-24 pt-12 sm:grid-cols-2 md:pb-40 md:grid-cols-[1.4fr_1fr_1fr_1fr]">
           <div>
             <Logo dark />
             <p className="mt-4 max-w-xs text-sm leading-relaxed text-white/60">RTG Live is a proposed product concept prepared for discussion with Voyager Partners, Hyderabad. It is not an existing or approved Voyager Partners product.</p>

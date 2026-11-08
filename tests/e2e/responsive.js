@@ -25,7 +25,8 @@ const WIDTHS = [390, 768, 1280];
         const scroll = document.documentElement.scrollWidth - vw;
         const clipped = [];
         for (const el of document.querySelectorAll("body *")) {
-          if (el.closest(".overflow-x-auto,.scrollbar-none,[role=dialog],[aria-hidden=true]")) continue;
+          // Excluded: native scroll rows, intentional carousels (content slides into view), dialogs, decorative layers.
+          if (el.closest(".overflow-x-auto,.scrollbar-none,[data-carousel],[role=dialog],[aria-hidden=true]")) continue;
           const hasText = [...el.childNodes].some((n) => n.nodeType === 3 && n.textContent.trim());
           if (!hasText) continue;
           const rc = el.getBoundingClientRect();

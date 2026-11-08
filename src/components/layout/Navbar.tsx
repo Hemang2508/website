@@ -125,7 +125,9 @@ export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const { role } = useStore();
   const dash = DASH[role];
-  const dark = pathname === "/";
+  // The creative homepage hero is a light paper canvas, so the bar stays light and blends into it.
+  const dark = false;
+  const home = pathname === "/";
   useEffect(() => setOpen(false), [pathname]);
   useEffect(() => {
     const on = () => setScrolled(window.scrollY > 8);
@@ -144,7 +146,9 @@ export function Navbar() {
         "sticky top-0 z-40 transition-[background-color,border-color,box-shadow] duration-base",
         dark
           ? cn("border-b", scrolled ? "border-white/10 bg-navy/85 backdrop-blur-xl" : "border-transparent bg-navy")
-          : cn("border-b border-line/80 bg-canvas/80 backdrop-blur-xl", scrolled && "shadow-[0_8px_24px_-18px_rgba(16,23,42,0.35)]"),
+          : home && !scrolled
+            ? "border-b border-transparent bg-canvas"
+            : cn("border-b border-line/80 bg-canvas/80 backdrop-blur-xl", scrolled && "shadow-[0_8px_24px_-18px_rgba(16,23,42,0.35)]"),
       )}
     >
       <div className="mx-auto flex h-16 max-w-7xl items-center gap-4 px-4 sm:px-6 lg:px-8">
