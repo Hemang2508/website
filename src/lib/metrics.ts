@@ -28,7 +28,7 @@ export function toTransactions(bookings: Booking[], requests: PitchRequest[], pi
     ref: b.id,
     type: b.source === "creator" ? "Creator-originated booking" : "Marketplace booking",
     creatorId: b.creatorId,
-    creatorName: name(b.creatorId),
+    creatorName: b.partnerCreatorId ? `${name(b.creatorId)} & ${name(b.partnerCreatorId)}` : name(b.creatorId),
     payer: b.userName,
     description: b.serviceTitle,
     date: b.date,

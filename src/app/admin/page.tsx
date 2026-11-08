@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { Suspense, useMemo, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { BadgeCheck, Ban, CheckCircle2, Download, IndianRupee, Megaphone, RotateCcw, Search, Users, Wallet } from "lucide-react";
+import { BadgeCheck, Ban, CalendarDays, CheckCircle2, Download, Handshake, IdCard, IndianRupee, Megaphone, RotateCcw, Search, Sparkles, Users, UsersRound, Wallet } from "lucide-react";
 import { pitchOverallStatus, useStore } from "@/lib/store";
 import { summarise, toCSV, toTransactions, weeklySeries, type TxType } from "@/lib/metrics";
 import { COMMISSION, pct } from "@/lib/pricing";
@@ -18,8 +18,9 @@ import { RoleNotice } from "@/components/dashboard/RoleNotice";
 import { download } from "@/components/creator-dashboard/CreatorEarnings";
 import { PitchListItem } from "@/components/pitch/PitchListItem";
 import { cn, compact, formatDate, formatINR } from "@/lib/utils";
+import { APP_STATUS, COLLAB_STATUS } from "@/components/ecosystem/collab";
 
-type Tab = "overview" | "creators" | "transactions" | "pitches";
+type Tab = "overview" | "creators" | "transactions" | "pitches" | "ecosystem";
 
 export default function AdminPage() {
   return (
@@ -35,7 +36,7 @@ function Admin() {
   const pathname = usePathname();
   const tab = (params.get("tab") as Tab) || "overview";
   const setTab = (t: Tab) => router.replace(`${pathname}?tab=${t}`, { scroll: false });
-  const { bookings, pitchRequests, pitches, creators, setCreatorStatus, toggleVerified, toast } = useStore();
+  const { bookings, pitchRequests, pitches, creators, setCreatorStatus, toggleVerified, toast, communities, memberCount, events, registeredCount, registrations, collaborations, applications } = useStore();
   const tx = useMemo(() => toTransactions(bookings, pitchRequests, pitches, creators), [bookings, pitchRequests, pitches, creators]);
   const s = summarise(tx);
   const pendingCreators = creators.filter((c) => c.status === "pending");
@@ -63,6 +64,7 @@ function Admin() {
         { id: "creators", label: "Creators", count: pendingCreators.length },
         { id: "transactions", label: "Transactions" },
         { id: "pitches", label: "Pitches" },
+        { id: "ecosystem", label: "Ecosystem" },
       ]} />
 
       <div className="mt-6">
@@ -158,6 +160,7 @@ function Admin() {
                       <td className="px-5 py-3">
                         <div className="flex justify-end gap-1.5">
                           {c.status === "pending" && <Button size="sm" variant="teal" onClick={() => { setCreatorStatus(c.id, "active"); toast({ title: `${c.name} approved`, body: "Profile is now live and verified." }); }}><CheckCircle2 className="h-4 w-4" />Approve</Button>}
+                          <Link href={`/creators/${c.slug}/passport`} className="inline-flex h-8 items-center gap-1.5 rounded-lg px-2.5 text-[13px] font-medium text-ink-muted hover:bg-canvas hover:text-ink" title="View Creator Passport"><IdCard className="h-4 w-4" />Passport</Link>
                           {c.status !== "pending" && (
                             <Button size="sm" variant="ghost" onClick={() => { toggleVerified(c.id); toast({ title: c.verified ? "Verification removed" : "Creator verified", tone: "info" }); }} title={c.verified ? "Remove verified badge" : "Mark as verified"}>
                               <BadgeCheck className={cn("h-4 w-4", c.verified && "text-brand-500")} />{c.verified ? "Verified" : "Verify"}
@@ -237,6 +240,67 @@ function Admin() {
                 const reqs = pitchRequests.filter((r) => r.pitchId === p.id);
                 return <div key={p.id}><PitchListItem pitch={p} requests={reqs} creators={creators} /><span className="sr-only">{pitchOverallStatus(reqs).label}</span></div>;
               })}
+            </div>
+          </div>
+        )}
+
+        {tab === "ecosystem" && (
+          <div className="space-y-6">
+            <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+              <Stat label="Community members" value={communities.reduce((a, c) => a + memberCount(c), 0).toLocaleString("en-IN")} icon={<UsersRound className="h-4 w-4" />} sub={`${communities.length} communities · demo figures`} />
+              <Stat label="Event registrations" value={events.reduce((a, e) => a + registeredCount(e), 0)} icon={<CalendarDays className="h-4 w-4" />} accent="teal" sub={`${registrations.length} made in this demo session`} />
+              <Stat label="Collaboration applications" value={applications.length} icon={<Handshake className="h-4 w-4" />} accent="navy" sub={`${collaborations.filter((c) => c.status === "open").length} open briefs`} />
+              <Stat label="Creator Duo bookings" value={bookings.filter((b) => b.duoId).length} icon={<Sparkles className="h-4 w-4" />} accent="amber" sub={formatINR(bookings.filter((b) => b.duoId && b.paymentStatus === "paid_simulated").reduce((a, b) => a + b.amount, 0)) + " GTV (simulated)"} />
+            </div>
+
+            <Card>
+              <CardHeader title="Brand collaborations" description="Applications by status" />
+              <div className="overflow-x-auto">
+                <table className="w-full min-w-[760px] text-left text-[13px]">
+                  <thead className="border-b border-line bg-canvas/60 text-[11px] uppercase tracking-wide text-ink-subtle">
+                    <tr><th className="px-5 py-2.5 font-semibold">Brief</th><th className="px-3 py-2.5 font-semibold">Status</th><th className="px-3 py-2.5 font-semibold">Applications</th><th className="px-3 py-2.5 font-semibold">Slots</th><th className="px-5 py-2.5 font-semibold">Deadline</th></tr>
+                  </thead>
+                  <tbody className="divide-y divide-line">
+                    {collaborations.map((c) => {
+                      const apps = applications.filter((a) => a.collabId === c.id);
+                      return (
+                        <tr key={c.id}>
+                          <td className="px-5 py-3"><Link href={`/collaborate/${c.id}`} className="font-medium text-ink hover:text-brand-600">{c.title}</Link><p className="text-xs text-ink-subtle">{c.brand} · {c.compensation}</p></td>
+                          <td className="px-3 py-3"><Badge tone={COLLAB_STATUS[c.status][1]} dot>{COLLAB_STATUS[c.status][0]}</Badge></td>
+                          <td className="px-3 py-3"><div className="flex flex-wrap gap-1">{apps.length === 0 ? <span className="text-ink-subtle">—</span> : (Object.keys(APP_STATUS) as (keyof typeof APP_STATUS)[]).map((k) => { const n = apps.filter((a) => a.status === k).length; return n ? <Badge key={k} tone={APP_STATUS[k][1]}>{n} {APP_STATUS[k][0].toLowerCase()}</Badge> : null; })}</div></td>
+                          <td className="px-3 py-3 text-ink-muted">{apps.filter((a) => a.status === "accepted").length}/{c.slots}</td>
+                          <td className="px-5 py-3 text-ink-muted">{formatDate(c.deadline)}</td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            </Card>
+
+            <div className="grid gap-6 lg:grid-cols-[1.4fr_1fr]">
+              <Card>
+                <CardHeader title="Regional events" description="Registrations include demo figures" />
+                <ul className="divide-y divide-line">
+                  {[...events].sort((a, b) => a.date.localeCompare(b.date)).map((e) => {
+                    const n = registeredCount(e);
+                    return (
+                      <li key={e.id}><Link href={`/regional/events/${e.id}`} className="flex items-center gap-3 px-5 py-3 hover:bg-canvas">
+                        <div className="min-w-0 flex-1"><p className="truncate text-[13px] font-medium text-ink">{e.title}</p><p className="text-xs text-ink-subtle">{e.city} · {formatDate(e.date, { day: "numeric", month: "short" })} · {e.price ? formatINR(e.price) : "Free"}</p></div>
+                        <div className="w-28"><div className="h-1.5 rounded-full bg-canvas"><div className={cn("h-1.5 rounded-full", n >= e.capacity ? "bg-red-400" : "bg-teal-500")} style={{ width: `${Math.min(100, (n / e.capacity) * 100)}%` }} /></div><p className="mt-1 text-right text-[11px] text-ink-subtle">{n}/{e.capacity}</p></div>
+                      </Link></li>
+                    );
+                  })}
+                </ul>
+              </Card>
+              <Card>
+                <CardHeader title="Communities" />
+                <ul className="divide-y divide-line">
+                  {communities.map((c) => (
+                    <li key={c.id}><Link href={`/community/${c.slug}`} className="flex items-center justify-between px-5 py-3 hover:bg-canvas"><span><span className="block text-[13px] font-medium text-ink">{c.name}</span><span className="text-xs text-ink-subtle">{c.category} · {c.city}</span></span><span className="text-[13px] font-semibold text-ink">{memberCount(c).toLocaleString("en-IN")}</span></Link></li>
+                  ))}
+                </ul>
+              </Card>
             </div>
           </div>
         )}

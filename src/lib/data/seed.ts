@@ -2,6 +2,7 @@ import type { Booking, BookingSource, BookingStatus, DemoUser, Notification, Pit
 import { seedCreators } from "./creators";
 import { bookingRate, COMMISSION, splitAmount } from "../pricing";
 import { addDays, toISODate } from "../utils";
+import { seedApplications, seedCollaborations, seedCommunities, seedDuos, seedEvents, seedMemberships, seedRegistrations } from "./ecosystem";
 
 export const DEMO_USER: DemoUser = {
   name: "Aarav Mehta",
@@ -253,18 +254,40 @@ function seedNotifications(): Notification[] {
     { id: "n5", role: "creator", creatorId: "c1", title: "New pitch request", body: "BrewBox Coffee Co. sent you a product pitch.", href: "/creator?tab=pitches", createdAt: ago(20), read: false, kind: "pitch" },
     { id: "n6", role: "creator", creatorId: "c1", title: "Payout processed (simulated)", body: "₹14,218 was marked as paid out to your bank account.", href: "/creator?tab=earnings", createdAt: ago(72), read: true, kind: "payment" },
     { id: "n7", role: "admin", title: "Creator awaiting verification", body: "Siddharth Rao submitted a creator application.", href: "/admin?tab=creators", createdAt: ago(10), read: false, kind: "system" },
+    { id: "n9", role: "creator", creatorId: "c1", title: "Collaboration match", body: "BrewBox Coffee Co. is looking for creators in Bengaluru — you've applied.", href: "/creator?tab=collabs", createdAt: ago(40), read: true, kind: "collab" },
+    { id: "n10", role: "user", title: "New collaboration applications", body: "2 creators applied to your Kosha face oil launch brief.", href: "/collaborate/cb1", createdAt: ago(26), read: false, kind: "collab" },
     { id: "n8", role: "admin", title: "Refund issued (simulated)", body: "BK-1013 was declined and refunded automatically.", href: "/admin?tab=transactions", createdAt: ago(96), read: true, kind: "payment" },
   ];
+}
+
+function seedDuoBookings(): Booking[] {
+  const duo = seedDuos[0];
+  const { platformFee, creatorEarning } = splitAmount(duo.price, COMMISSION.marketplace);
+  return [{
+    id: "BK-1101", creatorId: duo.creatorIds[0], partnerCreatorId: duo.creatorIds[1], duoId: duo.id, serviceId: duo.id,
+    serviceTitle: `Creator Duo · ${duo.title}`, userName: "Pooja Reddy", userEmail: "pooja.reddy@gmail.com", userPhone: "+91 98490 33102",
+    topic: "Food trail for visiting family from Pune (3 guests)", notes: "", date: toISODate(addDays(new Date(), 6)), time: "10:00",
+    durationMins: duo.durationMins, amount: duo.price, source: "marketplace", commissionRate: COMMISSION.marketplace, platformFee, creatorEarning,
+    status: "confirmed", paymentId: "sim_pay_seedduo1", paymentStatus: "paid_simulated", createdAt: addDays(new Date(), -2).toISOString(),
+  }];
 }
 
 export function createSeed() {
   const { pitches, requests } = seedPitches();
   return {
     creators: structuredClone(seedCreators),
-    bookings: seedBookings(),
+    bookings: [...seedBookings(), ...seedDuoBookings()],
     reviews: seedReviews(),
     pitches,
     pitchRequests: requests,
     notifications: seedNotifications(),
+    city: "Hyderabad",
+    communities: structuredClone(seedCommunities),
+    events: structuredClone(seedEvents),
+    duos: structuredClone(seedDuos),
+    collaborations: structuredClone(seedCollaborations),
+    applications: structuredClone(seedApplications),
+    memberships: structuredClone(seedMemberships),
+    registrations: structuredClone(seedRegistrations),
   };
 }

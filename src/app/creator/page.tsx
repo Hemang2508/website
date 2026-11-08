@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { Suspense } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { ArrowRight, CalendarCheck, Copy, ExternalLink, Inbox, Megaphone, Star, Wallet } from "lucide-react";
+import { ArrowRight, CalendarCheck, Copy, ExternalLink, IdCard, Inbox, Megaphone, Star, Wallet } from "lucide-react";
 import { useStore } from "@/lib/store";
 import { Avatar } from "@/components/ui/Avatar";
 import { Button, ButtonLink } from "@/components/ui/Button";
@@ -18,11 +18,12 @@ import { CreatorAvailability } from "@/components/creator-dashboard/CreatorAvail
 import { CreatorProfileEditor } from "@/components/creator-dashboard/CreatorProfileEditor";
 import { CreatorEarnings, useCreatorTx } from "@/components/creator-dashboard/CreatorEarnings";
 import { IncomingPitches } from "@/components/pitch/IncomingPitches";
+import { CreatorCollabs } from "@/components/creator-dashboard/CreatorCollabs";
 import { weeklySeries } from "@/lib/metrics";
 import { bookingRate, pct } from "@/lib/pricing";
 import { formatDate, formatINR, formatTime, timeAgo, toISODate } from "@/lib/utils";
 
-type Tab = "overview" | "bookings" | "pitches" | "services" | "availability" | "profile" | "earnings";
+type Tab = "overview" | "bookings" | "pitches" | "collabs" | "services" | "availability" | "profile" | "earnings";
 
 export default function CreatorDashboardPage() {
   return (
@@ -38,11 +39,11 @@ function CreatorDashboard() {
   const pathname = usePathname();
   const tab = (params.get("tab") as Tab) || "overview";
   const setTab = (t: Tab) => router.replace(`${pathname}?tab=${t}`, { scroll: false });
-  const { creators, activeCreatorId, bookings, pitchRequests, pitches, reviews, toast, notifications } = useStore();
+  const { creators, activeCreatorId, bookings, pitchRequests, pitches, reviews, toast, notifications, applications } = useStore();
   const c = creators.find((x) => x.id === activeCreatorId) ?? creators[0];
   const { tx, summary } = useCreatorTx(c.id);
 
-  const myBookings = bookings.filter((b) => b.creatorId === c.id);
+  const myBookings = bookings.filter((b) => b.creatorId === c.id || b.partnerCreatorId === c.id);
   const pendingBookings = myBookings.filter((b) => b.status === "pending");
   const upcoming = myBookings.filter((b) => b.status === "confirmed").sort((a, b) => (a.date + a.time).localeCompare(b.date + b.time));
   const myReqs = pitchRequests.filter((r) => r.creatorId === c.id);
@@ -69,6 +70,7 @@ function CreatorDashboard() {
         </div>
         <div className="flex flex-wrap gap-2">
           <Button variant="secondary" size="sm" onClick={copyLink}><Copy className="h-4 w-4" />Copy booking link</Button>
+          <ButtonLink href={`/creators/${c.slug}/passport`} variant="secondary" size="sm"><IdCard className="h-4 w-4" />My Creator Passport</ButtonLink>
           <ButtonLink href={`/creators/${c.slug}`} variant="secondary" size="sm"><ExternalLink className="h-4 w-4" />View public profile</ButtonLink>
         </div>
       </div>
@@ -81,6 +83,7 @@ function CreatorDashboard() {
           { id: "overview", label: "Overview" },
           { id: "bookings", label: "Bookings", count: pendingBookings.length },
           { id: "pitches", label: "Pitches", count: pendingPitches.length + feedbackDue.length },
+          { id: "collabs", label: "Collaborations", count: applications.filter((a) => a.creatorId === c.id && a.status === "shortlisted").length },
           { id: "services", label: "Services & pricing" },
           { id: "availability", label: "Availability" },
           { id: "profile", label: "Profile" },
@@ -145,7 +148,7 @@ function CreatorDashboard() {
                       <li key={b.id} className="flex items-center gap-3 px-5 py-3">
                         <div className="w-12 shrink-0 rounded-lg border border-line py-1 text-center"><p className="text-[9px] font-semibold uppercase text-brand-600">{formatDate(b.date, { month: "short" })}</p><p className="font-semibold leading-tight text-ink">{formatDate(b.date, { day: "numeric" })}</p></div>
                         <div className="min-w-0 flex-1"><p className="truncate text-[13px] font-medium text-ink">{b.userName} · {b.serviceTitle}</p><p className="text-xs text-ink-muted">{formatTime(b.time)} · {b.durationMins} min</p></div>
-                        <span className="text-[13px] font-semibold text-teal-700">{formatINR(b.creatorEarning)}</span>
+                        <span className="text-[13px] font-semibold text-teal-700">{formatINR(b.partnerCreatorId ? Math.round(b.creatorEarning / 2) : b.creatorEarning)}</span>
                       </li>
                     ))}
                   </ul>
@@ -179,6 +182,7 @@ function CreatorDashboard() {
         {tab === "pitches" && (c.acceptsPitches || myReqs.length ? <IncomingPitches creatorId={c.id} /> : (
           <Card><EmptyState icon={<Megaphone className="h-5 w-5" />} title="Pitch reviews are turned off" body="Enable RTG Pitch in your profile settings to receive paid product pitches from brands." action={<Button size="sm" onClick={() => setTab("profile")}>Open profile settings</Button>} /></Card>
         ))}
+        {tab === "collabs" && <CreatorCollabs creator={c} />}
         {tab === "services" && <CreatorServices creator={c} />}
         {tab === "availability" && <CreatorAvailability key={c.id} creator={c} />}
         {tab === "profile" && <CreatorProfileEditor key={c.id} creator={c} />}

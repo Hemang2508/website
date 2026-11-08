@@ -14,7 +14,16 @@ import { formatDate, formatINR } from "@/lib/utils";
 
 export function useCreatorTx(creatorId: string) {
   const { bookings, pitchRequests, pitches, creators } = useStore();
-  const tx = toTransactions(bookings.filter((b) => b.creatorId === creatorId), pitchRequests.filter((r) => r.creatorId === creatorId), pitches, creators);
+  // Duo bookings: each creator sees their 50% share of the amount, fee and earnings
+  const mine = bookings
+    .filter((b) => b.creatorId === creatorId || b.partnerCreatorId === creatorId)
+    .map((b) => {
+      if (!b.partnerCreatorId) return b;
+      const lead = b.creatorId === creatorId;
+      const half = (n: number) => (lead ? Math.round(n / 2) : n - Math.round(n / 2));
+      return { ...b, amount: half(b.amount), platformFee: half(b.platformFee), creatorEarning: half(b.creatorEarning), serviceTitle: `${b.serviceTitle} (your 50% share)` };
+    });
+  const tx = toTransactions(mine, pitchRequests.filter((r) => r.creatorId === creatorId), pitches, creators);
   return { tx, summary: summarise(tx) };
 }
 

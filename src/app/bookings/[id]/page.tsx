@@ -49,6 +49,7 @@ function BookingDetail() {
     notFound();
   }
   const c = getCreator(b.creatorId)!;
+  const partner = b.partnerCreatorId ? getCreator(b.partnerCreatorId) : undefined;
   const cancellable = b.status === "pending" || b.status === "confirmed";
 
   const timeline = [
@@ -63,7 +64,7 @@ function BookingDetail() {
         <div className="mb-8 flex flex-col items-center rounded-2xl border border-line bg-white px-6 py-10 text-center shadow-card">
           <span className="flex h-14 w-14 items-center justify-center rounded-full bg-teal-50"><CheckCircle2 className="h-8 w-8 text-teal-500" /></span>
           <h1 className="mt-4 text-2xl font-semibold tracking-tight text-ink">Booking request sent</h1>
-          <p className="mt-2 max-w-md text-ink-muted">Your simulated payment was successful. {c.name.split(" ")[0]} will confirm your session shortly — we&apos;ll notify you on your dashboard.</p>
+          <p className="mt-2 max-w-md text-ink-muted">Your simulated payment was successful. {partner ? `${c.name.split(" ")[0]} & ${partner.name.split(" ")[0]}` : c.name.split(" ")[0]} will confirm your session shortly — we&apos;ll notify you on your dashboard.</p>
           <div className="mt-6 flex flex-col gap-2 sm:flex-row">
             <ButtonLink href="/dashboard">Go to my dashboard <ArrowRight className="h-4 w-4" /></ButtonLink>
             <Button variant="secondary" onClick={() => downloadIcs(b, c.name)}><CalendarPlus className="h-4 w-4" />Add to calendar</Button>
@@ -83,13 +84,18 @@ function BookingDetail() {
         <Card>
           <CardHeader title={`Booking ${b.id}`} description={`Created ${formatDate(b.createdAt)}`} action={<BookingStatusBadge status={b.status} />} />
           <div className="p-5">
-            <Link href={`/creators/${c.slug}`} className="flex items-center gap-3 rounded-xl border border-line p-3 hover:bg-canvas">
-              <Avatar initials={c.initials} hue={c.avatarHue} size="md" verified={c.verified} />
-              <div className="min-w-0">
-                <p className="font-semibold text-ink">{c.name}</p>
-                <p className="truncate text-xs text-ink-muted">{c.headline}</p>
-              </div>
-            </Link>
+            <div className={partner ? "grid gap-3 sm:grid-cols-2" : ""}>
+              {[c, ...(partner ? [partner] : [])].map((x) => (
+                <Link key={x.id} href={`/creators/${x.slug}`} className="flex items-center gap-3 rounded-xl border border-line p-3 hover:bg-canvas">
+                  <Avatar initials={x.initials} hue={x.avatarHue} size="md" verified={x.verified} />
+                  <div className="min-w-0">
+                    <p className="font-semibold text-ink">{x.name}</p>
+                    <p className="truncate text-xs text-ink-muted">{x.headline}</p>
+                  </div>
+                </Link>
+              ))}
+            </div>
+            {partner && b.duoId && <p className="mt-2 text-xs text-ink-subtle">Creator Duo booking — either creator can confirm; earnings are split 50/50.</p>}
             <dl className="mt-5 grid gap-4 text-sm sm:grid-cols-2">
               <Row label="Service" value={`${b.serviceTitle} · ${b.durationMins} min`} />
               <Row label="When" value={`${formatDate(b.date, { weekday: "short", day: "numeric", month: "short", year: "numeric" })}, ${formatTime(b.time)} IST`} />

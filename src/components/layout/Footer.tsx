@@ -12,9 +12,9 @@ export function Footer() {
             RTG Live is a proposed product concept prepared for discussion with Voyager Partners, Hyderabad. It is not an existing or approved Voyager Partners product.
           </p>
         </div>
-        <FooterCol title="Live in MVP" links={[["Explore creators", "/explore"], ["RTG Connect", "/explore"], ["RTG Pitch", "/pitch/new"], ["User dashboard", "/dashboard"]]} />
-        <FooterCol title="Coming later" links={[["RTG Collaborate", "/#roadmap"], ["RTG Market", "/#roadmap"], ["RTG Community", "/#roadmap"], ["Video sessions", "/#roadmap"]]} />
-        <FooterCol title="For creators" links={[["Creator dashboard", "/creator"], ["Pricing & fees", "/#fees"], ["Admin console", "/admin"]]} />
+        <FooterCol title="Discover & connect" links={[["Explore creators", "/explore"], ["Creator Duos", "/duos"], ["Regional events", "/regional"], ["RTG Pitch", "/pitch/new"]]} />
+        <FooterCol title="Ecosystem" links={[["Community", "/community"], ["Collaborate (beta)", "/collaborate"], ["Coming later: RTG Market", "/#ecosystem"], ["Coming later: video sessions", "/#ecosystem"]]} />
+        <FooterCol title="Dashboards" links={[["User dashboard", "/dashboard"], ["Creator dashboard", "/creator"], ["Pricing & fees", "/#fees"], ["Admin console", "/admin"]]} />
       </div>
       <div className="border-t border-line">
         <div className="mx-auto flex max-w-7xl flex-col gap-2 px-4 py-5 text-xs text-ink-subtle sm:flex-row sm:justify-between sm:px-6 lg:px-8">

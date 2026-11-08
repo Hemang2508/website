@@ -8,7 +8,9 @@ export type CreatorCategory =
   | "Finance & Investing"
   | "Content & Creator Economy"
   | "Career & Education"
-  | "Lifestyle & Wellness";
+  | "Lifestyle & Wellness"
+  | "Food & Travel"
+  | "Gaming & Entertainment";
 
 export type ServiceType = "call" | "review" | "mentorship" | "pitch";
 
@@ -52,6 +54,17 @@ export interface Creator {
   pitchCategories: string[];
   socials: { platform: "LinkedIn" | "Instagram" | "YouTube" | "X"; handle: string }[];
   featured?: boolean;
+  /** Creator Passport extras (demo data) */
+  portfolio?: PortfolioItem[];
+  collaborationsCompleted?: number;
+}
+
+export interface PortfolioItem {
+  title: string;
+  kind: "Campaign" | "Video" | "Article" | "Workshop" | "Venture" | "Talk";
+  org: string;
+  year: number;
+  metric?: string;
 }
 
 export type BookingSource = "marketplace" | "creator";
@@ -82,6 +95,9 @@ export interface Booking {
   createdAt: string;
   reviewed?: boolean;
   isDemoUser?: boolean; // true if the booking belongs to the demo "user" account
+  /** Creator Duo bookings: lead creator is creatorId, partner shares the session and earnings 50/50 */
+  duoId?: string;
+  partnerCreatorId?: string;
 }
 
 export interface Review {
@@ -156,7 +172,7 @@ export interface Notification {
   href?: string;
   createdAt: string;
   read: boolean;
-  kind: "booking" | "pitch" | "payment" | "review" | "system";
+  kind: "booking" | "pitch" | "payment" | "review" | "system" | "community" | "event" | "collab";
 }
 
 export interface DemoUser {
@@ -164,4 +180,110 @@ export interface DemoUser {
   email: string;
   phone: string;
   title: string;
+}
+
+/* ───────────── Ecosystem modules ───────────── */
+
+export interface Community {
+  id: string;
+  slug: string;
+  name: string;
+  tagline: string;
+  description: string;
+  category: "Food" | "Career" | "Travel" | "Gaming" | "Startups";
+  city: string; // "All India" or a city
+  hue: number;
+  icon: "food" | "career" | "travel" | "gaming" | "startup";
+  baseMembers: number; // demo figure
+  hostCreatorIds: string[];
+  tags: string[];
+  guidelines: string[];
+  posts: { author: string; role: string; text: string; ago: string; replies: number }[];
+  createdAt: string;
+}
+
+export type EventType = "Creator meetup" | "Coffee with Creators" | "Food walk" | "Startup networking" | "Creator workshop";
+
+export interface RegionalEvent {
+  id: string;
+  title: string;
+  type: EventType;
+  city: string;
+  area: string; // neighbourhood only — exact venue shared after registration
+  date: string; // YYYY-MM-DD
+  time: string; // HH:MM
+  durationMins: number;
+  price: number; // 0 = free
+  capacity: number;
+  baseRegistered: number; // demo figure
+  creatorIds: string[];
+  communityId?: string;
+  description: string;
+  agenda: string[];
+  hue: number;
+}
+
+export interface EventRegistration {
+  id: string;
+  eventId: string;
+  viewer: string; // viewer key: "user" | "admin" | creatorId
+  name: string;
+  paymentId?: string;
+  createdAt: string;
+}
+
+export interface CreatorDuo {
+  id: string;
+  slug: string;
+  title: string;
+  pairing: "Food + Travel" | "Finance + Career" | "Fitness + Lifestyle" | "Gaming + Entertainment";
+  creatorIds: [string, string];
+  description: string;
+  includes: string[];
+  format: "Online" | "In person · Hyderabad";
+  durationMins: number;
+  price: number;
+  maxGuests: number;
+  availability: WeeklyAvailability;
+  hue: number;
+}
+
+export type CollabStatus = "open" | "in_progress" | "closed";
+export type ApplicationStatus = "submitted" | "shortlisted" | "accepted" | "declined" | "withdrawn";
+
+export interface Collaboration {
+  id: string;
+  brand: string;
+  brandHue: number;
+  ownedByDemoUser?: boolean;
+  title: string;
+  summary: string;
+  description: string;
+  category: string;
+  campaignType: "Product launch" | "Brand awareness" | "Event partnership" | "Content series" | "Store launch";
+  compensation: "Paid" | "Paid + product" | "Product only";
+  budgetMin: number;
+  budgetMax: number;
+  cities: string[];
+  minFollowers: number;
+  slots: number;
+  requirements: string[];
+  deliverables: string[];
+  deadline: string; // YYYY-MM-DD application deadline
+  status: CollabStatus;
+  baseApplicants: number; // demo figure
+  createdAt: string;
+}
+
+export interface CollabApplication {
+  id: string;
+  collabId: string;
+  creatorId: string;
+  message: string;
+  proposedFee: number;
+  portfolioLink: string;
+  status: ApplicationStatus;
+  createdAt: string;
+  updatedAt: string;
+  brandNote?: string;
 }

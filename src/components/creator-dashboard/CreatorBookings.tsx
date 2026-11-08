@@ -13,9 +13,9 @@ import { pct } from "@/lib/pricing";
 type F = "requests" | "upcoming" | "past";
 
 export function CreatorBookings({ creatorId }: { creatorId: string }) {
-  const { bookings, setBookingStatus, toast } = useStore();
+  const { bookings, setBookingStatus, toast, creators } = useStore();
   const [f, setF] = useState<F>("requests");
-  const mine = bookings.filter((b) => b.creatorId === creatorId);
+  const mine = bookings.filter((b) => b.creatorId === creatorId || b.partnerCreatorId === creatorId);
   const groups: Record<F, Booking[]> = {
     requests: mine.filter((b) => b.status === "pending").sort((a, b) => (a.date + a.time).localeCompare(b.date + b.time)),
     upcoming: mine.filter((b) => b.status === "confirmed").sort((a, b) => (a.date + a.time).localeCompare(b.date + b.time)),
@@ -47,6 +47,11 @@ export function CreatorBookings({ creatorId }: { creatorId: string }) {
                 <div className="flex flex-wrap items-center gap-2">
                   <p className="font-semibold text-ink">{b.userName}</p>
                   <BookingStatusBadge status={b.status} />
+                  {b.partnerCreatorId && (
+                    <span className="inline-flex items-center gap-1 rounded-full bg-brand-50 px-2 py-0.5 text-[11px] font-medium text-brand-700">
+                      Duo with {creators.find((x) => x.id === (b.creatorId === creatorId ? b.partnerCreatorId : b.creatorId))?.name}
+                    </span>
+                  )}
                   {b.source === "creator" && <span className="inline-flex items-center gap-1 rounded-full bg-teal-50 px-2 py-0.5 text-[11px] font-medium text-teal-700"><Link2 className="h-3 w-3" />Your link</span>}
                 </div>
                 <p className="mt-0.5 text-[13px] text-ink-muted">{b.serviceTitle} · {formatTime(b.time)} · {b.durationMins} min · {b.id}</p>
@@ -56,7 +61,8 @@ export function CreatorBookings({ creatorId }: { creatorId: string }) {
               <div className="shrink-0 rounded-xl bg-canvas px-4 py-3 text-[13px] sm:w-52">
                 <div className="flex justify-between"><span className="text-ink-muted">Price</span><span className="text-ink">{formatINR(b.amount)}</span></div>
                 <div className="flex justify-between"><span className="text-ink-muted">Fee ({pct(b.commissionRate)})</span><span className="text-ink">−{formatINR(b.platformFee)}</span></div>
-                <div className="mt-1 flex justify-between border-t border-line pt-1 font-semibold"><span className="text-ink">You earn</span><span className="text-teal-700">{formatINR(b.creatorEarning)}</span></div>
+                {b.partnerCreatorId && <div className="flex justify-between"><span className="text-ink-muted">Partner share (50%)</span><span className="text-ink">−{formatINR(b.creatorEarning - Math.round(b.creatorEarning / 2))}</span></div>}
+                <div className="mt-1 flex justify-between border-t border-line pt-1 font-semibold"><span className="text-ink">You earn</span><span className="text-teal-700">{formatINR(b.partnerCreatorId ? Math.round(b.creatorEarning / 2) : b.creatorEarning)}</span></div>
               </div>
             </div>
             {(b.status === "pending" || b.status === "confirmed") && (

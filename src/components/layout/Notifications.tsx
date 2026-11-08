@@ -2,13 +2,13 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Bell, CalendarCheck, CreditCard, Info, Megaphone, Star } from "lucide-react";
+import { Bell, CalendarCheck, CreditCard, Handshake, Info, MapPin, Megaphone, Star, UsersRound } from "lucide-react";
 import { useMyNotifications, useStore } from "@/lib/store";
 import type { Notification } from "@/lib/types";
 import { cn, timeAgo } from "@/lib/utils";
 
 const icons: Record<Notification["kind"], typeof Bell> = {
-  booking: CalendarCheck, pitch: Megaphone, payment: CreditCard, review: Star, system: Info,
+  booking: CalendarCheck, pitch: Megaphone, payment: CreditCard, review: Star, system: Info, community: UsersRound, event: MapPin, collab: Handshake,
 };
 
 export function NotificationBell() {

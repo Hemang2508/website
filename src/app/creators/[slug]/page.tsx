@@ -4,7 +4,7 @@ import Link from "next/link";
 import { Suspense, useMemo, useState } from "react";
 import { notFound, useParams, useSearchParams } from "next/navigation";
 import {
-  ArrowLeft, CalendarClock, Clock, Copy, Globe2, Link2, MapPin, Megaphone, MessageSquareText, Share2, Star, Timer, Users, Video,
+  ArrowLeft, CalendarClock, Clock, Copy, Globe2, IdCard, Link2, MapPin, Megaphone, MessageSquareText, Share2, Sparkles, Star, Timer, Users, Video,
 } from "lucide-react";
 import { useStore } from "@/lib/store";
 import { Avatar } from "@/components/ui/Avatar";
@@ -31,7 +31,7 @@ function Profile() {
   const { slug } = useParams<{ slug: string }>();
   const params = useSearchParams();
   const viaCreatorLink = params.get("ref") === "creator";
-  const { getCreator, reviews, isSlotTaken, toast, hydrated } = useStore();
+  const { getCreator, reviews, isSlotTaken, toast, hydrated, duos, creators } = useStore();
   const c = getCreator(slug);
   const [showAll, setShowAll] = useState(false);
 
@@ -90,7 +90,10 @@ function Profile() {
                 </div>
                 <p className="mt-1 text-[15px] text-ink-muted">{c.headline}</p>
               </div>
-              <Button variant="secondary" size="sm" onClick={copyLink} className="self-start sm:self-end"><Share2 className="h-4 w-4" />Share profile</Button>
+              <div className="flex gap-2 self-start sm:self-end">
+                <ButtonLink href={`/creators/${c.slug}/passport`} variant="secondary" size="sm"><IdCard className="h-4 w-4" />View Creator Passport</ButtonLink>
+                <Button variant="secondary" size="sm" onClick={copyLink}><Share2 className="h-4 w-4" /><span className="hidden sm:inline">Share</span></Button>
+              </div>
             </div>
 
             <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
@@ -148,6 +151,23 @@ function Profile() {
                 })}
               </div>
             </Section>
+
+            {duos.some((d) => d.creatorIds.includes(c.id)) && (
+              <Section title="Creator Duos" subtitle="Joint experiences with another creator">
+                <div className="grid gap-3 sm:grid-cols-2">
+                  {duos.filter((d) => d.creatorIds.includes(c.id)).map((d) => {
+                    const partner = creators.find((x) => x.id === d.creatorIds.find((id) => id !== c.id));
+                    return (
+                      <Link key={d.id} href={`/duos/${d.slug}`} className="flex items-center gap-3 rounded-2xl border border-line bg-white p-4 shadow-card hover:border-brand-300">
+                        <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-brand-50 text-brand-600"><Sparkles className="h-5 w-5" /></span>
+                        <span className="min-w-0 flex-1"><span className="block truncate text-sm font-semibold text-ink">{d.title}</span><span className="block text-xs text-ink-muted">With {partner?.name} · {d.pairing}</span></span>
+                        <span className="text-sm font-semibold text-ink">{formatINR(d.price)}</span>
+                      </Link>
+                    );
+                  })}
+                </div>
+              </Section>
+            )}
 
             <Section title="Weekly availability" subtitle="Times shown in IST. Exact open slots appear when you book.">
               <div className="grid grid-cols-7 gap-2">

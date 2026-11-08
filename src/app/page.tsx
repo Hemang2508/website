@@ -4,8 +4,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import {
-  ArrowRight, Briefcase, CalendarCheck, ClipboardCheck, Handshake, LineChart, MessagesSquare, PackageSearch, Search, ShieldCheck,
-  ShoppingBag, Sparkles, Store, UserRound, Users, Wallet,
+  ArrowRight, Briefcase, CalendarCheck, ClipboardCheck, Handshake, IdCard, LineChart, MapPin, MessagesSquare, PackageSearch, Search, ShieldCheck,
+  ShoppingBag, Sparkles, UserRound, Users, UsersRound, Wallet,
 } from "lucide-react";
 import { useStore } from "@/lib/store";
 import { Container } from "@/components/ui/Misc";
@@ -59,7 +59,7 @@ export default function LandingPage() {
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(#E4E7EF_1px,transparent_1px)] [background-size:22px_22px] [mask-image:linear-gradient(to_bottom,black,transparent_75%)]" />
         <Container className="relative grid items-center gap-14 py-16 lg:grid-cols-[1.05fr_1fr] lg:py-24">
           <div>
-            <Badge tone="brand" className="mb-5">RTG Connect & RTG Pitch — MVP preview</Badge>
+            <Badge tone="brand" className="mb-5">MVP preview · Connect, Pitch, Community & Collaborate</Badge>
             <h1 className="text-[40px] font-semibold leading-[1.05] tracking-[-0.03em] text-ink sm:text-[56px]">
               Where ideas<br />meet <span className="text-brand-500">influence.</span>
             </h1>
@@ -202,31 +202,40 @@ export default function LandingPage() {
         </Container>
       </section>
 
-      {/* ROADMAP */}
-      <section id="roadmap" className="scroll-mt-24 py-20">
+      {/* ECOSYSTEM */}
+      <section id="ecosystem" className="scroll-mt-24 py-20">
         <Container>
-          <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
-            <div className="max-w-2xl">
-              <p className="text-[13px] font-semibold uppercase tracking-wide text-brand-600">Product roadmap</p>
-              <h2 className="mt-2 text-3xl font-semibold tracking-tight text-ink">What comes after the MVP</h2>
-              <p className="mt-2 text-ink-muted">These modules are planned for later phases and are not operational in this demo.</p>
-            </div>
+          <div className="max-w-2xl">
+            <p className="text-[13px] font-semibold uppercase tracking-wide text-brand-600">The RTG ecosystem</p>
+            <h2 className="mt-2 text-3xl font-semibold tracking-tight text-ink">From one conversation to a lasting relationship.</h2>
+            <p className="mt-2 text-ink-muted">Discover creators, meet them in your city, join their communities and collaborate as a brand — every module connects to the next.</p>
           </div>
-          <div className="mt-10 grid gap-5 md:grid-cols-3">
+          <div className="mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
             {[
-              { icon: Handshake, name: "RTG Collaborate", phase: "Phase 2", body: "Paid brand–creator campaigns with briefs, deliverables, milestones and contracts — built on relationships started in RTG Pitch." },
-              { icon: ShoppingBag, name: "RTG Market", phase: "Phase 3", body: "A storefront for creators to sell digital products — templates, courses and toolkits — alongside their sessions." },
-              { icon: Store, name: "RTG Community", phase: "Phase 3", body: "Paid cohorts, AMAs and member communities hosted by creators, with live video sessions." },
+              { icon: IdCard, name: "Creator Passport", body: "A verified-style record of every creator: expertise, region, portfolio, track record and badges.", href: "/explore", cta: "Browse passports", tag: "Live in demo" },
+              { icon: UsersRound, name: "RTG Community", body: "Creator-hosted communities like Hyderabad Foodies, Startup Founders and Gaming Zone.", href: "/community", cta: "Join a community", tag: "Live in demo" },
+              { icon: MapPin, name: "Regional Connect", body: "City-based discovery with meetups, Coffee with Creators, food walks and workshops. Piloting in Hyderabad.", href: "/regional", cta: "See Hyderabad events", tag: "Hyderabad pilot" },
+              { icon: Sparkles, name: "Creator Duos", body: "Two creators, one experience — Food + Travel, Finance + Career, Fitness + Lifestyle and more.", href: "/duos", cta: "Explore duos", tag: "Live in demo" },
+              { icon: Handshake, name: "RTG Collaborate", body: "Brands post campaign briefs, creators apply, and both track every application to acceptance.", href: "/collaborate", cta: "View briefs", tag: "Beta" },
             ].map((m) => (
-              <div key={m.name} className="rounded-2xl border border-dashed border-[#CCD2DE] bg-white/60 p-6">
+              <Link key={m.name} href={m.href} className="group flex flex-col rounded-2xl border border-line bg-white p-6 shadow-card transition hover:-translate-y-0.5 hover:shadow-lift">
                 <div className="flex items-center justify-between">
-                  <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-canvas text-ink-muted"><m.icon className="h-5 w-5" /></span>
-                  <Badge>{m.phase} · Coming later</Badge>
+                  <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-brand-50 text-brand-600"><m.icon className="h-5 w-5" /></span>
+                  <Badge tone="teal">{m.tag}</Badge>
                 </div>
                 <h3 className="mt-5 text-lg font-semibold text-ink">{m.name}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-ink-muted">{m.body}</p>
-              </div>
+                <p className="mt-2 flex-1 text-sm leading-relaxed text-ink-muted">{m.body}</p>
+                <span className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-brand-600 group-hover:underline">{m.cta} <ArrowRight className="h-4 w-4" /></span>
+              </Link>
             ))}
+            <div className="flex flex-col rounded-2xl border border-dashed border-[#CCD2DE] bg-white/60 p-6">
+              <div className="flex items-center justify-between">
+                <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-canvas text-ink-muted"><ShoppingBag className="h-5 w-5" /></span>
+                <Badge>Coming later</Badge>
+              </div>
+              <h3 className="mt-5 text-lg font-semibold text-ink">RTG Market & creator-owned products</h3>
+              <p className="mt-2 text-sm leading-relaxed text-ink-muted">Future phases could let creators sell digital products and co-develop their own products with brand partners. Not operational in this demo.</p>
+            </div>
           </div>
         </Container>
       </section>

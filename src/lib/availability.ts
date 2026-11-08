@@ -1,7 +1,7 @@
 import type { Creator } from "./types";
 import { addDays, toISODate } from "./utils";
 
-export function slotsForDate(c: Creator, date: Date): string[] {
+export function slotsForDate(c: Pick<Creator, "availability">, date: Date): string[] {
   const slots = c.availability[date.getDay()] ?? [];
   const now = new Date();
   if (toISODate(date) !== toISODate(now)) return slots;
@@ -18,7 +18,7 @@ export function upcomingDays(n = 14) {
   return Array.from({ length: n }, (_, i) => addDays(today, i));
 }
 
-export function nextAvailable(c: Creator, isTaken: (date: string, time: string) => boolean) {
+export function nextAvailable(c: Pick<Creator, "availability">, isTaken: (date: string, time: string) => boolean) {
   for (const d of upcomingDays(21)) {
     const iso = toISODate(d);
     const free = slotsForDate(c, d).find((t) => !isTaken(iso, t));

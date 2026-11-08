@@ -20,7 +20,7 @@ export function RoleSwitcher({ compact }: { compact?: boolean }) {
   const ref = useRef<HTMLDivElement>(null);
   const router = useRouter();
   const creator = creators.find((c) => c.id === activeCreatorId);
-  const switchable = creators.filter((c) => c.status !== "suspended").slice(0, 8);
+  const switchable = creators.filter((c) => c.status !== "suspended");
 
   useEffect(() => {
     const h = (e: MouseEvent) => ref.current && !ref.current.contains(e.target as Node) && setOpen(false);

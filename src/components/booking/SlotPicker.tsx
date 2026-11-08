@@ -9,7 +9,7 @@ import { cn, formatTime, toISODate } from "@/lib/utils";
 export function SlotPicker({
   creator, date, time, onChange, isTaken,
 }: {
-  creator: Creator;
+  creator: Pick<Creator, "availability">;
   date: string | null;
   time: string | null;
   onChange: (date: string, time: string | null) => void;
