@@ -20,9 +20,9 @@ export function DuoCard({ duo }: { duo: CreatorDuo }) {
         <Portrait initials={a.initials} hue={a.avatarHue} photo={a.photo} monogram={false} />
         <Portrait initials={b.initials} hue={b.avatarHue} photo={b.photo} monogram={false} />
         <div className="absolute inset-x-0 -bottom-7 flex items-center justify-center">
-          <Avatar initials={a.initials} hue={a.avatarHue} photo={a.photo} size="lg" ring />
+          <Avatar creator={a} size="lg" ring />
           <span className="z-10 -mx-2 flex h-7 w-7 items-center justify-center rounded-full bg-navy text-white ring-4 ring-white"><Plus className="h-3.5 w-3.5" /></span>
-          <Avatar initials={b.initials} hue={b.avatarHue} photo={b.photo} size="lg" ring />
+          <Avatar creator={b} size="lg" ring />
         </div>
         <Badge tone="neutral" className="absolute left-3 top-3 bg-white/95 text-ink">{duo.pairing}</Badge>
       </div>

@@ -16,6 +16,7 @@ import { CreatorBookings } from "@/components/creator-dashboard/CreatorBookings"
 import { CreatorServices } from "@/components/creator-dashboard/CreatorServices";
 import { CreatorAvailability } from "@/components/creator-dashboard/CreatorAvailability";
 import { CreatorProfileEditor } from "@/components/creator-dashboard/CreatorProfileEditor";
+import { CreatorAppearanceEditor } from "@/components/creator-dashboard/CreatorAppearanceEditor";
 import { CreatorEarnings, useCreatorTx } from "@/components/creator-dashboard/CreatorEarnings";
 import { IncomingPitches } from "@/components/pitch/IncomingPitches";
 import { CreatorCollabs } from "@/components/creator-dashboard/CreatorCollabs";
@@ -63,7 +64,7 @@ function CreatorDashboard() {
     <PageHero
       compact
       eyebrow="Creator dashboard"
-      title={<span className="flex items-center gap-4"><Avatar initials={c.initials} hue={c.avatarHue} size="lg" verified={c.verified} photo={c.photo} /><span>Welcome back, {c.name.split(" ")[0]}</span></span>}
+      title={<span className="flex items-center gap-4"><Avatar creator={c} size="lg" verified={c.verified} photo={c.photo} /><span>Welcome back, {c.name.split(" ")[0]}</span></span>}
       description={c.headline}
       actions={<>
         <ButtonLink href={`/creators/${c.slug}/passport`} variant="light" size="sm"><IdCard className="h-4 w-4" />My Creator Passport</ButtonLink>
@@ -182,7 +183,7 @@ function CreatorDashboard() {
         {tab === "collabs" && <CreatorCollabs creator={c} />}
         {tab === "services" && <CreatorServices creator={c} />}
         {tab === "availability" && <CreatorAvailability key={c.id} creator={c} />}
-        {tab === "profile" && <CreatorProfileEditor key={c.id} creator={c} />}
+        {tab === "profile" && <div className="space-y-6"><CreatorAppearanceEditor key={`ap-${c.id}`} creator={c} /><CreatorProfileEditor key={c.id} creator={c} /></div>}
         {tab === "earnings" && <CreatorEarnings creatorId={c.id} />}
       </div>
     </Container>

@@ -1,5 +1,7 @@
 import { cn } from "@/lib/utils";
 import { BadgeCheck } from "lucide-react";
+import type { Creator } from "@/lib/types";
+import { CreatorFigure } from "@/components/creative/CreatorFigure";
 
 const sizes = { xs: "h-7 w-7 text-[11px]", sm: "h-9 w-9 text-xs", md: "h-12 w-12 text-sm", lg: "h-16 w-16 text-lg", xl: "h-28 w-28 text-3xl" };
 
@@ -7,16 +9,26 @@ const sizes = { xs: "h-7 w-7 text-[11px]", sm: "h-9 w-9 text-xs", md: "h-12 w-12
  * Creator avatar. Renders the creator's photo when one exists (Supabase Storage in production);
  * the demo uses a tinted monogram so no third-party or unlicensed imagery is required.
  */
+type AvatarCreator = Pick<Creator, "id" | "name" | "initials" | "avatarHue" | "photo" | "appearance">;
+
+/**
+ * Creator avatar: uploaded photo → illustrated figure (head crop) → monogram (non-creators).
+ * Pass `creator` for creators; `initials`/`hue` remain for non-creator people.
+ */
 export function Avatar({
-  initials, hue = 250, size = "md", photo, verified, className, ring,
-}: { initials: string; hue?: number; size?: keyof typeof sizes; photo?: string; verified?: boolean; className?: string; ring?: boolean }) {
+  creator, initials, hue = 250, size = "md", photo, verified, className, ring,
+}: { creator?: AvatarCreator; initials?: string; hue?: number; size?: keyof typeof sizes; photo?: string; verified?: boolean; className?: string; ring?: boolean }) {
+  const ph = photo ?? creator?.photo;
+  const h = creator?.avatarHue ?? hue;
   return (
     <div className={cn("relative shrink-0", className)}>
       <div
         className={cn("flex items-center justify-center overflow-hidden rounded-full font-display font-bold tracking-tight", sizes[size], ring && "ring-4 ring-white")}
-        style={{ background: `linear-gradient(145deg, hsl(${hue} 70% 93%), hsl(${(hue + 28) % 360} 55% 84%))`, color: `hsl(${hue} 45% 28%)` }}
+        style={{ background: `hsl(${creator?.appearance?.backdrop ?? h} 48% 88%)`, color: `hsl(${h} 45% 28%)` }}
       >
-        {photo ? <img src={photo} alt="" className="h-full w-full object-cover" /> : initials}
+        {ph ? <img src={ph} alt="" className="h-full w-full object-cover" loading="lazy" decoding="async" />
+          : creator ? <CreatorFigure creator={creator} crop="head" label="" />
+          : initials}
       </div>
       {verified && (
         <BadgeCheck

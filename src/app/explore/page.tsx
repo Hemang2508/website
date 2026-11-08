@@ -2,15 +2,18 @@
 
 import { Suspense, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { SlidersHorizontal, Search, X, SearchX } from "lucide-react";
+import { LayoutGrid, Rows3, SlidersHorizontal, Search, X, SearchX } from "lucide-react";
+import Link from "next/link";
 import { useStore } from "@/lib/store";
 import { CATEGORIES } from "@/lib/data/creators";
-import { Container, EmptyState, PageHero } from "@/components/ui/Misc";
+import { Container, EmptyState } from "@/components/ui/Misc";
 import { Reveal } from "@/components/ui/Reveal";
 import { Chip, Select, Toggle } from "@/components/ui/Field";
 import { Button } from "@/components/ui/Button";
 import { CreatorCard, minPrice } from "@/components/creators/CreatorCard";
-import { cn } from "@/lib/utils";
+import { CreatorFigure } from "@/components/creative/CreatorFigure";
+import { SplitWords } from "@/components/creative/SplitWords";
+import { cn, formatINR } from "@/lib/utils";
 
 type Sort = "recommended" | "rating" | "price_asc" | "price_desc" | "followers";
 const PRICE_BANDS = [
@@ -42,6 +45,7 @@ function Explore() {
   const [verifiedOnly, setVerifiedOnly] = useState(false);
   const [sort, setSort] = useState<Sort>("recommended");
   const [drawer, setDrawer] = useState(false);
+  const [view, setView] = useState<"gallery" | "index">("gallery");
 
   const results = useMemo(() => {
     const term = q.trim().toLowerCase();
@@ -110,39 +114,64 @@ function Explore() {
 
   return (
     <>
-    <PageHero
-      eyebrow="RTG Connect · Explore"
-      title="Explore creators & experts"
-      description="Book a paid conversation or send a product pitch to practitioners across business, marketing, technology, food, travel, gaming and more."
-    >
-      <div className="flex flex-col gap-3 sm:flex-row">
-        <label className="flex h-12 flex-1 items-center gap-2.5 rounded-2xl border border-white/12 bg-white/[0.07] px-4 backdrop-blur transition-colors focus-within:border-white/35">
-          <Search className="h-4 w-4 text-white/50" />
-          <span className="sr-only">Search</span>
-          <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search by name, skill, industry or city" className="h-full w-full bg-transparent text-[15px] text-white placeholder:text-white/40 focus:outline-none" />
-          {q && <button onClick={() => setQ("")} aria-label="Clear search" className="text-white/50 hover:text-white"><X className="h-4 w-4" /></button>}
-        </label>
-        <div className="flex gap-3">
-          <Button variant="light" className="h-12 lg:hidden" onClick={() => setDrawer(true)}>
-            <SlidersHorizontal className="h-4 w-4" /> Filters {activeCount > 0 && <span className="rounded-full bg-brand-500 px-1.5 text-[11px] text-white">{activeCount}</span>}
-          </Button>
-          <Select value={sort} onChange={(e) => setSort(e.target.value as Sort)} className="h-12 w-full rounded-2xl sm:w-56" aria-label="Sort by">
-            <option value="recommended">Sort: Recommended</option>
-            <option value="rating">Sort: Highest rated</option>
-            <option value="price_asc">Sort: Price, low to high</option>
-            <option value="price_desc">Sort: Price, high to low</option>
-            <option value="followers">Sort: Largest audience</option>
-          </Select>
+    <section className="relative overflow-hidden border-b border-line bg-canvas">
+      <div className="pointer-events-none absolute -right-24 -top-24 h-80 w-80 rounded-full border border-ink/10" aria-hidden />
+      <div className="pointer-events-none absolute -right-2 -top-10 h-80 w-80 rounded-full border border-ink/10" aria-hidden />
+      <Container className="relative pb-6 pt-10 sm:pt-14">
+        <p className="eyebrow text-ink-muted animate-fade-in">RTG Connect · Explore</p>
+        <div className="mt-4 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+          <h1 className="font-display text-[clamp(2.6rem,7vw,6rem)] font-bold leading-[0.95] tracking-[-0.05em] text-ink">
+            <SplitWords items={["Find", "your", <em key="p" className="font-serif font-normal italic tracking-[-0.02em] text-brand-600">person.</em>]} label="Find your person." />
+          </h1>
+          <p className="max-w-sm text-[15px] leading-relaxed text-ink-muted animate-fade-up [animation-delay:300ms]">
+            <span className="font-display text-3xl font-bold text-ink">{results.length}</span> of {creators.filter((c) => c.status === "active").length} creators match — book a conversation or send a product pitch.
+          </p>
         </div>
-      </div>
-      <div className="-mx-4 mt-5 flex gap-2 overflow-x-auto px-4 pb-1 scrollbar-none sm:mx-0 sm:px-0" role="group" aria-label="Category">
-        {["All", ...CATEGORIES].map((c) => <Chip key={c} dark active={category === c} onClick={() => setCategory(c)}>{c === "All" ? "All categories" : c}</Chip>)}
-      </div>
-    </PageHero>
+        <div className="mt-8 flex flex-col gap-3 lg:flex-row lg:items-center">
+          <label className="flex h-14 flex-1 items-center gap-3 border-b-2 border-ink/80 transition-colors focus-within:border-brand-500">
+            <Search className="h-5 w-5 text-ink-muted" />
+            <span className="sr-only">Search</span>
+            <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search by name, skill, industry or city" className="h-full w-full bg-transparent text-[17px] text-ink placeholder:text-ink-subtle focus:outline-none" />
+            {q && <button onClick={() => setQ("")} aria-label="Clear search" className="text-ink-subtle hover:text-ink"><X className="h-4 w-4" /></button>}
+          </label>
+          <div className="flex gap-2">
+            <Button variant="secondary" className="h-12 lg:hidden" onClick={() => setDrawer(true)}>
+              <SlidersHorizontal className="h-4 w-4" /> Filters {activeCount > 0 && <span className="rounded-full bg-brand-500 px-1.5 text-[11px] text-white">{activeCount}</span>}
+            </Button>
+            <Select value={sort} onChange={(e) => setSort(e.target.value as Sort)} className="h-12 w-full rounded-full sm:w-56" aria-label="Sort by">
+              <option value="recommended">Sort: Recommended</option>
+              <option value="rating">Sort: Highest rated</option>
+              <option value="price_asc">Sort: Price, low to high</option>
+              <option value="price_desc">Sort: Price, high to low</option>
+              <option value="followers">Sort: Largest audience</option>
+            </Select>
+            <div className="hidden h-12 items-center rounded-full border border-line bg-white p-1 sm:flex" role="group" aria-label="View">
+              {(["gallery", "index"] as const).map((v) => (
+                <button key={v} onClick={() => setView(v)} aria-pressed={view === v} className={cn("flex h-10 items-center gap-1.5 rounded-full px-3.5 text-[13px] font-semibold transition-colors", view === v ? "bg-ink text-white" : "text-ink-muted hover:text-ink")}>
+                  {v === "gallery" ? <LayoutGrid className="h-4 w-4" /> : <Rows3 className="h-4 w-4" />}{v === "gallery" ? "Gallery" : "Index"}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+        <div className="-mx-4 mt-6 flex gap-1 overflow-x-auto px-4 pb-1 scrollbar-none sm:mx-0 sm:px-0" role="group" aria-label="Category">
+          {["All", ...CATEGORIES].map((c) => {
+            const n = c === "All" ? creators.filter((x) => x.status === "active").length : creators.filter((x) => x.status === "active" && x.category === c).length;
+            return (
+              <button key={c} onClick={() => setCategory(c)} aria-pressed={category === c}
+                className={cn("relative shrink-0 rounded-full px-3.5 py-2 text-[14px] font-semibold transition-colors duration-fast", category === c ? "text-ink" : "text-ink-muted hover:text-ink")}>
+                {c === "All" ? "All categories" : c}<sup className="ml-0.5 text-[10px] font-medium text-ink-subtle">{n}</sup>
+                <span className={cn("absolute inset-x-3 -bottom-0.5 h-0.5 origin-left rounded-full bg-ink transition-transform duration-base ease-out", category === c ? "scale-x-100" : "scale-x-0")} />
+              </button>
+            );
+          })}
+        </div>
+      </Container>
+    </section>
     <Container className="py-10">
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-[250px_1fr]">
         <aside className="hidden lg:block">
-          <div className="sticky top-24 rounded-2xl border border-line bg-white p-5 shadow-card">
+          <div className="sticky top-24 rounded-3xl border border-line bg-white p-5">
             <div className="mb-4 flex items-center justify-between">
               <p className="text-sm font-semibold text-ink">Filters</p>
               {activeCount > 0 && <button onClick={clear} className="text-xs font-medium text-brand-600">Clear all</button>}
@@ -162,9 +191,27 @@ function Explore() {
               <EmptyState icon={<SearchX className="h-5 w-5" />} title="No creators match these filters" body="Try a broader search term or remove a filter." action={<Button variant="secondary" onClick={clear}>Reset filters</Button>} />
             </div>
           ) : (
-            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-3">
-              {results.map((c, i) => <Reveal key={c.id} delay={(i % 3) * 60} className="h-full"><div className="h-full [&>div]:h-full"><CreatorCard creator={c} /></div></Reveal>)}
-            </div>
+            view === "gallery" ? (
+              <div className="grid grid-cols-1 gap-x-5 gap-y-10 sm:grid-cols-2 xl:grid-cols-3">
+                {results.map((c, i) => <Reveal key={c.id} delay={(i % 3) * 60} className="h-full"><div className="h-full [&>div]:h-full"><CreatorCard creator={c} /></div></Reveal>)}
+              </div>
+            ) : (
+              <ul className="divide-y divide-line overflow-hidden rounded-3xl border border-line bg-white">
+                {results.map((c) => (
+                  <li key={c.id} className="group relative flex items-center gap-4 px-4 py-3 transition-colors hover:bg-canvas sm:px-5">
+                    <span className="h-14 w-12 shrink-0 overflow-hidden rounded-t-full rounded-b-lg"><CreatorFigure creator={c} label="" /></span>
+                    <span className="min-w-0 flex-1">
+                      <Link href={`/creators/${c.slug}`} className="block truncate font-display text-[16px] font-bold text-ink after:absolute after:inset-0 group-hover:text-brand-600">{c.name}</Link>
+                      <span className="block truncate text-[13px] text-ink-muted">{c.category} · {c.location}</span>
+                    </span>
+                    <span className="hidden w-40 truncate text-[13px] text-ink-muted md:block">{c.tags.slice(0, 2).join(" · ")}</span>
+                    <span className="hidden w-16 text-[13px] font-semibold text-ink sm:block">★ {c.rating.toFixed(1)}</span>
+                    <span className="w-20 text-right font-display font-bold text-ink">{formatINR(minPrice(c))}</span>
+                    <Link href={`/creators/${c.slug}/passport`} className="relative z-10 hidden rounded-full border border-line px-3 py-1.5 text-xs font-semibold text-ink hover:border-ink sm:block">Passport</Link>
+                  </li>
+                ))}
+              </ul>
+            )
           )}
         </div>
       </div>

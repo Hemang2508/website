@@ -94,7 +94,7 @@ function NewPitch() {
 
       {preCreator && (
         <div className="flex items-center gap-3 rounded-xl border border-line bg-white px-4 py-3 text-[13px] text-ink-muted">
-          <Avatar initials={preCreator.initials} hue={preCreator.avatarHue} size="sm" />
+          <Avatar creator={preCreator} size="sm" />
           <p><b className="text-ink">{preCreator.name}</b> is pre-selected. You can add up to {MAX_CREATORS - 1} more creators in step 3.</p>
         </div>
       )}
@@ -200,7 +200,7 @@ function NewPitch() {
               <ul className="divide-y divide-line rounded-xl border border-line">
                 {chosen.map((c) => (
                   <li key={c.id} className="flex items-center gap-3 px-4 py-3">
-                    <Avatar initials={c.initials} hue={c.avatarHue} size="sm" />
+                    <Avatar creator={c} size="sm" />
                     <span className="flex-1 text-sm font-medium text-ink">{c.name}</span>
                     <span className="text-sm text-ink">{formatINR(pitchFee(c))}</span>
                   </li>

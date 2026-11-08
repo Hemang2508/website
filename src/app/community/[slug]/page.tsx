@@ -95,7 +95,7 @@ export default function CommunityDetailPage() {
               <ul className="divide-y divide-line">
                 {hosts.map((h) => (
                   <li key={h.id} className="flex items-center gap-3 px-5 py-3">
-                    <Avatar initials={h.initials} hue={h.avatarHue} size="sm" verified={h.verified} />
+                    <Avatar creator={h} size="sm" verified={h.verified} />
                     <div className="min-w-0 flex-1">
                       <Link href={`/creators/${h.slug}`} className="block truncate text-[13px] font-semibold text-ink hover:text-brand-600">{h.name}</Link>
                       <p className="truncate text-xs text-ink-subtle">{h.category}</p>

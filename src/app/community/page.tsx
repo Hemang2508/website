@@ -57,7 +57,7 @@ export default function CommunityPage() {
                   <Link href={`/community/${c.slug}`} className="text-lg font-semibold text-ink after:absolute after:inset-0 after:content-[''] group-hover:text-brand-600">{c.name}</Link>
                   <p className="mt-1 text-[13px] leading-snug text-ink-muted">{c.tagline}</p>
                   <div className="mt-4 flex items-center gap-3 text-xs text-ink-muted">
-                    <div className="flex -space-x-2">{hosts.map((h) => <div key={h!.id} className="rounded-full ring-2 ring-white"><Avatar initials={h!.initials} hue={h!.avatarHue} size="xs" /></div>)}</div>
+                    <div className="flex -space-x-2">{hosts.map((h) => <div key={h!.id} className="rounded-full ring-2 ring-white"><Avatar creator={h!} size="xs" /></div>)}</div>
                     <span>Hosted by {hosts.map((h) => h!.name.split(" ")[0]).join(" & ")}</span>
                   </div>
                   <div className="flex-1" />

@@ -21,7 +21,7 @@ export function HeroPreview() {
       <div className="relative z-10 w-[80%] overflow-hidden rounded-3xl border border-white/10 bg-white shadow-pop animate-fade-up [animation-delay:150ms]">
         <Portrait initials={c.initials} hue={c.avatarHue} photo={c.photo} monogram={false} className="h-24" />
         <div className="px-5 pb-5">
-          <Avatar initials={c.initials} hue={c.avatarHue} size="lg" ring className="-mt-8 mb-2 w-fit" />
+          <Avatar creator={c} size="lg" ring className="-mt-8 mb-2 w-fit" />
           <div className="flex items-center gap-2">
             <p className="font-display text-lg font-bold text-ink">{c.name}</p>
             <BadgeCheck className="h-5 w-5 fill-brand-500 text-white" />

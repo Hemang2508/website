@@ -81,7 +81,7 @@ export function CityMap() {
               <p className="flex items-center gap-2"><Users className="h-4 w-4" />{Math.max(0, e.capacity - registeredCount(e))} of {e.capacity} spots left</p>
             </div>
             <div className="mt-5 flex items-center gap-3 border-t border-line pt-5">
-              <div className="flex -space-x-2">{hosts.map((h) => <div key={h.id} className="rounded-full ring-2 ring-white"><Avatar initials={h.initials} hue={h.avatarHue} size="sm" /></div>)}</div>
+              <div className="flex -space-x-2">{hosts.map((h) => <div key={h.id} className="rounded-full ring-2 ring-white"><Avatar creator={h} size="sm" /></div>)}</div>
               <p className="text-[13px] text-ink-muted">Hosted by {hosts.map((h) => h.name).join(" & ")}</p>
             </div>
             <div className="mt-6 flex items-center justify-between">

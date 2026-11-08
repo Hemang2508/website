@@ -9,6 +9,7 @@ import {
 import { useStore } from "@/lib/store";
 import { buildPassport } from "@/lib/passport";
 import { Avatar } from "@/components/ui/Avatar";
+import { CreatorFigure } from "@/components/creative/CreatorFigure";
 import { Badge, SimulatedTag } from "@/components/ui/Badge";
 import { Button, ButtonLink } from "@/components/ui/Button";
 import { Card, CardHeader } from "@/components/ui/Card";
@@ -16,6 +17,7 @@ import { Container, Stars } from "@/components/ui/Misc";
 import { PageSkeleton } from "@/components/ui/Visual";
 import { cn, compact, formatDate, formatINR } from "@/lib/utils";
 
+const stampCls = { brand: "border-brand-500 text-brand-600", teal: "border-teal-600 text-teal-700", amber: "border-amber-500 text-amber-700", navy: "border-ink text-ink" };
 const toneCls = { brand: "bg-brand-50 text-brand-700 ring-brand-100", teal: "bg-teal-50 text-teal-700 ring-teal-100", amber: "bg-amber-50 text-amber-700 ring-amber-100", navy: "bg-[#E8EAF0] text-navy ring-[#D9DCE5]" };
 
 export default function PassportPage() {
@@ -37,35 +39,43 @@ export default function PassportPage() {
   const pitchSvc = c.services.find((x) => x.type === "pitch" && x.active);
   return (
     <>
-    <section className="surface-dark relative overflow-hidden text-white">
-      <div className="absolute inset-0 opacity-70" style={{ background: `radial-gradient(40rem 22rem at 20% 0%, hsl(${c.avatarHue} 70% 55% / 0.45), transparent 60%)` }} aria-hidden />
-      <div className="grid-faint pointer-events-none absolute inset-0" aria-hidden />
-      <Container className="relative max-w-6xl pb-10 pt-6 sm:pb-12">
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <Link href={`/creators/${c.slug}`} className="inline-flex items-center gap-1.5 text-[13px] font-medium text-white/70 transition-colors hover:text-white"><ArrowLeft className="h-4 w-4" />Back to profile</Link>
-          <p className="flex items-center gap-2 rounded-full border border-white/15 bg-white/[0.06] px-3 py-1.5 text-[11.5px] font-semibold uppercase tracking-[0.14em] text-white/80"><IdCard className="h-4 w-4 text-teal-400" />RTG Creator Passport<span className="font-mono normal-case tracking-normal text-white/50">· {p.id}</span></p>
-        </div>
-        <div className="mt-10 flex flex-col gap-7 md:flex-row md:items-end animate-fade-up">
-          <Avatar initials={c.initials} hue={c.avatarHue} size="xl" verified={c.verified} photo={c.photo} className="w-fit [&>div]:ring-4 [&>div]:ring-white/10" />
-          <div className="min-w-0 flex-1">
-            <div className="flex flex-wrap items-center gap-2">
-              {c.verified ? <Badge tone="brand" className="bg-white/10 text-white ring-white/15"><BadgeCheck className="h-3 w-3" />Verified (demo)</Badge> : <Badge tone="amber">Verification pending</Badge>}
-              <Badge className="bg-white/10 text-white/85 ring-white/15">{c.category}</Badge>
+    <section className="relative overflow-hidden bg-sand/60">
+      <Container className="relative max-w-6xl pb-12 pt-6">
+        <Link href={`/creators/${c.slug}`} className="inline-flex items-center gap-1.5 text-[13px] font-semibold text-ink-muted transition-colors hover:text-ink"><ArrowLeft className="h-4 w-4" />Back to profile</Link>
+        {/* The passport spread: identity page + data page */}
+        <div className="mt-6 grid grid-cols-1 overflow-hidden rounded-[2rem] bg-white shadow-pop ring-1 ring-black/5 animate-scale-in md:grid-cols-2">
+          <div className="relative flex flex-col items-center border-b border-dashed border-ink/15 p-8 text-center md:border-b-0 md:border-r">
+            <p className="flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.2em] text-ink-muted"><IdCard className="h-4 w-4" />RTG Creator Passport</p>
+            <div className="relative mt-6 w-44">
+              <div className="aspect-[5/6] overflow-hidden rounded-t-full rounded-b-3xl ring-1 ring-black/5"><CreatorFigure creator={c} /></div>
+              {/* lens seal */}
+              <svg viewBox="0 0 64 64" className="absolute -bottom-4 -right-6 h-16 w-16 -rotate-12" aria-hidden>
+                <circle cx="25" cy="32" r="18" fill="#6558E8" fillOpacity="0.85" />
+                <circle cx="39" cy="32" r="18" fill="#19B8A6" fillOpacity="0.85" style={{ mixBlendMode: "multiply" }} />
+                <path d="M32 18a18 18 0 0 1 0 28a18 18 0 0 1 0-28z" fill="#fff" />
+              </svg>
             </div>
-            <h1 className="mt-3 font-display text-display-lg text-white">{c.name}</h1>
-            <p className="mt-2 max-w-2xl text-[16px] text-white/70">{c.headline}</p>
+            <h1 className="mt-8 font-display text-[clamp(2rem,4vw,3rem)] font-bold leading-none tracking-[-0.04em] text-ink">{c.name}</h1>
+            <p className="mt-2 max-w-sm text-[14px] text-ink-muted">{c.headline}</p>
+            <div className="mt-4 flex flex-wrap justify-center gap-2">
+              {c.verified ? <Badge tone="brand"><BadgeCheck className="h-3 w-3" />Verified (demo)</Badge> : <Badge tone="amber">Verification pending</Badge>}
+            </div>
           </div>
-          <div className="flex shrink-0 flex-wrap gap-2 md:flex-col">
-            <ButtonLink href={`/creators/${c.slug}`} size="lg">Book a session</ButtonLink>
-            {pitchSvc && <ButtonLink href={`/pitch/new?creator=${c.id}`} size="lg" variant="teal"><Megaphone className="h-4 w-4" />Send a pitch</ButtonLink>}
-            <Button variant="outline" className="border-white/25 text-white hover:border-white/60 hover:bg-white/[0.06]" onClick={share}><Share2 className="h-4 w-4" />Share passport</Button>
+          <div className="flex flex-col p-8">
+            <dl className="grid grid-cols-2 gap-x-6 gap-y-5">
+              {[["Passport no.", p.id], ["Category", c.category], ["Home city", c.location], ["State", p.region.state], ["Region", p.region.region], ["Member since", formatDate(c.joined, { month: "short", year: "numeric" })], ["Languages", c.languages.join(", ")], ["Rating", `${c.rating.toFixed(1)} · ${c.reviewCount} reviews`]].map(([k, v]) => (
+                <div key={k}><dt className="font-mono text-[10.5px] uppercase tracking-[0.16em] text-ink-subtle">{k}</dt><dd className="mt-1 text-[14px] font-semibold text-ink">{v}</dd></div>
+              ))}
+            </dl>
+            <div className="flex-1" />
+            <div className="mt-8 flex flex-wrap gap-2">
+              <ButtonLink href={`/creators/${c.slug}`} size="lg">Book a session</ButtonLink>
+              {pitchSvc && <ButtonLink href={`/pitch/new?creator=${c.id}`} size="lg" variant="teal"><Megaphone className="h-4 w-4" />Send a pitch</ButtonLink>}
+              <Button variant="secondary" size="lg" onClick={share}><Share2 className="h-4 w-4" />Share passport</Button>
+            </div>
+            <p className="mt-6 truncate font-mono text-[11px] tracking-[0.3em] text-ink/30" aria-hidden>{`RTG<<${p.id.replace(/-/g, "<")}<<${c.name.toUpperCase().replace(/[^A-Z]+/g, "<")}<<<<<<`}</p>
           </div>
         </div>
-        <dl className="mt-10 grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-white/10 bg-white/10 text-[13px] sm:grid-cols-4">
-          {[["Category", c.category], ["Home city", `${c.location}, ${p.region.state}`], ["Region", p.region.region], ["Member since", formatDate(c.joined, { month: "short", year: "numeric" })]].map(([k, v]) => (
-            <div key={k} className="bg-navy/60 px-4 py-3.5 backdrop-blur"><dt className="text-white/50">{k}</dt><dd className="mt-0.5 font-semibold text-white">{v}</dd></div>
-          ))}
-        </dl>
       </Container>
     </section>
     <Container className="max-w-6xl py-8 sm:py-10">
@@ -94,14 +104,17 @@ export default function PassportPage() {
 
           <Card>
             <CardHeader title={<span className="inline-flex items-center gap-2"><Award className="h-4 w-4" />Achievements & badges</span>} description="Earned automatically from activity on RTG Live" />
-            <div className="grid grid-cols-1 gap-3 p-5 sm:grid-cols-2">
-              {p.badges.map((b) => (
-                <div key={b.id} className="flex items-start gap-3 rounded-xl border border-line p-3.5">
-                  <span className={cn("flex h-9 w-9 shrink-0 items-center justify-center rounded-lg ring-1 ring-inset", toneCls[b.tone])}><Award className="h-4 w-4" /></span>
-                  <div><p className="text-sm font-semibold text-ink">{b.label}</p><p className="text-xs text-ink-muted">{b.description}</p></div>
+            <div className="grid grid-cols-2 gap-x-4 gap-y-6 p-6 sm:grid-cols-3 lg:grid-cols-4">
+              {p.badges.map((b, i) => (
+                <div key={b.id} className="group flex flex-col items-center text-center">
+                  <span className={cn("relative flex h-24 w-24 items-center justify-center rounded-full border-2 border-dashed transition-transform duration-base ease-out group-hover:rotate-0 group-hover:scale-105", stampCls[b.tone])} style={{ transform: `rotate(${[-8, 6, -4, 9, -10, 5][i % 6]}deg)` }}>
+                    <span className="absolute inset-1.5 rounded-full border" />
+                    <span className="px-2 font-display text-[12px] font-extrabold uppercase leading-tight tracking-[0.04em]">{b.label}</span>
+                  </span>
+                  <span className="mt-3 text-[12px] leading-snug text-ink-muted">{b.description}</span>
                 </div>
               ))}
-              {p.badges.length === 0 && <p className="text-[13px] text-ink-muted">Badges appear as the creator completes sessions and collaborations.</p>}
+              {p.badges.length === 0 && <p className="col-span-full text-[13px] text-ink-muted">Badges appear as the creator completes sessions and collaborations.</p>}
             </div>
           </Card>
 

@@ -87,7 +87,7 @@ export default function EventPage() {
                 {hosts.map((h) => (
                   <li key={h.id} className="flex flex-col gap-3 px-5 py-4 sm:flex-row sm:items-center">
                     <div className="flex flex-1 items-center gap-3">
-                      <Avatar initials={h.initials} hue={h.avatarHue} size="md" verified={h.verified} />
+                      <Avatar creator={h} size="md" verified={h.verified} />
                       <div className="min-w-0"><p className="font-semibold text-ink">{h.name}</p><p className="truncate text-xs text-ink-muted">{h.headline}</p></div>
                     </div>
                     <div className="flex gap-2">

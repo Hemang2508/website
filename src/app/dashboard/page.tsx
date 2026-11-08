@@ -86,7 +86,7 @@ export default function UserDashboard() {
                           <p className="text-[10px] font-semibold uppercase text-brand-600">{formatDate(b.date, { month: "short" })}</p>
                           <p className="text-lg font-semibold leading-tight text-ink">{formatDate(b.date, { day: "numeric" })}</p>
                         </div>
-                        <Avatar initials={c.initials} hue={c.avatarHue} size="sm" />
+                        <Avatar creator={c} size="sm" />
                         <div className="min-w-0">
                           <Link href={`/bookings/${b.id}`} className="block truncate text-sm font-semibold text-ink hover:text-brand-600">{b.serviceTitle} · {c.name}</Link>
                           <p className="truncate text-xs text-ink-muted">{formatDate(b.date, { weekday: "short", day: "numeric", month: "short" })}, {formatTime(b.time)} · {formatINR(b.amount)} · {b.id}</p>

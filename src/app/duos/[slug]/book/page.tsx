@@ -85,7 +85,7 @@ export default function DuoBookPage() {
         <aside>
           <Card className="sticky top-24 p-5">
             <div className="flex items-center gap-3">
-              <div className="flex"><Avatar initials={a.initials} hue={a.avatarHue} size="md" ring /><Avatar initials={b.initials} hue={b.avatarHue} size="md" ring className="-ml-3" /></div>
+              <div className="flex"><Avatar creator={a} size="md" ring /><Avatar creator={b} size="md" ring className="-ml-3" /></div>
               <div className="min-w-0"><p className="font-semibold text-ink">{duo.title}</p><p className="truncate text-xs text-ink-muted">{a.name} & {b.name}</p></div>
             </div>
             <div className="mt-4 space-y-2 border-t border-line pt-4 text-[13px] text-ink-muted">

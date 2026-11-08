@@ -8,7 +8,7 @@ const MAX_FILES = 4;
 const MAX_MB = 5;
 
 /** Downscale to keep demo storage small. In production files go to Supabase Storage. */
-function resize(file: File, max = 900): Promise<string> {
+export function resize(file: File, max = 900): Promise<string> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.onerror = reject;

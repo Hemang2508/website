@@ -204,7 +204,7 @@ function Booking() {
           <div className="sticky top-24 space-y-4">
             <Card className="p-5">
               <div className="flex items-center gap-3">
-                <Avatar initials={c.initials} hue={c.avatarHue} size="md" verified={c.verified} />
+                <Avatar creator={c} size="md" verified={c.verified} />
                 <div className="min-w-0">
                   <p className="font-semibold text-ink">{c.name}</p>
                   <p className="truncate text-xs text-ink-muted">{c.headline}</p>

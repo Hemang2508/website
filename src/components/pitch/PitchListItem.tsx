@@ -30,7 +30,7 @@ export function PitchListItem({ pitch, requests, creators }: { pitch: Pitch; req
         <div className="flex -space-x-2">
           {requests.map((r) => {
             const c = creators.find((x) => x.id === r.creatorId);
-            return c ? <div key={r.id} className={cn("rounded-full ring-2", ring[r.status])} title={`${c.name}: ${r.status.replace("_", " ")}`}><Avatar initials={c.initials} hue={c.avatarHue} size="sm" /></div> : null;
+            return c ? <div key={r.id} className={cn("rounded-full ring-2", ring[r.status])} title={`${c.name}: ${r.status.replace("_", " ")}`}><Avatar creator={c} size="sm" /></div> : null;
           })}
         </div>
         <span className="text-[13px] text-ink-muted">{requests.filter((r) => r.status === "feedback_submitted").length}/{requests.length} reviewed</span>

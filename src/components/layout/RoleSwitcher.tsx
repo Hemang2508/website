@@ -39,7 +39,7 @@ export function RoleSwitcher({ compact, dark }: { compact?: boolean; dark?: bool
 
   const current =
     role === "creator" && creator ? (
-      <Avatar initials={creator.initials} hue={creator.avatarHue} size="xs" />
+      <Avatar creator={creator} size="xs" />
     ) : (
       <span className={cn("flex h-7 w-7 items-center justify-center rounded-full text-[11px] font-semibold", role === "admin" ? "bg-navy text-white" : "bg-teal-50 text-teal-700")}>
         {role === "admin" ? "AD" : "AM"}
@@ -83,7 +83,7 @@ export function RoleSwitcher({ compact, dark }: { compact?: boolean; dark?: bool
           <div className="max-h-56 overflow-y-auto">
             {switchable.map((c) => (
               <button key={c.id} onClick={() => choose("creator", c.id)} className="flex w-full items-center gap-3 rounded-lg px-2.5 py-1.5 text-left hover:bg-canvas" role="menuitem">
-                <Avatar initials={c.initials} hue={c.avatarHue} size="xs" />
+                <Avatar creator={c} size="xs" />
                 <span className="flex-1 truncate text-sm text-ink">{c.name}</span>
                 {role === "creator" && activeCreatorId === c.id && <Check className="h-4 w-4 text-brand-500" />}
               </button>

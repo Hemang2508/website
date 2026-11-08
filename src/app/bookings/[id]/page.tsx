@@ -87,7 +87,7 @@ function BookingDetail() {
             <div className={partner ? "grid gap-3 sm:grid-cols-2" : ""}>
               {[c, ...(partner ? [partner] : [])].map((x) => (
                 <Link key={x.id} href={`/creators/${x.slug}`} className="flex items-center gap-3 rounded-xl border border-line p-3 hover:bg-canvas">
-                  <Avatar initials={x.initials} hue={x.avatarHue} size="md" verified={x.verified} />
+                  <Avatar creator={x} size="md" verified={x.verified} />
                   <div className="min-w-0">
                     <p className="font-semibold text-ink">{x.name}</p>
                     <p className="truncate text-xs text-ink-muted">{x.headline}</p>

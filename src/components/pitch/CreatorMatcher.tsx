@@ -42,7 +42,7 @@ export function CreatorMatcher({
             <span className={cn("mt-1 flex h-5 w-5 shrink-0 items-center justify-center rounded-md border sm:mt-0", on ? "border-brand-500 bg-brand-500 text-white" : "border-[#C9CEDA] bg-white")}>
               {on && <Check className="h-3.5 w-3.5" />}
             </span>
-            <Avatar initials={c.initials} hue={c.avatarHue} size="md" verified={c.verified} />
+            <Avatar creator={c} size="md" verified={c.verified} />
             <span className="min-w-0 flex-1">
               <span className="flex flex-wrap items-center gap-x-2 gap-y-1">
                 <span className="font-semibold text-ink">{c.name}</span>

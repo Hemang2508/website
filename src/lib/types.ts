@@ -54,9 +54,23 @@ export interface Creator {
   pitchCategories: string[];
   socials: { platform: "LinkedIn" | "Instagram" | "YouTube" | "X"; handle: string }[];
   featured?: boolean;
+  /** Illustrated appearance chosen by the creator (used when no photo is uploaded). */
+  appearance?: CreatorAppearance;
   /** Creator Passport extras (demo data) */
   portfolio?: PortfolioItem[];
   collaborationsCompleted?: number;
+}
+
+/**
+ * Appearance of the illustrated figure. Chosen by the creator — never inferred from names,
+ * IDs or categories. Every field is optional; unset fields fall back to a neutral default.
+ */
+export interface CreatorAppearance {
+  hair?: "none" | "short" | "long" | "bun" | "curly" | "swept";
+  headwear?: "none" | "scarf" | "cap";
+  accessory?: "none" | "glasses" | "headphones";
+  tone?: 0 | 1 | 2 | 3 | 4;
+  backdrop?: number; // backdrop hue; defaults to the creator's brand hue
 }
 
 export interface PortfolioItem {

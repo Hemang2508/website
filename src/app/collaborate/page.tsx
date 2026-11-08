@@ -79,7 +79,7 @@ export default function CollaboratePage() {
                   const p = pitches.find((x) => x.id === r.pitchId);
                   return (
                     <li key={r.id} className="flex flex-col gap-2 py-3 sm:flex-row sm:items-center">
-                      <div className="flex flex-1 items-center gap-3"><Avatar initials={c.initials} hue={c.avatarHue} size="sm" /><div><p className="text-[13px] font-semibold text-ink">{c.name}</p><p className="text-xs text-ink-subtle">Reviewed {p?.productName}</p></div></div>
+                      <div className="flex flex-1 items-center gap-3"><Avatar creator={c} size="sm" /><div><p className="text-[13px] font-semibold text-ink">{c.name}</p><p className="text-xs text-ink-subtle">Reviewed {p?.productName}</p></div></div>
                       <div className="flex gap-2"><Link href={`/creators/${c.slug}/passport`} className="text-xs font-medium text-brand-600">View Passport</Link><span className="text-ink-subtle">·</span><Link href="/collaborate/new" className="text-xs font-medium text-brand-600">Post a brief</Link></div>
                     </li>
                   );

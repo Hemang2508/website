@@ -123,7 +123,7 @@ function Admin() {
                   {creatorRank.slice(0, 5).map(({ c, gmv, fees, count }, i) => (
                     <li key={c.id} className="flex items-center gap-3 px-5 py-3">
                       <span className="w-4 text-xs font-semibold text-ink-subtle">{i + 1}</span>
-                      <Avatar initials={c.initials} hue={c.avatarHue} size="sm" />
+                      <Avatar creator={c} size="sm" />
                       <div className="min-w-0 flex-1"><p className="truncate text-[13px] font-medium text-ink">{c.name}</p><p className="text-xs text-ink-subtle">{count} transactions</p></div>
                       <div className="text-right"><p className="text-[13px] font-semibold text-ink">{formatINR(gmv)}</p><p className="text-[11px] text-ink-subtle">{formatINR(fees)} fees</p></div>
                     </li>
@@ -147,7 +147,7 @@ function Admin() {
                     <tr key={c.id} className={c.status === "suspended" ? "bg-canvas/50" : ""}>
                       <td className="px-5 py-3">
                         <Link href={`/creators/${c.slug}`} className="flex items-center gap-3">
-                          <Avatar initials={c.initials} hue={c.avatarHue} size="sm" verified={c.verified} />
+                          <Avatar creator={c} size="sm" verified={c.verified} />
                           <span><span className="block font-medium text-ink hover:text-brand-600">{c.name}</span><span className="text-xs text-ink-subtle">{c.location} · joined {formatDate(c.joined, { month: "short", year: "numeric" })}</span></span>
                         </Link>
                       </td>

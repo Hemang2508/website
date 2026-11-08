@@ -37,7 +37,7 @@ export function CreatorProfileEditor({ creator }: { creator: Creator }) {
   return (
     <Card className="p-5 sm:p-6">
       <div className="flex items-center gap-4">
-        <Avatar initials={creator.initials} hue={creator.avatarHue} size="lg" verified={creator.verified} />
+        <Avatar creator={creator} size="lg" verified={creator.verified} />
         <div>
           <p className="font-semibold text-ink">{creator.name}</p>
           <p className="text-xs text-ink-subtle">Profile photo upload uses Supabase Storage in production (not enabled in demo).</p>

@@ -116,7 +116,7 @@ function PitchDetail() {
                   <Card key={r.id}>
                     <div className="flex flex-col gap-3 p-5 sm:flex-row sm:items-center">
                       <Link href={`/creators/${c.slug}`} className="flex min-w-0 flex-1 items-center gap-3">
-                        <Avatar initials={c.initials} hue={c.avatarHue} size="md" verified={c.verified} />
+                        <Avatar creator={c} size="md" verified={c.verified} />
                         <div className="min-w-0">
                           <p className="font-semibold text-ink hover:text-brand-600">{c.name}</p>
                           <p className="truncate text-xs text-ink-muted">Sent {timeAgo(r.sentAt)}{r.respondedAt ? ` · responded ${timeAgo(r.respondedAt)}` : ""} · {formatINR(r.fee)}</p>

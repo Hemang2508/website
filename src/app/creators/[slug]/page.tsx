@@ -7,7 +7,8 @@ import {
   ArrowLeft, CalendarClock, Clock, Copy, Globe2, IdCard, Link2, MapPin, Megaphone, MessageSquareText, Share2, Sparkles, Star, Timer, Users, Video,
 } from "lucide-react";
 import { useStore } from "@/lib/store";
-import { Avatar, Portrait } from "@/components/ui/Avatar";
+import { CreatorFigure } from "@/components/creative/CreatorFigure";
+import { SplitWords } from "@/components/creative/SplitWords";
 import { Badge } from "@/components/ui/Badge";
 import { Button, ButtonLink } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
@@ -63,13 +64,39 @@ function Profile() {
 
   return (
     <>
-      <Portrait initials={c.initials} hue={c.avatarHue} photo={c.photo} monogram={false} className="h-44 sm:h-60">
-        <Container className="pt-5">
-          <Link href="/explore" className="inline-flex items-center gap-1.5 rounded-xl bg-white/90 px-3 py-2 text-[13px] font-semibold text-ink shadow-sm backdrop-blur transition hover:bg-white">
+      <section className="relative overflow-hidden border-b border-line bg-canvas">
+        <Container className="relative pb-12 pt-6">
+          <Link href="/explore" className="inline-flex items-center gap-1.5 text-[13px] font-semibold text-ink-muted transition hover:text-ink">
             <ArrowLeft className="h-4 w-4" /> All creators
           </Link>
+          <div className="mt-8 grid grid-cols-1 items-end gap-10 md:grid-cols-[minmax(0,320px)_1fr] lg:gap-16">
+            <div className="relative mx-auto w-full max-w-[300px] animate-scale-in md:mx-0">
+              <div className="absolute -right-10 top-6 h-48 w-48 rounded-full opacity-70 mix-blend-multiply" style={{ background: `hsl(${(c.appearance?.backdrop ?? c.avatarHue) + 40} 70% 70%)` }} aria-hidden />
+              <div className="relative aspect-[5/6] overflow-hidden rounded-t-full rounded-b-[2rem] shadow-pop ring-1 ring-black/5"><CreatorFigure creator={c} /></div>
+            </div>
+            <div className="min-w-0">
+              <p className="eyebrow text-ink-muted animate-fade-in">{c.category} · {c.location}</p>
+              <h1 className="mt-3 font-display text-[clamp(2.5rem,6vw,5rem)] font-bold leading-[0.95] tracking-[-0.045em] text-ink">
+                <SplitWords items={c.name.split(" ")} label={c.name} />
+              </h1>
+              <div className="mt-4 flex flex-wrap items-center gap-2 animate-fade-up [animation-delay:200ms]">
+                {c.verified && <Badge tone="brand">Verified (demo)</Badge>}
+                {c.acceptsPitches && <Badge tone="teal">Reviews product pitches</Badge>}
+              </div>
+              <p className="mt-4 max-w-2xl text-[17px] leading-relaxed text-ink-muted animate-fade-up [animation-delay:240ms]">{c.headline}</p>
+              <dl className="mt-8 grid max-w-2xl grid-cols-2 gap-y-6 border-t border-ink/10 pt-6 sm:grid-cols-4 animate-fade-up [animation-delay:320ms]">
+                {[[`${c.rating.toFixed(1)}★`, `${c.reviewCount} reviews`], [compact(c.followers), "audience"], [String(c.sessionsCompleted), "sessions"], [c.responseTime.replace("Usually within ", "").replace("Usually ", ""), "response time"]].map(([v, l]) => (
+                  <div key={l}><dt className="sr-only">{l}</dt><dd><span className="block font-display text-[28px] font-bold leading-none tracking-[-0.03em] text-ink">{v}</span><span className="mt-1 block text-[12.5px] text-ink-muted">{l}</span></dd></div>
+                ))}
+              </dl>
+              <div className="mt-8 flex flex-wrap gap-2 animate-fade-up [animation-delay:400ms]">
+                <ButtonLink href={`/creators/${c.slug}/passport`} variant="dark"><IdCard className="h-4 w-4" />View Creator Passport</ButtonLink>
+                <Button variant="secondary" onClick={copyLink}><Share2 className="h-4 w-4" />Share profile</Button>
+              </div>
+            </div>
+          </div>
         </Container>
-      </Portrait>
+      </section>
 
       <Container className="pb-10">
         {viaCreatorLink && (
@@ -80,40 +107,6 @@ function Profile() {
         )}
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_360px]">
           <div className="min-w-0">
-            {/* Header */}
-            <div className="relative z-10 -mt-14 flex flex-col gap-5 sm:flex-row sm:items-end">
-              <Avatar initials={c.initials} hue={c.avatarHue} size="xl" verified={c.verified} ring photo={c.photo} />
-              <div className="min-w-0 flex-1 pb-1">
-                <div className="flex flex-wrap items-center gap-2">
-                  <h1 className="font-display text-display-md text-ink">{c.name}</h1>
-                  {c.verified && <Badge tone="brand">Verified (demo)</Badge>}
-                </div>
-                <p className="mt-1 text-[15px] text-ink-muted">{c.headline}</p>
-              </div>
-              <div className="flex gap-2 self-start sm:self-end">
-                <ButtonLink href={`/creators/${c.slug}/passport`} variant="secondary" size="sm"><IdCard className="h-4 w-4" />View Creator Passport</ButtonLink>
-                <Button variant="secondary" size="sm" onClick={copyLink}><Share2 className="h-4 w-4" /><span className="hidden sm:inline">Share</span></Button>
-              </div>
-            </div>
-
-            <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
-              {[
-                [Star, `${c.rating.toFixed(1)} rating`, `${c.reviewCount} reviews`],
-                [Users, compact(c.followers), "audience"],
-                [MessageSquareText, String(c.sessionsCompleted), "sessions completed"],
-                [Timer, c.responseTime.replace("Usually ", ""), "response time"],
-              ].map(([I, a, b], i) => {
-                const Icon = I as typeof Star;
-                return (
-                  <div key={i} className="rounded-xl border border-line bg-white p-3.5">
-                    <Icon className="h-4 w-4 text-ink-subtle" />
-                    <p className="mt-2 text-sm font-semibold text-ink">{a as string}</p>
-                    <p className="text-xs text-ink-subtle">{b as string}</p>
-                  </div>
-                );
-              })}
-            </div>
-
             <Section title="About">
               <p className="text-[15px] leading-relaxed text-ink-muted">{c.bio}</p>
               <div className="mt-5 flex flex-wrap gap-x-6 gap-y-2 text-[13px] text-ink-muted">

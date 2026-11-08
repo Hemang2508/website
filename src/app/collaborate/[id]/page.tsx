@@ -106,7 +106,7 @@ export default function CollabDetailPage() {
                     return (
                       <li key={a.id} className="p-5">
                         <div className="flex flex-col gap-3 sm:flex-row sm:items-start">
-                          <Avatar initials={cr.initials} hue={cr.avatarHue} size="md" verified={cr.verified} />
+                          <Avatar creator={cr} size="md" verified={cr.verified} />
                           <div className="min-w-0 flex-1">
                             <div className="flex flex-wrap items-center gap-2"><Link href={`/creators/${cr.slug}/passport`} className="font-semibold text-ink hover:text-brand-600">{cr.name}</Link><Badge tone={APP_STATUS[a.status][1]} dot>{APP_STATUS[a.status][0]}</Badge></div>
                             <p className="text-xs text-ink-subtle">{cr.category} · {cr.location} · {compact(cr.followers)} audience · ★ {cr.rating.toFixed(1)} · applied {timeAgo(a.createdAt)}</p>

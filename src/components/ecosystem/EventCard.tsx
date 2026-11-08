@@ -38,7 +38,7 @@ export function EventCard({ event: e, compact }: { event: RegionalEvent; compact
         <div className="flex-1" />
         <div className="mt-4 flex items-center justify-between border-t border-line pt-3">
           <div className="flex -space-x-2">
-            {hosts.map((h) => <div key={h!.id} className="rounded-full ring-2 ring-white"><Avatar initials={h!.initials} hue={h!.avatarHue} size="xs" /></div>)}
+            {hosts.map((h) => <div key={h!.id} className="rounded-full ring-2 ring-white"><Avatar creator={h!} size="xs" /></div>)}
           </div>
           <div className="text-right">
             <p className="text-sm font-semibold text-ink">{e.price ? formatINR(e.price) : "Free"}</p>
