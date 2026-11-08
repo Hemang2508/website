@@ -15,12 +15,12 @@ export function BarChart({ data, color = "brand", height = 180 }: { data: { labe
           <div key={i} className="group relative flex h-full flex-1 items-end">
             <div
               className={cn(
-                "w-full rounded-t-md transition-all",
-                d.future ? "bg-[repeating-linear-gradient(45deg,#E4E7EF,#E4E7EF_4px,#F5F6FA_4px,#F5F6FA_8px)]" : color === "teal" ? "bg-teal-500 group-hover:bg-teal-600" : "bg-brand-500 group-hover:bg-brand-600",
+                "w-full origin-bottom rounded-t-lg transition-colors duration-fast animate-grow-y",
+                d.future ? "bg-[repeating-linear-gradient(45deg,#E4E7EF,#E4E7EF_4px,#F5F6FA_4px,#F5F6FA_8px)]" : color === "teal" ? "bg-gradient-to-t from-teal-600 to-teal-400 group-hover:from-teal-700" : "bg-gradient-to-t from-brand-600 to-brand-400 group-hover:from-brand-700",
               )}
-              style={{ height: `${Math.max(d.value ? 3 : 0, (d.value / nice) * 100)}%` }}
+              style={{ height: `${Math.max(d.value ? 3 : 0, (d.value / nice) * 100)}%`, animationDelay: `${i * 50}ms` }}
             />
-            <span className="pointer-events-none absolute -top-7 left-1/2 z-10 hidden -translate-x-1/2 whitespace-nowrap rounded-md bg-navy px-2 py-1 text-[11px] font-medium text-white group-hover:block">{formatINR(d.value)}</span>
+            <span className="pointer-events-none absolute -top-8 left-1/2 z-10 -translate-x-1/2 whitespace-nowrap rounded-lg bg-navy px-2 py-1 text-[11px] font-semibold text-white opacity-0 transition-opacity duration-fast group-hover:opacity-100">{formatINR(d.value)}</span>
           </div>
         ))}
       </div>

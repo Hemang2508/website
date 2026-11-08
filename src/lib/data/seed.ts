@@ -1,7 +1,7 @@
 import type { Booking, BookingSource, BookingStatus, DemoUser, Notification, Pitch, PitchRequest, Review } from "../types";
 import { seedCreators } from "./creators";
 import { bookingRate, COMMISSION, splitAmount } from "../pricing";
-import { addDays, toISODate } from "../utils";
+import { addDays, seedClock, toISODate } from "../utils";
 import { seedApplications, seedCollaborations, seedCommunities, seedDuos, seedEvents, seedMemberships, seedRegistrations } from "./ecosystem";
 
 export const DEMO_USER: DemoUser = {
@@ -34,7 +34,7 @@ function seedReviews(): Review[] {
         role: r.role,
         rating: r.rating,
         text: r.text,
-        date: toISODate(addDays(new Date(), -(i * 9 + ci + 3))),
+        date: toISODate(addDays(seedClock(), -(i * 9 + ci + 3))),
       });
     }
   });
@@ -69,7 +69,7 @@ function mkBooking(opts: {
   const rate = bookingRate(source);
   const { platformFee, creatorEarning } = splitAmount(s.price, rate);
   const user = opts.demo ? DEMO_USER : opts.user ?? otherUsers[0];
-  const date = toISODate(addDays(new Date(), opts.dayOffset));
+  const date = toISODate(addDays(seedClock(), opts.dayOffset));
   bookingCounter++;
   return {
     id: `BK-${bookingCounter}`,
@@ -92,7 +92,7 @@ function mkBooking(opts: {
     status: opts.status,
     paymentId: `sim_pay_seed${bookingCounter}`,
     paymentStatus: opts.status === "declined" || opts.status === "cancelled" ? "refunded_simulated" : "paid_simulated",
-    createdAt: addDays(new Date(), Math.min(opts.dayOffset, 0) - 3).toISOString(),
+    createdAt: addDays(seedClock(), Math.min(opts.dayOffset, 0) - 3).toISOString(),
     reviewed: opts.reviewed,
     isDemoUser: opts.demo,
   };
@@ -146,7 +146,7 @@ function mkRequest(id: string, pitchId: string, creatorId: string, status: Pitch
     platformFee,
     creatorEarning,
     status,
-    sentAt: addDays(new Date(), -daysAgo).toISOString(),
+    sentAt: addDays(seedClock(), -daysAgo).toISOString(),
     paymentId: `sim_pay_${id}`,
     ...extra,
   };
@@ -168,7 +168,7 @@ function seedPitches(): { pitches: Pitch[]; requests: PitchRequest[] } {
       goals: ["Product feedback", "Pricing validation", "Packaging & design review"],
       images: [],
       submittedBy: DEMO_USER.name,
-      createdAt: addDays(new Date(), -12).toISOString(),
+      createdAt: addDays(seedClock(), -12).toISOString(),
       isDemoUser: true,
     },
     {
@@ -185,7 +185,7 @@ function seedPitches(): { pitches: Pitch[]; requests: PitchRequest[] } {
       goals: ["Audience fit check", "Future collaboration"],
       images: [],
       submittedBy: "Kunal Bose",
-      createdAt: addDays(new Date(), -3).toISOString(),
+      createdAt: addDays(seedClock(), -3).toISOString(),
     },
     {
       id: "PT-203",
@@ -201,13 +201,13 @@ function seedPitches(): { pitches: Pitch[]; requests: PitchRequest[] } {
       goals: ["Product feedback", "Pricing validation"],
       images: [],
       submittedBy: "Aditya Joshi",
-      createdAt: addDays(new Date(), -8).toISOString(),
+      createdAt: addDays(seedClock(), -8).toISOString(),
     },
   ];
 
   const requests: PitchRequest[] = [
     mkRequest("PR-301", "PT-201", "c1", "feedback_submitted", 11, {
-      respondedAt: addDays(new Date(), -10).toISOString(),
+      respondedAt: addDays(seedClock(), -10).toISOString(),
       feedback: {
         scores: { problemClarity: 4, valueProposition: 4, productDesign: 5, pricing: 3, marketFit: 4 },
         strengths: "Beautiful, credible packaging. The Kerala small-batch story is distinctive and the 15 ml trial size lowers the barrier for first-time buyers.",
@@ -215,18 +215,18 @@ function seedPitches(): { pitches: Pitch[]; requests: PitchRequest[] } {
         audienceFit: "Strong fit for urban women 25–35 already using serums. Weaker for first-time Ayurveda buyers who need more education.",
         recommendation: "iterate",
         collaborationInterest: true,
-        submittedAt: addDays(new Date(), -7).toISOString(),
+        submittedAt: addDays(seedClock(), -7).toISOString(),
       },
     }),
     mkRequest("PR-302", "PT-201", "c3", "pending", 2),
     mkRequest("PR-303", "PT-201", "c11", "declined", 9, {
-      respondedAt: addDays(new Date(), -8).toISOString(),
+      respondedAt: addDays(seedClock(), -8).toISOString(),
       declineReason: "Skincare sits outside my current content focus. Meera Krishnan or Ananya Rao would be a better fit.",
     }),
     mkRequest("PR-304", "PT-202", "c1", "pending", 1),
-    mkRequest("PR-305", "PT-202", "c10", "accepted", 3, { respondedAt: addDays(new Date(), -2).toISOString() }),
+    mkRequest("PR-305", "PT-202", "c10", "accepted", 3, { respondedAt: addDays(seedClock(), -2).toISOString() }),
     mkRequest("PR-306", "PT-203", "c2", "feedback_submitted", 8, {
-      respondedAt: addDays(new Date(), -7).toISOString(),
+      respondedAt: addDays(seedClock(), -7).toISOString(),
       feedback: {
         scores: { problemClarity: 5, valueProposition: 4, productDesign: 3, pricing: 3, marketFit: 4 },
         strengths: "Real, frequent pain point with a clear wedge (UPI settlement).",
@@ -234,17 +234,17 @@ function seedPitches(): { pitches: Pitch[]; requests: PitchRequest[] } {
         audienceFit: "Strong among students and first-jobbers in metros.",
         recommendation: "iterate",
         collaborationInterest: false,
-        submittedAt: addDays(new Date(), -5).toISOString(),
+        submittedAt: addDays(seedClock(), -5).toISOString(),
       },
     }),
-    mkRequest("PR-307", "PT-203", "c6", "accepted", 6, { respondedAt: addDays(new Date(), -5).toISOString() }),
+    mkRequest("PR-307", "PT-203", "c6", "accepted", 6, { respondedAt: addDays(seedClock(), -5).toISOString() }),
   ];
 
   return { pitches, requests };
 }
 
 function seedNotifications(): Notification[] {
-  const now = Date.now();
+  const now = seedClock().getTime();
   const ago = (h: number) => new Date(now - h * 3600_000).toISOString();
   return [
     { id: "n1", role: "user", title: "Booking confirmed", body: "Ananya Rao confirmed your Go-to-market deep dive.", href: "/dashboard", createdAt: ago(5), read: false, kind: "booking" },
@@ -261,14 +261,14 @@ function seedNotifications(): Notification[] {
 }
 
 function seedDuoBookings(): Booking[] {
-  const duo = seedDuos[0];
+  const duo = seedDuos()[0];
   const { platformFee, creatorEarning } = splitAmount(duo.price, COMMISSION.marketplace);
   return [{
     id: "BK-1101", creatorId: duo.creatorIds[0], partnerCreatorId: duo.creatorIds[1], duoId: duo.id, serviceId: duo.id,
     serviceTitle: `Creator Duo · ${duo.title}`, userName: "Pooja Reddy", userEmail: "pooja.reddy@gmail.com", userPhone: "+91 98490 33102",
-    topic: "Food trail for visiting family from Pune (3 guests)", notes: "", date: toISODate(addDays(new Date(), 6)), time: "10:00",
+    topic: "Food trail for visiting family from Pune (3 guests)", notes: "", date: toISODate(addDays(seedClock(), 6)), time: "10:00",
     durationMins: duo.durationMins, amount: duo.price, source: "marketplace", commissionRate: COMMISSION.marketplace, platformFee, creatorEarning,
-    status: "confirmed", paymentId: "sim_pay_seedduo1", paymentStatus: "paid_simulated", createdAt: addDays(new Date(), -2).toISOString(),
+    status: "confirmed", paymentId: "sim_pay_seedduo1", paymentStatus: "paid_simulated", createdAt: addDays(seedClock(), -2).toISOString(),
   }];
 }
 
@@ -282,12 +282,12 @@ export function createSeed() {
     pitchRequests: requests,
     notifications: seedNotifications(),
     city: "Hyderabad",
-    communities: structuredClone(seedCommunities),
-    events: structuredClone(seedEvents),
-    duos: structuredClone(seedDuos),
-    collaborations: structuredClone(seedCollaborations),
-    applications: structuredClone(seedApplications),
-    memberships: structuredClone(seedMemberships),
-    registrations: structuredClone(seedRegistrations),
+    communities: seedCommunities(),
+    events: seedEvents(),
+    duos: seedDuos(),
+    collaborations: seedCollaborations(),
+    applications: seedApplications(),
+    memberships: seedMemberships(),
+    registrations: seedRegistrations(),
   };
 }

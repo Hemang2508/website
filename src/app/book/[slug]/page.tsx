@@ -15,6 +15,7 @@ import { SimulatedTag } from "@/components/ui/Badge";
 import { SlotPicker } from "@/components/booking/SlotPicker";
 import { PaymentModal } from "@/components/booking/PaymentModal";
 import { FeeBreakdown } from "@/components/booking/FeeBreakdown";
+import { JourneySteps } from "@/components/booking/JourneySteps";
 import { cn, formatDate, formatINR, formatTime, isEmail, isIndianPhone } from "@/lib/utils";
 
 const STEPS = ["Service & time", "Your details", "Payment"];
@@ -106,20 +107,10 @@ function Booking() {
       <Link href={`/creators/${c.slug}${source === "creator" ? "?ref=creator" : ""}`} className="inline-flex items-center gap-1.5 text-[13px] font-medium text-ink-muted hover:text-ink">
         <ArrowLeft className="h-4 w-4" /> Back to {c.name}
       </Link>
-      <h1 className="mt-3 text-2xl font-semibold tracking-tight text-ink">Book a session</h1>
+      <h1 className="mt-3 font-display text-display-md text-ink">Book a session with {c.name.split(" ")[0]}</h1>
 
-      {/* Stepper */}
-      <ol className="mt-6 flex items-center gap-2 sm:gap-4" aria-label="Booking progress">
-        {STEPS.map((s, i) => (
-          <li key={s} className="flex flex-1 items-center gap-2 sm:flex-none">
-            <span className={cn("flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-xs font-semibold", i < step ? "bg-teal-500 text-white" : i === step ? "bg-brand-500 text-white" : "bg-white text-ink-subtle ring-1 ring-line")}>
-              {i < step ? <Check className="h-4 w-4" /> : i + 1}
-            </span>
-            <span className={cn("hidden text-sm font-medium sm:inline", i === step ? "text-ink" : "text-ink-muted")}>{s}</span>
-            {i < STEPS.length - 1 && <span className="h-px flex-1 bg-line sm:w-10 sm:flex-none" />}
-          </li>
-        ))}
-      </ol>
+      {/* Journey: profile → service & time → details → simulated payment → confirmation */}
+      <div className="mt-6"><JourneySteps label="Booking progress" current={step + 1} steps={["Creator", ...STEPS, "Confirmation"]} /></div>
 
       <div className="mt-8 grid grid-cols-1 gap-8 lg:grid-cols-[1fr_380px]">
         <div className="min-w-0 space-y-6">
@@ -130,7 +121,7 @@ function Booking() {
                 <div className="mt-4 space-y-2.5">
                   {services.map((s) => (
                     <label key={s.id} className={cn("flex cursor-pointer items-start gap-3 rounded-xl border p-4 transition", s.id === service.id ? "border-brand-500 bg-brand-50/40 ring-2 ring-brand-100" : "border-line hover:border-[#D5D9E4]")}>
-                      <input type="radio" name="service" className="mt-1 accent-[#6657CE]" checked={s.id === service.id} onChange={() => { setServiceId(s.id); }} />
+                      <input type="radio" name="service" className="mt-1 accent-[#6558E8]" checked={s.id === service.id} onChange={() => { setServiceId(s.id); }} />
                       <span className="min-w-0 flex-1">
                         <span className="flex items-center justify-between gap-3">
                           <span className="font-medium text-ink">{s.title}</span>
@@ -155,7 +146,7 @@ function Booking() {
             <Card className="p-5 sm:p-6">
               <h2 className="text-base font-semibold text-ink">Your details</h2>
               <p className="mt-0.5 text-[13px] text-ink-muted">{c.name.split(" ")[0]} will see this information when reviewing your request.</p>
-              <div className="mt-5 grid gap-4 sm:grid-cols-2">
+              <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <Field label="Full name" htmlFor="name" required error={errors.name}><Input id="name" value={form.name} onChange={set("name")} invalid={!!errors.name} autoComplete="name" /></Field>
                 <Field label="Email" htmlFor="email" required error={errors.email}><Input id="email" type="email" value={form.email} onChange={set("email")} invalid={!!errors.email} autoComplete="email" /></Field>
                 <Field label="Mobile number" htmlFor="phone" required error={errors.phone} hint="For session reminders" className="sm:col-span-2"><Input id="phone" value={form.phone} onChange={set("phone")} invalid={!!errors.phone} placeholder="+91 98765 43210" autoComplete="tel" /></Field>
@@ -167,7 +158,7 @@ function Booking() {
                 </Field>
               </div>
               <label className="mt-5 flex items-start gap-2.5 text-[13px] text-ink-muted">
-                <input type="checkbox" checked={form.agree} onChange={set("agree")} className="mt-0.5 h-4 w-4 accent-[#6657CE]" />
+                <input type="checkbox" checked={form.agree} onChange={set("agree")} className="mt-0.5 h-4 w-4 accent-[#6558E8]" />
                 <span>I agree to the booking terms: the creator may accept or decline; declined requests are refunded in full, and sessions can be cancelled free of charge up to 24 hours before.</span>
               </label>
               {errors.agree && <p className="mt-1.5 text-xs font-medium text-red-600">{errors.agree}</p>}
@@ -180,7 +171,7 @@ function Booking() {
                 <h2 className="text-base font-semibold text-ink">Review & pay</h2>
                 <SimulatedTag label="Simulated payment" />
               </div>
-              <dl className="mt-5 grid gap-4 text-sm sm:grid-cols-2">
+              <dl className="mt-5 grid grid-cols-1 gap-4 text-sm sm:grid-cols-2">
                 <Info label="Creator" value={c.name} />
                 <Info label="Service" value={`${service.title} · ${service.durationMins} min`} />
                 <Info label="Date & time" value={`${formatDate(date!, { weekday: "long", day: "numeric", month: "long" })}, ${formatTime(time!)} IST`} />

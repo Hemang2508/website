@@ -34,39 +34,42 @@ export default function PassportPage() {
     toast({ title: "Passport link copied" });
   };
 
+  const pitchSvc = c.services.find((x) => x.type === "pitch" && x.active);
   return (
-    <Container className="max-w-6xl py-8 sm:py-10">
-      <Link href={`/creators/${c.slug}`} className="inline-flex items-center gap-1.5 text-[13px] font-medium text-ink-muted hover:text-ink"><ArrowLeft className="h-4 w-4" />Back to profile</Link>
-
-      {/* Passport header */}
-      <div className="mt-4 overflow-hidden rounded-2xl border border-line bg-white shadow-card">
-        <div className="flex flex-wrap items-center justify-between gap-3 bg-navy px-5 py-3 text-white sm:px-6">
-          <p className="flex items-center gap-2 text-[12px] font-semibold uppercase tracking-[0.14em]"><IdCard className="h-4 w-4 text-teal-400" />RTG Creator Passport</p>
-          <p className="font-mono text-[12px] text-white/70">{p.id}</p>
+    <>
+    <section className="surface-dark relative overflow-hidden text-white">
+      <div className="absolute inset-0 opacity-70" style={{ background: `radial-gradient(40rem 22rem at 20% 0%, hsl(${c.avatarHue} 70% 55% / 0.45), transparent 60%)` }} aria-hidden />
+      <div className="grid-faint pointer-events-none absolute inset-0" aria-hidden />
+      <Container className="relative max-w-6xl pb-10 pt-6 sm:pb-12">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <Link href={`/creators/${c.slug}`} className="inline-flex items-center gap-1.5 text-[13px] font-medium text-white/70 transition-colors hover:text-white"><ArrowLeft className="h-4 w-4" />Back to profile</Link>
+          <p className="flex items-center gap-2 rounded-full border border-white/15 bg-white/[0.06] px-3 py-1.5 text-[11.5px] font-semibold uppercase tracking-[0.14em] text-white/80"><IdCard className="h-4 w-4 text-teal-400" />RTG Creator Passport<span className="font-mono normal-case tracking-normal text-white/50">· {p.id}</span></p>
         </div>
-        <div className="flex flex-col gap-6 p-5 sm:p-6 md:flex-row md:items-center">
-          <Avatar initials={c.initials} hue={c.avatarHue} size="xl" verified={c.verified} photo={c.photo} />
+        <div className="mt-10 flex flex-col gap-7 md:flex-row md:items-end animate-fade-up">
+          <Avatar initials={c.initials} hue={c.avatarHue} size="xl" verified={c.verified} photo={c.photo} className="w-fit [&>div]:ring-4 [&>div]:ring-white/10" />
           <div className="min-w-0 flex-1">
             <div className="flex flex-wrap items-center gap-2">
-              <h1 className="text-2xl font-semibold tracking-tight text-ink sm:text-[28px]">{c.name}</h1>
-              {c.verified ? <Badge tone="brand"><BadgeCheck className="h-3 w-3" />Verified (demo)</Badge> : <Badge tone="amber">Verification pending</Badge>}
+              {c.verified ? <Badge tone="brand" className="bg-white/10 text-white ring-white/15"><BadgeCheck className="h-3 w-3" />Verified (demo)</Badge> : <Badge tone="amber">Verification pending</Badge>}
+              <Badge className="bg-white/10 text-white/85 ring-white/15">{c.category}</Badge>
             </div>
-            <p className="mt-1 text-[15px] text-ink-muted">{c.headline}</p>
-            <dl className="mt-4 grid grid-cols-2 gap-x-6 gap-y-3 text-[13px] sm:grid-cols-4">
-              <div><dt className="text-ink-subtle">Category</dt><dd className="font-medium text-ink">{c.category}</dd></div>
-              <div><dt className="text-ink-subtle">Home city</dt><dd className="font-medium text-ink">{c.location}, {p.region.state}</dd></div>
-              <div><dt className="text-ink-subtle">Region</dt><dd className="font-medium text-ink">{p.region.region}</dd></div>
-              <div><dt className="text-ink-subtle">Member since</dt><dd className="font-medium text-ink">{formatDate(c.joined, { month: "short", year: "numeric" })}</dd></div>
-            </dl>
+            <h1 className="mt-3 font-display text-display-lg text-white">{c.name}</h1>
+            <p className="mt-2 max-w-2xl text-[16px] text-white/70">{c.headline}</p>
           </div>
-          <div className="flex shrink-0 flex-row flex-wrap gap-2 md:flex-col">
-            <ButtonLink href={`/creators/${c.slug}`}>Book a session</ButtonLink>
-            <Button variant="secondary" onClick={share}><Share2 className="h-4 w-4" />Share passport</Button>
+          <div className="flex shrink-0 flex-wrap gap-2 md:flex-col">
+            <ButtonLink href={`/creators/${c.slug}`} size="lg">Book a session</ButtonLink>
+            {pitchSvc && <ButtonLink href={`/pitch/new?creator=${c.id}`} size="lg" variant="teal"><Megaphone className="h-4 w-4" />Send a pitch</ButtonLink>}
+            <Button variant="outline" className="border-white/25 text-white hover:border-white/60 hover:bg-white/[0.06]" onClick={share}><Share2 className="h-4 w-4" />Share passport</Button>
           </div>
         </div>
-      </div>
-
-      <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-[1fr_320px]">
+        <dl className="mt-10 grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-white/10 bg-white/10 text-[13px] sm:grid-cols-4">
+          {[["Category", c.category], ["Home city", `${c.location}, ${p.region.state}`], ["Region", p.region.region], ["Member since", formatDate(c.joined, { month: "short", year: "numeric" })]].map(([k, v]) => (
+            <div key={k} className="bg-navy/60 px-4 py-3.5 backdrop-blur"><dt className="text-white/50">{k}</dt><dd className="mt-0.5 font-semibold text-white">{v}</dd></div>
+          ))}
+        </dl>
+      </Container>
+    </section>
+    <Container className="max-w-6xl py-8 sm:py-10">
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1fr_320px]">
         <div className="min-w-0 space-y-6">
           {/* Track record */}
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
@@ -91,7 +94,7 @@ export default function PassportPage() {
 
           <Card>
             <CardHeader title={<span className="inline-flex items-center gap-2"><Award className="h-4 w-4" />Achievements & badges</span>} description="Earned automatically from activity on RTG Live" />
-            <div className="grid gap-3 p-5 sm:grid-cols-2">
+            <div className="grid grid-cols-1 gap-3 p-5 sm:grid-cols-2">
               {p.badges.map((b) => (
                 <div key={b.id} className="flex items-start gap-3 rounded-xl border border-line p-3.5">
                   <span className={cn("flex h-9 w-9 shrink-0 items-center justify-center rounded-lg ring-1 ring-inset", toneCls[b.tone])}><Award className="h-4 w-4" /></span>
@@ -145,7 +148,7 @@ export default function PassportPage() {
           {(p.duos.length > 0 || p.hosted.length > 0 || p.events.length > 0) && (
             <Card>
               <CardHeader title="On RTG Live" description="Duos, communities and events this creator is part of" />
-              <div className="grid gap-3 p-5 sm:grid-cols-2">
+              <div className="grid grid-cols-1 gap-3 p-5 sm:grid-cols-2">
                 {p.duos.map((d) => {
                   const partner = creators.find((x) => x.id === d.creatorIds.find((id) => id !== c.id));
                   return (
@@ -176,7 +179,7 @@ export default function PassportPage() {
 
           <Card>
             <CardHeader title="Ratings & reviews" action={<Stars value={c.rating} />} />
-            <div className="grid gap-3 p-5 md:grid-cols-2">
+            <div className="grid grid-cols-1 gap-3 p-5 md:grid-cols-2">
               {myReviews.slice(0, 4).map((r) => (
                 <div key={r.id} className="rounded-xl bg-canvas p-4">
                   <div className="flex items-center justify-between"><p className="text-[13px] font-semibold text-ink">{r.author}</p><Badge tone="amber">{r.rating}★</Badge></div>
@@ -229,5 +232,6 @@ export default function PassportPage() {
         </aside>
       </div>
     </Container>
+    </>
   );
 }

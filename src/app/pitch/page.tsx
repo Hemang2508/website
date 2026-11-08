@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Megaphone, Plus } from "lucide-react";
 import { useStore } from "@/lib/store";
-import { Container, EmptyState, PageHeader, Stat, Tabs } from "@/components/ui/Misc";
+import { Container, EmptyState, PageHero, Stat, Tabs } from "@/components/ui/Misc";
 import { ButtonLink } from "@/components/ui/Button";
 import { PitchListItem } from "@/components/pitch/PitchListItem";
 import { IncomingPitches } from "@/components/pitch/IncomingPitches";
@@ -15,10 +15,12 @@ export default function PitchManagementPage() {
   if (role === "creator") {
     const c = creators.find((x) => x.id === activeCreatorId);
     return (
+      <>
+      <PageHero eyebrow="RTG Pitch" title="Pitch requests" description={`Product pitches sent to ${c?.name}. Accept or decline, then submit structured feedback.`} />
       <Container className="py-10">
-        <PageHeader eyebrow="RTG Pitch" title="Pitch requests" description={`Product pitches sent to ${c?.name}. Accept or decline, then submit structured feedback.`} />
         <div className="mt-8"><IncomingPitches creatorId={activeCreatorId} /></div>
       </Container>
+      </>
     );
   }
 
@@ -29,14 +31,15 @@ export default function PitchManagementPage() {
   const allReqs = withReqs.flatMap((x) => x.reqs);
 
   return (
-    <Container className="py-10">
-      <PageHeader
+    <>
+    <PageHero
         eyebrow="RTG Pitch"
         title={role === "admin" ? "All product pitches" : "My product pitches"}
         description="Track each creator's response and compare structured feedback."
         actions={role === "user" && <ButtonLink href="/pitch/new"><Plus className="h-4 w-4" />New pitch</ButtonLink>}
       />
-      <div className="mt-8 grid grid-cols-2 gap-4 lg:grid-cols-4">
+    <Container className="py-10">
+      <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
         <Stat label="Pitches" value={visible.length} />
         <Stat label="Awaiting response" value={allReqs.filter((r) => r.status === "pending").length} />
         <Stat label="In review" value={allReqs.filter((r) => r.status === "accepted").length} />
@@ -53,5 +56,6 @@ export default function PitchManagementPage() {
         )}
       </div>
     </Container>
+    </>
   );
 }

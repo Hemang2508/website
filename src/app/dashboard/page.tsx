@@ -8,7 +8,7 @@ import type { Booking } from "@/lib/types";
 import { Card, CardHeader } from "@/components/ui/Card";
 import { Avatar } from "@/components/ui/Avatar";
 import { Button, ButtonLink } from "@/components/ui/Button";
-import { Container, EmptyState, PageHeader, Stat, Tabs } from "@/components/ui/Misc";
+import { Container, EmptyState, PageHero, Stat, Tabs } from "@/components/ui/Misc";
 import { BookingStatusBadge } from "@/components/ui/StatusBadge";
 import { PitchListItem } from "@/components/pitch/PitchListItem";
 import { ReviewModal } from "@/components/dashboard/ReviewModal";
@@ -41,16 +41,17 @@ export default function UserDashboard() {
   const myBriefs = collaborations.filter((c) => c.ownedByDemoUser);
 
   return (
-    <Container className="py-10">
-      <RoleNotice expected="user" home="/dashboard" />
-      <PageHeader
+    <>
+    <PageHero
         eyebrow={demoUser.title}
         title={`${greeting}, ${demoUser.name.split(" ")[0]}`}
         description="Your sessions, pitches and activity in one place."
         actions={<><ButtonLink href="/explore" variant="secondary">Book a creator</ButtonLink><ButtonLink href="/pitch/new">Pitch a product</ButtonLink></>}
       />
+    <Container className="py-10">
+      <RoleNotice expected="user" home="/dashboard" />
 
-      <div className="mt-8 grid grid-cols-2 gap-4 lg:grid-cols-4">
+      <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
         <Stat label="Upcoming sessions" value={upcoming.length} icon={<CalendarCheck className="h-4 w-4" />} sub={`${upcoming.filter((b) => b.status === "pending").length} awaiting confirmation`} />
         <Stat label="Sessions completed" value={mine.filter((b) => b.status === "completed").length} icon={<MessageSquareText className="h-4 w-4" />} accent="teal" />
         <Stat label="Active pitches" value={myPitches.length} icon={<Megaphone className="h-4 w-4" />} accent="navy" sub={`${myReqs.filter((r) => r.status === "feedback_submitted").length} feedback reports received`} />
@@ -189,5 +190,6 @@ export default function UserDashboard() {
         />
       )}
     </Container>
+    </>
   );
 }

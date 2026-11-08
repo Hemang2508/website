@@ -6,6 +6,7 @@ import type { ApplicationStatus, Collaboration, Creator } from "@/lib/types";
 import { useStore } from "@/lib/store";
 import { Badge, type Tone } from "@/components/ui/Badge";
 import { Visual } from "@/components/ui/Visual";
+import { cardInteractive } from "@/components/ui/Card";
 import { cn, compact, formatDate, formatINR, toISODate } from "@/lib/utils";
 
 export const APP_STATUS: Record<ApplicationStatus, [string, Tone]> = {
@@ -43,9 +44,9 @@ export function CollabCard({ collab: c }: { collab: Collaboration }) {
   const count = c.baseApplicants + applications.filter((a) => a.collabId === c.id && !["withdrawn"].includes(a.status)).length;
   const [label, tone] = COLLAB_STATUS[c.status];
   return (
-    <Link href={`/collaborate/${c.id}`} className="group flex flex-col rounded-2xl border border-line bg-white p-5 shadow-card transition hover:-translate-y-0.5 hover:shadow-lift focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-400">
-      <div className="flex items-start justify-between gap-3">
-        <div className="flex items-center gap-3">
+    <Link href={`/collaborate/${c.id}`} className={cn("group flex h-full flex-col p-5", cardInteractive)}>
+      <div className="flex flex-wrap items-start justify-between gap-x-3 gap-y-2">
+        <div className="flex min-w-0 items-center gap-3">
           <Visual hue={c.brandHue} icon="brand" size="sm" className="h-11 w-11 shrink-0 rounded-xl" />
           <div className="min-w-0">
             <p className="truncate text-[13px] font-semibold text-ink">{c.brand}</p>
@@ -83,7 +84,7 @@ export function ApplicationTracker({ status }: { status: ApplicationStatus }) {
         const done = !failed && i <= idx;
         return (
           <li key={s} className="flex flex-1 items-center gap-2">
-            <span className={cn("flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-[11px] font-semibold", done ? "bg-teal-500 text-white" : "bg-canvas text-ink-subtle ring-1 ring-line")}>
+            <span className={cn("flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-[11px] font-semibold", done ? "bg-teal-600 text-white" : "bg-canvas text-ink-subtle ring-1 ring-line")}>
               {done ? <Check className="h-3.5 w-3.5" /> : i + 1}
             </span>
             <span className={cn("hidden text-xs sm:inline", done ? "font-medium text-ink" : "text-ink-subtle")}>{APP_STATUS[s][0]}</span>

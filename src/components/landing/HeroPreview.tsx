@@ -1,69 +1,76 @@
-import { BadgeCheck, CalendarDays, Check, Star } from "lucide-react";
+"use client";
 
-/** Product-UI composition used in the hero: real interface fragments, not illustrations. */
+import { BadgeCheck, CalendarDays, Check, Handshake, MapPin, Star } from "lucide-react";
+import { useStore } from "@/lib/store";
+import { Avatar, Portrait } from "@/components/ui/Avatar";
+import { formatDate, formatINR, formatTime } from "@/lib/utils";
+
+/** Hero composition built from real demo data: a creator card, a booking, an application and an event. */
 export function HeroPreview() {
+  const { creators, collaborations, events } = useStore();
+  const c = creators.find((x) => x.id === "c1") ?? creators[0];
+  const svc = c.services.filter((s) => s.type !== "pitch").slice(0, 2);
+  const collab = collaborations.find((x) => x.id === "cb2") ?? collaborations[0];
+  const ev = events.find((x) => x.id === "ev1") ?? events[0];
+
   return (
-    <div className="relative mx-auto w-full max-w-[520px]">
+    <div className="relative mx-auto w-full max-w-[540px] pb-24 pt-16 lg:ml-auto" aria-label="Product preview" role="img">
+      <div className="absolute -inset-8 rounded-[3rem] bg-gradient-to-br from-brand-500/25 via-transparent to-teal-500/20 blur-2xl" aria-hidden />
+
       {/* Creator card */}
-      <div className="relative z-10 rounded-2xl border border-line bg-white p-5 shadow-lift">
-        <div className="flex items-center gap-3.5">
-          <div className="relative">
-            <div className="flex h-14 w-14 items-center justify-center rounded-full text-base font-semibold" style={{ background: "hsl(252 55% 92%)", color: "hsl(252 45% 32%)" }}>AR</div>
-            <BadgeCheck className="absolute -bottom-0.5 -right-0.5 h-5 w-5 rounded-full bg-white text-brand-500" />
+      <div className="relative z-10 w-[80%] overflow-hidden rounded-3xl border border-white/10 bg-white shadow-pop animate-fade-up [animation-delay:150ms]">
+        <Portrait initials={c.initials} hue={c.avatarHue} photo={c.photo} monogram={false} className="h-24" />
+        <div className="px-5 pb-5">
+          <Avatar initials={c.initials} hue={c.avatarHue} size="lg" ring className="-mt-8 mb-2 w-fit" />
+          <div className="flex items-center gap-2">
+            <p className="font-display text-lg font-bold text-ink">{c.name}</p>
+            <BadgeCheck className="h-5 w-5 fill-brand-500 text-white" />
           </div>
-          <div className="min-w-0">
-            <p className="font-semibold text-ink">Ananya Rao</p>
-            <p className="truncate text-[13px] text-ink-muted">D2C brand strategist · Bengaluru</p>
-            <p className="mt-1 flex items-center gap-1 text-xs text-ink-muted"><Star className="h-3.5 w-3.5 fill-amber-400 text-amber-400" /><b className="text-ink">4.9</b> · 486 sessions</p>
-          </div>
-        </div>
-        <div className="mt-4 space-y-2">
-          {[
-            ["Quick strategy call", "20 min", "₹1,499"],
-            ["Go-to-market deep dive", "45 min", "₹3,999"],
-          ].map(([t, d, p], i) => (
-            <div key={t} className={`flex items-center justify-between rounded-xl border px-3.5 py-2.5 ${i === 1 ? "border-brand-500 bg-brand-50/60" : "border-line"}`}>
-              <div>
-                <p className="text-[13px] font-medium text-ink">{t}</p>
-                <p className="text-xs text-ink-subtle">{d} · video call</p>
+          <p className="truncate text-[13px] text-ink-muted">{c.headline}</p>
+          <p className="mt-1.5 flex items-center gap-1 text-xs text-ink-muted"><Star className="h-3.5 w-3.5 fill-amber-400 text-amber-400" /><b className="text-ink">{c.rating}</b> · {c.sessionsCompleted} sessions · {c.location}</p>
+          <div className="mt-4 space-y-2">
+            {svc.map((s, i) => (
+              <div key={s.id} className={`flex items-center justify-between rounded-xl border px-3.5 py-2.5 ${i === 1 ? "border-brand-500 bg-brand-50" : "border-line"}`}>
+                <div><p className="text-[13px] font-semibold text-ink">{s.title}</p><p className="text-xs text-ink-subtle">{s.durationMins} min · video call</p></div>
+                <p className="text-sm font-bold text-ink">{formatINR(s.price)}</p>
               </div>
-              <p className="text-sm font-semibold text-ink">{p}</p>
-            </div>
-          ))}
-        </div>
-        <div className="mt-4">
-          <p className="mb-2 flex items-center gap-1.5 text-xs font-medium text-ink-muted"><CalendarDays className="h-3.5 w-3.5" />Thu, 12 Nov</p>
-          <div className="grid grid-cols-4 gap-2">
-            {["10:00", "11:00", "16:00", "17:00"].map((t, i) => (
-              <span key={t} className={`rounded-lg border py-1.5 text-center text-xs font-medium ${i === 1 ? "border-brand-500 bg-brand-500 text-white" : i === 2 ? "border-line bg-canvas text-ink-subtle line-through" : "border-line text-ink"}`}>{t}</span>
             ))}
           </div>
         </div>
       </div>
 
-      {/* Pitch feedback card */}
-      <div className="relative z-20 -mt-6 ml-auto w-[78%] rounded-2xl border border-line bg-white p-4 shadow-pop sm:-mr-8">
-        <div className="flex items-center justify-between">
-          <p className="text-[13px] font-semibold text-ink">Pitch feedback · Kosha Face Oil</p>
-          <span className="rounded-full bg-teal-50 px-2 py-0.5 text-[11px] font-medium text-teal-700">Delivered</span>
-        </div>
-        <div className="mt-3 space-y-2">
-          {[["Value proposition", 4], ["Product design", 5], ["Pricing", 3]].map(([l, v]) => (
-            <div key={l as string} className="flex items-center gap-3">
-              <span className="w-32 text-xs text-ink-muted">{l}</span>
-              <div className="h-1.5 flex-1 rounded-full bg-canvas">
-                <div className="h-1.5 rounded-full bg-teal-500" style={{ width: `${(Number(v) / 5) * 100}%` }} />
-              </div>
-              <span className="w-6 text-right text-xs font-semibold text-ink">{v}/5</span>
-            </div>
+      {/* Collaboration application */}
+      <div className="absolute right-0 top-0 z-20 w-[50%] rounded-2xl border border-line bg-white p-4 shadow-pop animate-fade-up [animation-delay:320ms]">
+        <p className="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wide text-ink-subtle"><Handshake className="h-3.5 w-3.5" />Brand brief</p>
+        <p className="mt-1.5 text-[13px] font-bold leading-snug text-ink">{collab.title}</p>
+        <p className="text-xs text-ink-muted">{collab.brand}</p>
+        <div className="mt-3 flex items-center gap-1.5">
+          {["Submitted", "Shortlisted", "Accepted"].map((s, i) => (
+            <span key={s} className={`flex h-1.5 flex-1 rounded-full ${i < 2 ? "bg-teal-500" : "bg-line"}`} title={s} />
           ))}
+        </div>
+        <p className="mt-1.5 text-[11px] font-medium text-teal-700">Application shortlisted</p>
+      </div>
+
+      {/* Event */}
+      <div className="absolute bottom-0 right-0 z-20 flex w-[60%] items-center gap-3 rounded-2xl border border-line bg-white p-3 shadow-lift animate-fade-up [animation-delay:460ms]">
+        <div className="rounded-xl bg-canvas px-2.5 py-1.5 text-center">
+          <p className="text-[10px] font-bold uppercase text-brand-600">{formatDate(ev.date, { month: "short" })}</p>
+          <p className="font-display text-lg font-bold leading-none text-ink">{formatDate(ev.date, { day: "numeric" })}</p>
+        </div>
+        <div className="min-w-0">
+          <p className="truncate text-[12.5px] font-bold text-ink">{ev.title}</p>
+          <p className="flex items-center gap-1 text-[11px] text-ink-muted"><MapPin className="h-3 w-3" />{ev.area} · {formatTime(ev.time)}</p>
         </div>
       </div>
 
-      {/* Confirmation chip */}
-      <div className="absolute -left-4 top-[46%] z-30 hidden items-center gap-2 rounded-xl border border-line bg-white px-3 py-2 shadow-lift sm:flex">
-        <span className="flex h-6 w-6 items-center justify-center rounded-full bg-teal-500 text-white"><Check className="h-3.5 w-3.5" /></span>
-        <span className="text-xs font-medium text-ink">Booking confirmed</span>
+      {/* Booking confirmed */}
+      <div className="absolute bottom-8 left-0 z-30 flex items-center gap-2.5 rounded-2xl border border-line bg-white px-3.5 py-2.5 shadow-lift animate-fade-up [animation-delay:600ms] sm:-left-6">
+        <span className="flex h-8 w-8 items-center justify-center rounded-full bg-teal-600 text-white"><Check className="h-4 w-4" /></span>
+        <span>
+          <span className="block text-xs font-bold text-ink">Booking confirmed</span>
+          <span className="flex items-center gap-1 text-[11px] text-ink-muted"><CalendarDays className="h-3 w-3" />{svc[1]?.title ?? svc[0]?.title}</span>
+        </span>
       </div>
     </div>
   );

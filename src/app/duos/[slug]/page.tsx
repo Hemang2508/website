@@ -2,11 +2,11 @@
 
 import Link from "next/link";
 import { notFound, useParams } from "next/navigation";
-import { ArrowLeft, CalendarClock, Check, Clock, Globe2, MapPin, Star, Users } from "lucide-react";
+import { ArrowLeft, CalendarClock, Check, Clock, Globe2, MapPin, Plus, Star, Users } from "lucide-react";
 import { useStore } from "@/lib/store";
 import { nextAvailable, WEEKDAYS } from "@/lib/availability";
 import { bookingRate, pct, splitAmount } from "@/lib/pricing";
-import { Avatar } from "@/components/ui/Avatar";
+import { Avatar, Portrait } from "@/components/ui/Avatar";
 import { Badge } from "@/components/ui/Badge";
 import { ButtonLink } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
@@ -29,19 +29,38 @@ export default function DuoPage() {
   const others = duos.filter((d) => d.id !== duo.id).slice(0, 3);
 
   return (
-    <Container className="py-8 sm:py-10">
-      <Link href="/duos" className="inline-flex items-center gap-1.5 text-[13px] font-medium text-ink-muted hover:text-ink"><ArrowLeft className="h-4 w-4" />All Creator Duos</Link>
-      <div className="mt-4 grid grid-cols-1 gap-8 lg:grid-cols-[1fr_360px]">
-        <div className="min-w-0">
-          <Badge tone="brand">{duo.pairing}</Badge>
-          <h1 className="mt-3 text-2xl font-semibold tracking-tight text-ink sm:text-[32px]">{duo.title}</h1>
-          <div className="mt-3 flex flex-wrap gap-x-5 gap-y-1 text-[13px] text-ink-muted">
-            <span className="flex items-center gap-1.5">{duo.format === "Online" ? <Globe2 className="h-4 w-4" /> : <MapPin className="h-4 w-4" />}{duo.format}</span>
-            <span className="flex items-center gap-1.5"><Clock className="h-4 w-4" />{duo.durationMins} minutes</span>
-            <span className="flex items-center gap-1.5"><Users className="h-4 w-4" />Up to {duo.maxGuests} guest{duo.maxGuests > 1 ? "s" : ""}</span>
+    <>
+    <section className="surface-dark relative overflow-hidden text-white">
+      <div className="grid-faint pointer-events-none absolute inset-0" aria-hidden />
+      <Container className="relative pb-12 pt-6">
+        <Link href="/duos" className="inline-flex items-center gap-1.5 text-[13px] font-medium text-white/70 hover:text-white"><ArrowLeft className="h-4 w-4" />All Creator Duos</Link>
+        <div className="mt-8 grid grid-cols-1 items-center gap-10 lg:grid-cols-[1.2fr_1fr]">
+          <div className="animate-fade-up">
+            <Badge className="bg-white/10 text-white ring-white/15">{duo.pairing}</Badge>
+            <h1 className="mt-4 font-display text-display-lg text-white">{duo.title}</h1>
+            <p className="mt-3 text-[16px] text-white/70">{pair[0].name} <span className="text-white/40">&</span> {pair[1].name}</p>
+            <div className="mt-5 flex flex-wrap gap-x-6 gap-y-2 text-[13.5px] text-white/70">
+              <span className="flex items-center gap-1.5">{duo.format === "Online" ? <Globe2 className="h-4 w-4" /> : <MapPin className="h-4 w-4" />}{duo.format}</span>
+              <span className="flex items-center gap-1.5"><Clock className="h-4 w-4" />{duo.durationMins} minutes</span>
+              <span className="flex items-center gap-1.5"><Users className="h-4 w-4" />Up to {duo.maxGuests} guest{duo.maxGuests > 1 ? "s" : ""}</span>
+            </div>
           </div>
-
-          <div className="mt-6 grid gap-4 sm:grid-cols-2">
+          <div className="relative grid grid-cols-2 gap-3 animate-fade-up [animation-delay:120ms]">
+            {pair.map((c) => (
+              <div key={c.id} className="overflow-hidden rounded-3xl border border-white/10 bg-white/[0.04]">
+                <Portrait initials={c.initials} hue={c.avatarHue} photo={c.photo} className="aspect-[4/5]" />
+                <div className="p-3"><p className="truncate text-sm font-semibold text-white">{c.name}</p><p className="truncate text-xs text-white/55">{c.category}</p></div>
+              </div>
+            ))}
+            <span className="absolute left-1/2 top-[40%] flex h-10 w-10 -translate-x-1/2 items-center justify-center rounded-full bg-white text-navy shadow-pop"><Plus className="h-5 w-5" /></span>
+          </div>
+        </div>
+      </Container>
+    </section>
+    <Container className="py-8 sm:py-10">
+      <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_360px]">
+        <div className="min-w-0">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             {pair.map((c) => (
               <div key={c.id} className="rounded-2xl border border-line bg-white p-5 shadow-card">
                 <div className="flex items-center gap-3">
@@ -61,7 +80,7 @@ export default function DuoPage() {
             <h2 className="text-[15px] font-semibold text-ink">The experience</h2>
             <p className="mt-2 text-[14px] leading-relaxed text-ink-muted">{duo.description}</p>
             <h3 className="mt-5 text-sm font-semibold text-ink">What&apos;s included</h3>
-            <ul className="mt-3 grid gap-2 sm:grid-cols-2">{duo.includes.map((i) => <li key={i} className="flex items-start gap-2 text-[13.5px] text-ink"><Check className="mt-0.5 h-4 w-4 shrink-0 text-teal-500" />{i}</li>)}</ul>
+            <ul className="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-2">{duo.includes.map((i) => <li key={i} className="flex items-start gap-2 text-[13.5px] text-ink"><Check className="mt-0.5 h-4 w-4 shrink-0 text-teal-500" />{i}</li>)}</ul>
           </Card>
 
           <Card className="mt-6 p-5">
@@ -102,9 +121,10 @@ export default function DuoPage() {
       {others.length > 0 && (
         <div className="mt-14">
           <h2 className="text-lg font-semibold text-ink">More Creator Duos</h2>
-          <div className="mt-4 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">{others.map((d) => <DuoCard key={d.id} duo={d} />)}</div>
+          <div className="mt-4 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">{others.map((d) => <DuoCard key={d.id} duo={d} />)}</div>
         </div>
       )}
     </Container>
+    </>
   );
 }

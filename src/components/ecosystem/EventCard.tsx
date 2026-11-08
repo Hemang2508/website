@@ -7,6 +7,7 @@ import type { RegionalEvent } from "@/lib/types";
 import { Avatar } from "@/components/ui/Avatar";
 import { Badge } from "@/components/ui/Badge";
 import { Visual } from "@/components/ui/Visual";
+import { cardInteractive } from "@/components/ui/Card";
 import { cn, formatDate, formatINR, formatTime } from "@/lib/utils";
 
 export function EventCard({ event: e, compact }: { event: RegionalEvent; compact?: boolean }) {
@@ -16,7 +17,7 @@ export function EventCard({ event: e, compact }: { event: RegionalEvent; compact
   const full = taken >= e.capacity;
   const mine = hydrated && myRegistration(e.id);
   return (
-    <Link href={`/regional/events/${e.id}`} className="group flex flex-col overflow-hidden rounded-2xl border border-line bg-white shadow-card transition hover:-translate-y-0.5 hover:shadow-lift focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-400">
+    <Link href={`/regional/events/${e.id}`} className={cn("group flex h-full flex-col overflow-hidden", cardInteractive)}>
       <Visual hue={e.hue} icon={e.type} className={compact ? "h-24" : "h-32"} size={compact ? "sm" : "md"}>
         <div className="flex items-start justify-between p-3.5">
           <div className="rounded-lg bg-white px-2.5 py-1 text-center shadow-sm">

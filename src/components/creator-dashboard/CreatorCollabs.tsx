@@ -35,7 +35,7 @@ export function CreatorCollabs({ creator }: { creator: Creator }) {
               const c = collaborations.find((x) => x.id === a.collabId);
               if (!c) return null;
               return (
-                <li key={a.id} className="grid gap-3 px-5 py-4 md:grid-cols-[1fr_320px] md:items-center">
+                <li key={a.id} className="grid grid-cols-1 gap-3 px-5 py-4 md:grid-cols-[1fr_320px] md:items-center">
                   <div className="min-w-0">
                     <div className="flex flex-wrap items-center gap-2"><Link href={`/collaborate/${c.id}`} className="font-semibold text-ink hover:text-brand-600">{c.title}</Link><Badge tone={APP_STATUS[a.status][1]} dot>{APP_STATUS[a.status][0]}</Badge></div>
                     <p className="text-xs text-ink-subtle">{c.brand} · proposed {formatINR(a.proposedFee)} · updated {timeAgo(a.updatedAt)}</p>
@@ -51,11 +51,11 @@ export function CreatorCollabs({ creator }: { creator: Creator }) {
 
       <div>
         <h3 className="mb-3 text-[15px] font-semibold text-ink">Recommended for you</h3>
-        {recommended.length ? <div className="grid gap-5 md:grid-cols-3">{recommended.map((c) => <CollabCard key={c.id} collab={c} />)}</div>
+        {recommended.length ? <div className="grid grid-cols-1 gap-5 md:grid-cols-3">{recommended.map((c) => <CollabCard key={c.id} collab={c} />)}</div>
           : <Card><EmptyState icon={<Handshake className="h-5 w-5" />} title="No new eligible briefs right now" body="We match briefs on audience size and target cities." /></Card>}
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-2">
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
         <Card>
           <CardHeader title={<span className="inline-flex items-center gap-2"><UsersRound className="h-4 w-4" />Communities you host</span>} />
           {hosted.length ? (

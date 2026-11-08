@@ -43,7 +43,7 @@ export function CreatorProfileEditor({ creator }: { creator: Creator }) {
           <p className="text-xs text-ink-subtle">Profile photo upload uses Supabase Storage in production (not enabled in demo).</p>
         </div>
       </div>
-      <div className="mt-6 grid gap-4 sm:grid-cols-2">
+      <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
         <Field label="Headline" required error={errors.headline} className="sm:col-span-2"><Input value={d.headline} onChange={(e) => setD({ ...d, headline: e.target.value })} invalid={!!errors.headline} maxLength={100} /></Field>
         <Field label="About" required error={errors.bio} className="sm:col-span-2"><Textarea value={d.bio} onChange={(e) => setD({ ...d, bio: e.target.value })} invalid={!!errors.bio} className="min-h-[120px]" maxLength={800} /></Field>
         <Field label="City" required error={errors.location}><Input value={d.location} onChange={(e) => setD({ ...d, location: e.target.value })} invalid={!!errors.location} /></Field>

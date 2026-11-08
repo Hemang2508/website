@@ -29,9 +29,9 @@ export default function CommunityDetailPage() {
 
   return (
     <>
-      <Visual hue={c.hue} icon={c.icon} size="lg" className="h-44 border-b border-line sm:h-52">
+      <Visual hue={c.hue} icon={c.icon} size="lg" tone="dark" className="h-48 sm:h-64">
         <Container className="pt-5">
-          <Link href="/community" className="inline-flex items-center gap-1.5 rounded-lg bg-white/85 px-2.5 py-1.5 text-[13px] font-medium text-ink-muted backdrop-blur hover:text-ink"><ArrowLeft className="h-4 w-4" />All communities</Link>
+          <Link href="/community" className="inline-flex items-center gap-1.5 rounded-xl bg-white/90 px-3 py-2 text-[13px] font-semibold text-ink shadow-sm backdrop-blur transition hover:bg-white"><ArrowLeft className="h-4 w-4" />All communities</Link>
         </Container>
       </Visual>
       <Container className="pb-10">
@@ -39,7 +39,7 @@ export default function CommunityDetailPage() {
           <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
             <div>
               <div className="flex flex-wrap gap-2"><Badge tone="brand">{c.category}</Badge><Badge>{c.city}</Badge></div>
-              <h1 className="mt-3 text-2xl font-semibold tracking-tight text-ink sm:text-[28px]">{c.name}</h1>
+              <h1 className="mt-3 font-display text-display-md text-ink">{c.name}</h1>
               <p className="mt-1 text-[15px] text-ink-muted">{c.tagline}</p>
               <p className="mt-3 text-[13px] text-ink-subtle"><b className="text-ink">{memberCount(c).toLocaleString("en-IN")}</b> members (demo figure) · {upcoming.length} upcoming events</p>
             </div>
@@ -61,7 +61,7 @@ export default function CommunityDetailPage() {
                 <Link href="/regional" className="text-[13px] font-medium text-brand-600">All regional events</Link>
               </div>
               {upcoming.length ? (
-                <div className="grid gap-4 sm:grid-cols-2">{upcoming.map((e) => <EventCard key={e.id} event={e} compact />)}</div>
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">{upcoming.map((e) => <EventCard key={e.id} event={e} compact />)}</div>
               ) : (
                 <Card><EmptyState icon={<CalendarX2 className="h-5 w-5" />} title="No upcoming events yet" body="Hosts announce new events here first." /></Card>
               )}

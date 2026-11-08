@@ -96,7 +96,7 @@ function BookingDetail() {
               ))}
             </div>
             {partner && b.duoId && <p className="mt-2 text-xs text-ink-subtle">Creator Duo booking — either creator can confirm; earnings are split 50/50.</p>}
-            <dl className="mt-5 grid gap-4 text-sm sm:grid-cols-2">
+            <dl className="mt-5 grid grid-cols-1 gap-4 text-sm sm:grid-cols-2">
               <Row label="Service" value={`${b.serviceTitle} · ${b.durationMins} min`} />
               <Row label="When" value={`${formatDate(b.date, { weekday: "short", day: "numeric", month: "short", year: "numeric" })}, ${formatTime(b.time)} IST`} />
               <Row label="Booked by" value={b.userName} />

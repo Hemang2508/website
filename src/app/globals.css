@@ -2,16 +2,87 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ───────── RTG Live design tokens (mirrored in tailwind.config.ts) ───────── */
+:root {
+  --rtg-dark: #10172a;
+  --rtg-dark-2: #17223b;
+  --rtg-accent: #6558e8;
+  --rtg-accent-2: #19b8a6;
+  --rtg-bg: #f5f3ef;
+  --rtg-surface: #ffffff;
+  --rtg-text: #172033;
+  --rtg-text-2: #697386;
+  --rtg-border: #e6e2da;
+
+  --rtg-radius-sm: 0.5rem;
+  --rtg-radius-md: 0.875rem;
+  --rtg-radius-lg: 1.25rem;
+  --rtg-radius-xl: 1.75rem;
+
+  --rtg-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --rtg-dur-micro: 180ms; /* buttons, inputs, chips */
+  --rtg-dur-card: 260ms; /* card hover, dropdowns, modals */
+  --rtg-dur-section: 520ms; /* scroll reveals */
+
+  --rtg-container: 80rem;
+  --rtg-gutter: 1rem;
+}
+
 @layer base {
-  html { -webkit-tap-highlight-color: transparent; }
+  html { -webkit-tap-highlight-color: transparent; scroll-behavior: smooth; }
   body {
     @apply bg-canvas text-ink antialiased;
     font-feature-settings: "cv11", "ss01", "ss03";
+    overflow-x: clip;
   }
-  ::selection { background: #E5E1F9; }
+  h1, h2, h3 { @apply font-display; }
+  ::selection { background: #e4e1fc; }
+  :focus-visible { outline: 2px solid var(--rtg-accent); outline-offset: 2px; }
+}
+
+@layer components {
+  /* Dark premium surface with soft violet/teal light — used for hero bands */
+  .surface-dark {
+    background-color: var(--rtg-dark);
+    background-image:
+      radial-gradient(60rem 30rem at 85% -10%, rgba(101, 88, 232, 0.38), transparent 60%),
+      radial-gradient(40rem 26rem at -5% 110%, rgba(25, 184, 166, 0.22), transparent 60%),
+      linear-gradient(180deg, #10172a 0%, #131c33 100%);
+  }
+  .grid-faint {
+    background-image: linear-gradient(rgba(255, 255, 255, 0.045) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.045) 1px, transparent 1px);
+    background-size: 56px 56px;
+    mask-image: radial-gradient(ellipse at 60% 30%, black 20%, transparent 70%);
+  }
+  .text-gradient {
+    background: linear-gradient(92deg, #a69cf2 0%, #6558e8 45%, #19b8a6 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .eyebrow { @apply text-[12px] font-semibold uppercase tracking-[0.14em]; }
 }
 
 @layer utilities {
   .scrollbar-none { scrollbar-width: none; }
   .scrollbar-none::-webkit-scrollbar { display: none; }
+}
+
+/* Scroll reveal (added by <Reveal/> only to elements that start below the fold) */
+.reveal-hide { opacity: 0; transform: translateY(20px); }
+.reveal-show {
+  opacity: 1; transform: none;
+  transition: opacity var(--rtg-dur-section) var(--rtg-ease), transform var(--rtg-dur-section) var(--rtg-ease);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    animation-delay: 0ms !important;
+    transition-duration: 0.01ms !important;
+    transition-delay: 0ms !important;
+  }
+  .reveal-hide { opacity: 1; transform: none; }
 }

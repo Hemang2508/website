@@ -4,6 +4,10 @@
 
 > RTG Live is a **proposed product concept** prepared for discussion with the management of Voyager Partners, Hyderabad. It is not an existing or approved Voyager Partners product. All payments in this demo are **simulated**, and the commission rates are **proposed assumptions**, not confirmed commercial terms.
 
+## Design (v2 redesign: branch `rtg-ui-redesign`)
+
+Premium hybrid look: dark hero bands, a warm light canvas, Plus Jakarta Sans display type over Inter, a single interactive card system and balanced CSS motion. Details are in [`docs/redesign/DESIGN_SYSTEM.md`](docs/redesign/DESIGN_SYSTEM.md) and the plan in [`docs/REDESIGN_PLAN.md`](docs/REDESIGN_PLAN.md). Screenshots are in [`docs/redesign/screenshots`](docs/redesign/screenshots).
+
 ## Run locally
 
 ```bash
@@ -13,7 +17,14 @@ npm run dev        # http://localhost:3000
 npm run build && npm start
 ```
 
-No accounts, API keys or credentials are needed. Demo data is seeded on first load and saved in the browser (localStorage, key `rtg-live-demo-v2`; v1 data from the earlier build is ignored so the new sample data appears). Use **Reset demo** in the top bar to restore the original sample data.
+No accounts, API keys or credentials are needed.
+
+### Tests
+```bash
+npm run build && npx next start -p 3100   # in one terminal
+npm run test:e2e                          # core journeys, ecosystem modules, responsive + reduced motion
+```
+The suites use the Playwright/Chromium available on the machine (`BASE_URL` overrides `http://localhost:3100`). `node scripts/screenshots.js` regenerates the screenshot set. Demo data is seeded on first load and saved in the browser (localStorage, key `rtg-live-demo-v2`; v1 data from the earlier build is ignored so the new sample data appears). Use **Reset demo** in the top bar to restore the original sample data.
 
 ## Demo accounts (role switcher)
 

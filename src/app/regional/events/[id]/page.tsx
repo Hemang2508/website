@@ -53,16 +53,16 @@ export default function EventPage() {
 
   return (
     <>
-      <Visual hue={e.hue} icon={e.type} size="lg" className="h-40 border-b border-line sm:h-48">
-        <Container className="pt-5"><Link href="/regional" className="inline-flex items-center gap-1.5 rounded-lg bg-white/85 px-2.5 py-1.5 text-[13px] font-medium text-ink-muted backdrop-blur hover:text-ink"><ArrowLeft className="h-4 w-4" />Regional events</Link></Container>
+      <Visual hue={e.hue} icon={e.type} size="lg" tone="dark" className="h-44 sm:h-60">
+        <Container className="pt-5"><Link href="/regional" className="inline-flex items-center gap-1.5 rounded-xl bg-white/90 px-3 py-2 text-[13px] font-semibold text-ink shadow-sm backdrop-blur transition hover:bg-white"><ArrowLeft className="h-4 w-4" />Regional events</Link></Container>
       </Visual>
       <Container className="pb-10">
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1fr_360px]">
           <div className="min-w-0">
             <div className="relative -mt-10 rounded-2xl border border-line bg-white p-5 shadow-card sm:p-6">
               <div className="flex flex-wrap gap-2"><Badge tone="brand">{e.type}</Badge><Badge>{e.city}</Badge>{full && <Badge tone="red">Sold out</Badge>}</div>
-              <h1 className="mt-3 text-2xl font-semibold tracking-tight text-ink sm:text-[28px]">{e.title}</h1>
-              <div className="mt-4 grid gap-3 text-[13.5px] text-ink-muted sm:grid-cols-3">
+              <h1 className="mt-3 font-display text-display-md text-ink">{e.title}</h1>
+              <div className="mt-4 grid grid-cols-1 gap-3 text-[13.5px] text-ink-muted sm:grid-cols-3">
                 <p className="flex items-center gap-2"><CalendarDays className="h-4 w-4 text-ink-subtle" />{formatDate(e.date, { weekday: "long", day: "numeric", month: "long" })}</p>
                 <p className="flex items-center gap-2"><Clock className="h-4 w-4 text-ink-subtle" />{formatTime(e.time)} · {Math.round((e.durationMins / 60) * 10) / 10} hrs</p>
                 <p className="flex items-center gap-2"><MapPin className="h-4 w-4 text-ink-subtle" />{e.area}</p>

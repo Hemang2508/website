@@ -11,7 +11,7 @@ const icons: Record<Notification["kind"], typeof Bell> = {
   booking: CalendarCheck, pitch: Megaphone, payment: CreditCard, review: Star, system: Info, community: UsersRound, event: MapPin, collab: Handshake,
 };
 
-export function NotificationBell() {
+export function NotificationBell({ dark }: { dark?: boolean }) {
   const { hydrated, markAllRead, markRead } = useStore();
   const items = useMyNotifications();
   const unread = items.filter((n) => !n.read).length;
@@ -27,14 +27,14 @@ export function NotificationBell() {
 
   return (
     <div className="relative" ref={ref}>
-      <button onClick={() => setOpen((o) => !o)} className="relative flex h-10 w-10 items-center justify-center rounded-full text-ink-muted transition hover:bg-canvas hover:text-ink" aria-label={`Notifications${unread ? `, ${unread} unread` : ""}`}>
+      <button onClick={() => setOpen((o) => !o)} className={cn("relative flex h-11 w-11 items-center justify-center rounded-xl transition-colors duration-fast", dark ? "text-white/80 hover:bg-white/10 hover:text-white" : "text-ink-muted hover:bg-ink/[0.05] hover:text-ink")} aria-label={`Notifications${unread ? `, ${unread} unread` : ""}`}>
         <Bell className="h-5 w-5" />
         {hydrated && unread > 0 && (
-          <span className="absolute right-1.5 top-1.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-brand-500 px-1 text-[10px] font-semibold text-white ring-2 ring-white">{unread}</span>
+          <span className="absolute right-1.5 top-1.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-brand-500 px-1 text-[10px] font-semibold text-white ring-2 ring-transparent">{unread}</span>
         )}
       </button>
       {open && (
-        <div className="fixed inset-x-3 top-16 z-50 rounded-xl border border-line bg-white shadow-pop animate-fade-in sm:absolute sm:inset-x-auto sm:right-0 sm:top-auto sm:mt-2 sm:w-96">
+        <div className="fixed inset-x-3 top-[6.5rem] z-50 overflow-hidden rounded-2xl border border-line bg-white shadow-pop animate-scale-in sm:absolute sm:inset-x-auto sm:right-0 sm:top-auto sm:mt-2 sm:w-96">
           <div className="flex items-center justify-between border-b border-line px-4 py-3">
             <p className="text-sm font-semibold text-ink">Notifications</p>
             {unread > 0 && <button onClick={markAllRead} className="text-xs font-medium text-brand-600 hover:text-brand-700">Mark all as read</button>}

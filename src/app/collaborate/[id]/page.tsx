@@ -62,10 +62,10 @@ export default function CollabDetailPage() {
       <Link href="/collaborate" className="inline-flex items-center gap-1.5 text-[13px] font-medium text-ink-muted hover:text-ink"><ArrowLeft className="h-4 w-4" />All collaborations</Link>
 
       <div className="mt-4 overflow-hidden rounded-2xl border border-line bg-white shadow-card">
-        <Visual hue={c.brandHue} icon="brand" className="h-24" />
+        <Visual hue={c.brandHue} icon="brand" tone="dark" className="h-28" />
         <div className="p-5 sm:p-6">
           <div className="flex flex-wrap items-center gap-2"><Badge tone={statusTone} dot>{statusLabel}</Badge><Badge>{c.campaignType}</Badge><Badge tone="brand">{c.compensation}</Badge>{c.ownedByDemoUser && <Badge tone="teal">Your brief</Badge>}</div>
-          <h1 className="mt-3 text-2xl font-semibold tracking-tight text-ink sm:text-[28px]">{c.title}</h1>
+          <h1 className="mt-3 font-display text-display-md text-ink">{c.title}</h1>
           <p className="mt-1 text-[15px] text-ink-muted">{c.brand} · {c.category}</p>
           <div className="mt-5 grid grid-cols-2 gap-4 text-[13px] sm:grid-cols-4">
             <div><p className="text-ink-subtle">Budget per creator</p><p className="font-semibold text-ink">{budgetLabel(c)}</p></div>
@@ -82,7 +82,7 @@ export default function CollabDetailPage() {
             <h2 className="text-[15px] font-semibold text-ink">About the campaign</h2>
             <p className="mt-2 text-[14px] leading-relaxed text-ink-muted">{c.description}</p>
           </Card>
-          <div className="grid gap-6 md:grid-cols-2">
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
             <Card className="p-5">
               <h2 className="text-[15px] font-semibold text-ink">Requirements</h2>
               <ul className="mt-3 space-y-2">{c.requirements.map((r) => <li key={r} className="flex items-start gap-2 text-[13.5px] text-ink"><Check className="mt-0.5 h-4 w-4 shrink-0 text-teal-500" />{r}</li>)}</ul>

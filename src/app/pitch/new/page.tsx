@@ -9,12 +9,13 @@ import { COMMISSION, pct, splitAmount } from "@/lib/pricing";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { Chip, Field, Input, Select, Textarea } from "@/components/ui/Field";
-import { Container, PageHeader } from "@/components/ui/Misc";
+import { Container, PageHero } from "@/components/ui/Misc";
 import { Badge, SimulatedTag } from "@/components/ui/Badge";
 import { Avatar } from "@/components/ui/Avatar";
 import { ImageUploader } from "@/components/pitch/ImageUploader";
 import { CreatorMatcher, MAX_CREATORS, pitchFee } from "@/components/pitch/CreatorMatcher";
 import { PaymentModal } from "@/components/booking/PaymentModal";
+import { JourneySteps } from "@/components/booking/JourneySteps";
 import { cn, formatINR } from "@/lib/utils";
 
 const STEPS = ["Product", "Audience & goals", "Match creators", "Review & send"];
@@ -87,31 +88,25 @@ function NewPitch() {
   };
 
   return (
+    <>
+    <PageHero eyebrow={<span className="inline-flex items-center gap-1.5"><PackageSearch className="h-4 w-4" />RTG Pitch</span>} title="Pitch your product to creators" description="Submit once, match with relevant creators and receive structured, comparable feedback." />
     <Container className="max-w-5xl py-10">
-      <PageHeader eyebrow={<span className="inline-flex items-center gap-1.5"><PackageSearch className="h-4 w-4" />RTG Pitch</span>} title="Pitch your product to creators" description="Submit once, match with relevant creators and receive structured, comparable feedback." />
 
       {preCreator && (
-        <div className="mt-6 flex items-center gap-3 rounded-xl border border-line bg-white px-4 py-3 text-[13px] text-ink-muted">
+        <div className="flex items-center gap-3 rounded-xl border border-line bg-white px-4 py-3 text-[13px] text-ink-muted">
           <Avatar initials={preCreator.initials} hue={preCreator.avatarHue} size="sm" />
           <p><b className="text-ink">{preCreator.name}</b> is pre-selected. You can add up to {MAX_CREATORS - 1} more creators in step 3.</p>
         </div>
       )}
 
-      <ol className="mt-8 grid grid-cols-4 gap-2" aria-label="Pitch progress">
-        {STEPS.map((s, i) => (
-          <li key={s}>
-            <div className={cn("h-1.5 rounded-full", i < step ? "bg-teal-500" : i === step ? "bg-brand-500" : "bg-line")} />
-            <p className={cn("mt-2 hidden text-[13px] font-medium sm:block", i === step ? "text-ink" : "text-ink-subtle")}>{i + 1}. {s}</p>
-          </li>
-        ))}
-      </ol>
-      <p className="mt-2 text-[13px] font-medium text-ink sm:hidden">Step {step + 1} of 4 · {STEPS[step]}</p>
+      <JourneySteps label="Pitch progress" current={step} steps={STEPS} />
+
 
       <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-[1fr_300px]">
         <div className="min-w-0">
           {step === 0 && (
             <Card className="p-5 sm:p-6">
-              <div className="grid gap-4 sm:grid-cols-2">
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <Field label="Product name" required htmlFor="pn" error={errors.productName}><Input id="pn" value={form.productName} onChange={(e) => set("productName", e.target.value)} invalid={!!errors.productName} placeholder="e.g. Kosha Rose Hydrating Mist" /></Field>
                 <Field label="Company / brand" required htmlFor="co" error={errors.company}><Input id="co" value={form.company} onChange={(e) => set("company", e.target.value)} invalid={!!errors.company} /></Field>
                 <Field label="One-line summary" required htmlFor="tl" error={errors.tagline} className="sm:col-span-2"><Input id="tl" value={form.tagline} onChange={(e) => set("tagline", e.target.value)} invalid={!!errors.tagline} maxLength={100} placeholder="What it is and who it's for, in one sentence" /></Field>
@@ -239,5 +234,6 @@ function NewPitch() {
 
       <PaymentModal open={payOpen} onClose={() => setPayOpen(false)} amount={total} description={`Pitch review · ${selected.length} creator${selected.length > 1 ? "s" : ""}`} onSuccess={(r) => onPaid(r.paymentId)} />
     </Container>
+    </>
   );
 }

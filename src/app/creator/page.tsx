@@ -8,7 +8,7 @@ import { useStore } from "@/lib/store";
 import { Avatar } from "@/components/ui/Avatar";
 import { Button, ButtonLink } from "@/components/ui/Button";
 import { Card, CardHeader } from "@/components/ui/Card";
-import { Container, EmptyState, Stat, Tabs } from "@/components/ui/Misc";
+import { Container, EmptyState, PageHero, Stat, Tabs } from "@/components/ui/Misc";
 import { Badge } from "@/components/ui/Badge";
 import { RoleNotice } from "@/components/dashboard/RoleNotice";
 import { BarChart } from "@/components/dashboard/BarChart";
@@ -59,24 +59,21 @@ function CreatorDashboard() {
   };
 
   return (
+    <>
+    <PageHero
+      compact
+      eyebrow="Creator dashboard"
+      title={<span className="flex items-center gap-4"><Avatar initials={c.initials} hue={c.avatarHue} size="lg" verified={c.verified} photo={c.photo} /><span>Welcome back, {c.name.split(" ")[0]}</span></span>}
+      description={c.headline}
+      actions={<>
+        <ButtonLink href={`/creators/${c.slug}/passport`} variant="light" size="sm"><IdCard className="h-4 w-4" />My Creator Passport</ButtonLink>
+        <Button variant="outline" size="sm" className="border-white/25 text-white hover:border-white/60 hover:bg-white/[0.06]" onClick={copyLink}><Copy className="h-4 w-4" />Copy booking link</Button>
+        <ButtonLink href={`/creators/${c.slug}`} variant="outline" size="sm" className="border-white/25 text-white hover:border-white/60 hover:bg-white/[0.06]"><ExternalLink className="h-4 w-4" />Public profile</ButtonLink>
+      </>}
+    />
     <Container className="py-10">
       <RoleNotice expected="creator" home="/creator" />
-      <div className="flex flex-col gap-5 sm:flex-row sm:items-center">
-        <Avatar initials={c.initials} hue={c.avatarHue} size="lg" verified={c.verified} />
-        <div className="min-w-0 flex-1">
-          <p className="text-[13px] font-medium text-brand-600">Creator dashboard</p>
-          <h1 className="text-2xl font-semibold tracking-tight text-ink">{c.name}</h1>
-          <p className="truncate text-[13px] text-ink-muted">{c.headline}</p>
-        </div>
-        <div className="flex flex-wrap gap-2">
-          <Button variant="secondary" size="sm" onClick={copyLink}><Copy className="h-4 w-4" />Copy booking link</Button>
-          <ButtonLink href={`/creators/${c.slug}/passport`} variant="secondary" size="sm"><IdCard className="h-4 w-4" />My Creator Passport</ButtonLink>
-          <ButtonLink href={`/creators/${c.slug}`} variant="secondary" size="sm"><ExternalLink className="h-4 w-4" />View public profile</ButtonLink>
-        </div>
-      </div>
-
       <Tabs
-        className="mt-8"
         value={tab}
         onChange={setTab}
         tabs={[
@@ -139,7 +136,7 @@ function CreatorDashboard() {
               </Card>
             </div>
 
-            <div className="grid gap-6 lg:grid-cols-2">
+            <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
               <Card>
                 <CardHeader title="Upcoming sessions" />
                 {upcoming.length === 0 ? <EmptyState icon={<CalendarCheck className="h-5 w-5" />} title="No confirmed sessions" /> : (
@@ -167,7 +164,7 @@ function CreatorDashboard() {
 
             <Card>
               <CardHeader title="Latest reviews" action={<Link href={`/creators/${c.slug}`} className="text-[13px] font-medium text-brand-600">See all</Link>} />
-              <div className="grid gap-4 p-5 md:grid-cols-3">
+              <div className="grid grid-cols-1 gap-4 p-5 md:grid-cols-3">
                 {reviews.filter((r) => r.creatorId === c.id).slice(0, 3).map((r) => (
                   <div key={r.id} className="rounded-xl bg-canvas p-4">
                     <div className="flex items-center justify-between"><p className="text-[13px] font-semibold text-ink">{r.author}</p><Badge tone="amber">{r.rating}★</Badge></div>
@@ -189,5 +186,6 @@ function CreatorDashboard() {
         {tab === "earnings" && <CreatorEarnings creatorId={c.id} />}
       </div>
     </Container>
+    </>
   );
 }

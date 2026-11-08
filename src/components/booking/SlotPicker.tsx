@@ -39,12 +39,12 @@ export function SlotPicker({
   return (
     <div>
       <div className="flex items-center justify-between">
-        <p className="text-sm font-semibold text-ink">
+        <p className="font-display text-[15px] font-bold text-ink">
           {selected ? selected.d.toLocaleDateString("en-IN", { month: "long", year: "numeric" }) : "Choose a date"}
         </p>
         <div className="flex gap-1">
-          <button type="button" onClick={() => scroll(-1)} className="rounded-lg border border-line p-1.5 text-ink-muted hover:bg-canvas" aria-label="Earlier dates"><ChevronLeft className="h-4 w-4" /></button>
-          <button type="button" onClick={() => scroll(1)} className="rounded-lg border border-line p-1.5 text-ink-muted hover:bg-canvas" aria-label="Later dates"><ChevronRight className="h-4 w-4" /></button>
+          <button type="button" onClick={() => scroll(-1)} className="rounded-xl border border-line p-2 text-ink-muted transition hover:bg-canvas" aria-label="Earlier dates"><ChevronLeft className="h-4 w-4" /></button>
+          <button type="button" onClick={() => scroll(1)} className="rounded-xl border border-line p-2 text-ink-muted transition hover:bg-canvas" aria-label="Later dates"><ChevronRight className="h-4 w-4" /></button>
         </div>
       </div>
       <div ref={scroller} className="mt-3 flex gap-2 overflow-x-auto pb-1 scrollbar-none">
@@ -58,8 +58,8 @@ export function SlotPicker({
               disabled={disabled}
               onClick={() => onChange(iso, null)}
               className={cn(
-                "flex w-[68px] shrink-0 flex-col items-center rounded-xl border py-2.5 transition",
-                active ? "border-brand-500 bg-brand-500 text-white shadow-sm" : disabled ? "cursor-not-allowed border-dashed border-line text-ink-subtle/60" : "border-line bg-white text-ink hover:border-brand-300",
+                "flex w-[70px] shrink-0 flex-col items-center rounded-2xl border py-3 transition-[background-color,border-color,transform] duration-fast active:scale-[0.97]",
+                active ? "border-navy bg-navy text-white shadow-lift" : disabled ? "cursor-not-allowed border-dashed border-line text-ink-subtle/60" : "border-line bg-white text-ink hover:border-brand-300",
               )}
               aria-pressed={active}
               aria-label={`${d.toDateString()}${disabled ? ", unavailable" : `, ${free.length} slots`}`}
@@ -86,8 +86,8 @@ export function SlotPicker({
                   disabled={taken}
                   onClick={() => onChange(selected.iso, t)}
                   className={cn(
-                    "h-11 rounded-lg border text-sm font-medium transition",
-                    active ? "border-brand-500 bg-brand-50 text-brand-700 ring-2 ring-brand-100" : taken ? "cursor-not-allowed border-line bg-canvas text-ink-subtle line-through" : "border-line bg-white text-ink hover:border-brand-300",
+                    "h-12 rounded-xl border text-sm font-semibold transition-[background-color,border-color,transform] duration-fast active:scale-[0.97]",
+                    active ? "border-brand-500 bg-brand-500 text-white shadow-glow" : taken ? "cursor-not-allowed border-line bg-canvas text-ink-subtle line-through" : "border-line bg-white text-ink hover:border-brand-300",
                   )}
                   aria-pressed={active}
                 >

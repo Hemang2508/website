@@ -7,7 +7,7 @@ import {
   ArrowLeft, CalendarClock, Clock, Copy, Globe2, IdCard, Link2, MapPin, Megaphone, MessageSquareText, Share2, Sparkles, Star, Timer, Users, Video,
 } from "lucide-react";
 import { useStore } from "@/lib/store";
-import { Avatar } from "@/components/ui/Avatar";
+import { Avatar, Portrait } from "@/components/ui/Avatar";
 import { Badge } from "@/components/ui/Badge";
 import { Button, ButtonLink } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
@@ -63,13 +63,13 @@ function Profile() {
 
   return (
     <>
-      <div className="h-36 border-b border-line sm:h-44" style={{ background: `linear-gradient(180deg, hsl(${c.avatarHue} 40% 96%), hsl(${c.avatarHue} 30% 92%))` }}>
+      <Portrait initials={c.initials} hue={c.avatarHue} photo={c.photo} monogram={false} className="h-44 sm:h-60">
         <Container className="pt-5">
-          <Link href="/explore" className="inline-flex items-center gap-1.5 rounded-lg bg-white/80 px-2.5 py-1.5 text-[13px] font-medium text-ink-muted backdrop-blur hover:text-ink">
+          <Link href="/explore" className="inline-flex items-center gap-1.5 rounded-xl bg-white/90 px-3 py-2 text-[13px] font-semibold text-ink shadow-sm backdrop-blur transition hover:bg-white">
             <ArrowLeft className="h-4 w-4" /> All creators
           </Link>
         </Container>
-      </div>
+      </Portrait>
 
       <Container className="pb-10">
         {viaCreatorLink && (
@@ -81,12 +81,12 @@ function Profile() {
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_360px]">
           <div className="min-w-0">
             {/* Header */}
-            <div className="-mt-14 flex flex-col gap-5 sm:flex-row sm:items-end">
+            <div className="relative z-10 -mt-14 flex flex-col gap-5 sm:flex-row sm:items-end">
               <Avatar initials={c.initials} hue={c.avatarHue} size="xl" verified={c.verified} ring photo={c.photo} />
               <div className="min-w-0 flex-1 pb-1">
                 <div className="flex flex-wrap items-center gap-2">
-                  <h1 className="text-2xl font-semibold tracking-tight text-ink sm:text-[28px]">{c.name}</h1>
-                  {c.verified && <Badge tone="brand">Verified</Badge>}
+                  <h1 className="font-display text-display-md text-ink">{c.name}</h1>
+                  {c.verified && <Badge tone="brand">Verified (demo)</Badge>}
                 </div>
                 <p className="mt-1 text-[15px] text-ink-muted">{c.headline}</p>
               </div>
@@ -154,7 +154,7 @@ function Profile() {
 
             {duos.some((d) => d.creatorIds.includes(c.id)) && (
               <Section title="Creator Duos" subtitle="Joint experiences with another creator">
-                <div className="grid gap-3 sm:grid-cols-2">
+                <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                   {duos.filter((d) => d.creatorIds.includes(c.id)).map((d) => {
                     const partner = creators.find((x) => x.id === d.creatorIds.find((id) => id !== c.id));
                     return (
@@ -184,7 +184,7 @@ function Profile() {
             </Section>
 
             <Section title={`Reviews (${c.reviewCount})`}>
-              <div className="grid gap-6 rounded-2xl border border-line bg-white p-5 sm:grid-cols-[180px_1fr]">
+              <div className="grid grid-cols-1 gap-6 rounded-2xl border border-line bg-white p-5 sm:grid-cols-[180px_1fr]">
                 <div>
                   <p className="text-4xl font-semibold tracking-tight text-ink">{c.rating.toFixed(1)}</p>
                   <Stars value={c.rating} size="md" className="mt-1" />

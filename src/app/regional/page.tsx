@@ -7,7 +7,8 @@ import { CalendarX2, Coffee, Handshake, MapPin, Presentation, ShieldCheck, Users
 import { useStore } from "@/lib/store";
 import { CITIES, cityInfo } from "@/lib/data/cities";
 import type { EventType } from "@/lib/types";
-import { Container, EmptyState } from "@/components/ui/Misc";
+import { Container, EmptyState, PageHero } from "@/components/ui/Misc";
+import { Reveal } from "@/components/ui/Reveal";
 import { Chip, Select, Toggle } from "@/components/ui/Field";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
@@ -46,30 +47,27 @@ function Regional() {
 
   return (
     <>
-      <section className="border-b border-line bg-white">
-        <Container className="py-10">
-          <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
-            <div>
-              <p className="flex items-center gap-1.5 text-[13px] font-medium text-brand-600"><MapPin className="h-4 w-4" />Regional Connect</p>
-              <h1 className="mt-2 text-2xl font-semibold tracking-tight text-ink sm:text-[32px]">Creators and experiences in {city}</h1>
-              <p className="mt-2 max-w-2xl text-[15px] text-ink-muted">Discover local creators, meetups, Coffee with Creators sessions, food walks, founder networking and workshops near you.</p>
-            </div>
-            <div className="w-full max-w-xs">
-              <label htmlFor="city" className="mb-1.5 block text-[13px] font-medium text-ink">Your city</label>
-              <Select id="city" value={city} onChange={(e) => { setCity(e.target.value); setCreatorCat("All"); }}>
-                {CITIES.map((c) => <option key={c.name} value={c.name}>{c.name}{c.pilot ? " · Pilot city" : ""}</option>)}
-              </Select>
-              <p className="mt-1.5 flex items-center gap-1 text-[11.5px] text-ink-subtle"><ShieldCheck className="h-3.5 w-3.5" />Chosen manually — we never request your device location.</p>
-            </div>
+      <PageHero
+        eyebrow={<><MapPin className="h-4 w-4" />Regional Connect</>}
+        title={<>Creators and experiences in <span className="text-gradient">{city}</span></>}
+        description="Discover local creators, meetups, Coffee with Creators sessions, food walks, founder networking and workshops near you."
+        actions={
+          <div className="w-full min-w-[260px] max-w-xs">
+            <label htmlFor="city" className="mb-1.5 block text-[13px] font-semibold text-white/80">Your city</label>
+            <Select id="city" value={city} onChange={(e) => { setCity(e.target.value); setCreatorCat("All"); }}>
+              {CITIES.map((c) => <option key={c.name} value={c.name}>{c.name}{c.pilot ? " · Pilot city" : ""}</option>)}
+            </Select>
+            <p className="mt-1.5 flex items-center gap-1 text-[11.5px] text-white/50"><ShieldCheck className="h-3.5 w-3.5" />Chosen manually — we never request your device location.</p>
           </div>
-          <div className="mt-6 flex flex-wrap items-center gap-2 text-[13px]">
-            {info.pilot ? <Badge tone="teal" dot>Pilot city</Badge> : <Badge tone="amber" dot>Launching soon</Badge>}
-            <span className="text-ink-muted">{info.state} · {info.region}</span>
-            <span className="text-ink-subtle">·</span>
-            <span className="text-ink-muted"><b className="text-ink">{cityCreators.length}</b> creators · <b className="text-ink">{cityEvents.length}</b> upcoming events · <b className="text-ink">{cityCommunities.length}</b> communities</span>
-          </div>
-        </Container>
-      </section>
+        }
+      >
+        <div className="flex flex-wrap items-center gap-2 text-[13px]">
+          {info.pilot ? <Badge tone="teal" dot>Pilot city</Badge> : <Badge tone="amber" dot>Launching soon</Badge>}
+          <span className="text-white/60">{info.state} · {info.region}</span>
+          <span className="text-white/30">·</span>
+          <span className="text-white/60"><b className="text-white">{cityCreators.length}</b> creators · <b className="text-white">{cityEvents.length}</b> upcoming events · <b className="text-white">{cityCommunities.length}</b> communities</span>
+        </div>
+      </PageHero>
 
       <Container className="py-10">
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
@@ -78,25 +76,25 @@ function Regional() {
             const active = type === t.id;
             return (
               <button key={t.id} onClick={() => setType(active ? "All" : t.id)} aria-pressed={active}
-                className={cn("rounded-2xl border bg-white p-4 text-left transition", active ? "border-brand-500 ring-4 ring-brand-100" : "border-line hover:border-[#D5D9E4]")}>
-                <t.icon className={cn("h-5 w-5", active ? "text-brand-600" : "text-ink-subtle")} />
-                <p className="mt-3 text-sm font-semibold text-ink">{t.label}</p>
-                <p className="mt-0.5 text-xs text-ink-muted">{t.desc}</p>
-                <p className="mt-2 text-[11px] font-medium text-ink-subtle">{n} upcoming</p>
+                className={cn("group rounded-2xl border p-4 text-left transition-[background-color,border-color,transform,box-shadow] duration-base ease-out hover:-translate-y-0.5", active ? "border-navy bg-navy text-white shadow-lift" : "border-line bg-white shadow-card hover:shadow-lift")}>
+                <span className={cn("flex h-10 w-10 items-center justify-center rounded-xl transition-colors", active ? "bg-white/10 text-teal-400" : "bg-brand-50 text-brand-600")}><t.icon className="h-5 w-5" /></span>
+                <p className={cn("mt-3 text-sm font-semibold", active ? "text-white" : "text-ink")}>{t.label}</p>
+                <p className={cn("mt-0.5 text-xs", active ? "text-white/60" : "text-ink-muted")}>{t.desc}</p>
+                <p className={cn("mt-2 text-[11px] font-semibold", active ? "text-teal-400" : "text-ink-subtle")}>{n} upcoming</p>
               </button>
             );
           })}
         </div>
 
         <div id="events" className="mt-10 scroll-mt-24 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          <h2 className="text-lg font-semibold text-ink">Upcoming in {city}{type !== "All" && ` · ${type}`}</h2>
+          <h2 className="font-display text-xl font-bold tracking-[-0.015em] text-ink">Upcoming in {city}{type !== "All" && ` · ${type}`}</h2>
           <div className="flex items-center gap-4">
             <label className="flex items-center gap-2 text-[13px] font-medium text-ink">Free events only <Toggle checked={freeOnly} onChange={setFreeOnly} label="Free events only" /></label>
             {(type !== "All" || freeOnly) && <button onClick={() => { setType("All"); setFreeOnly(false); }} className="text-[13px] font-medium text-brand-600">Clear filters</button>}
           </div>
         </div>
         {shown.length ? (
-          <div className="mt-4 grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">{shown.map((e) => <EventCard key={e.id} event={e} />)}</div>
+          <div className="mt-4 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">{shown.map((e, i) => <Reveal key={e.id} delay={(i % 4) * 60} className="h-full"><EventCard event={e} /></Reveal>)}</div>
         ) : (
           <Card className="mt-4">
             <EmptyState
@@ -110,14 +108,14 @@ function Regional() {
 
         <div className="mt-14 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <h2 className="text-lg font-semibold text-ink">Creators based in {city}</h2>
+            <h2 className="font-display text-xl font-bold tracking-[-0.015em] text-ink">Creators based in {city}</h2>
             <p className="text-[13px] text-ink-muted">Book a session, or meet them at a local event.</p>
           </div>
           <Link href="/explore" className="text-[13px] font-medium text-brand-600">Explore all creators</Link>
         </div>
         {cityCreators.length > 0 && <div className="mt-4 flex flex-wrap gap-2">{cats.map((c) => <Chip key={c} active={creatorCat === c} onClick={() => setCreatorCat(c)}>{c === "All" ? "All categories" : c}</Chip>)}</div>}
         {shownCreators.length ? (
-          <div className="mt-5 grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">{shownCreators.map((c) => <CreatorCard key={c.id} creator={c} />)}</div>
+          <div className="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">{shownCreators.map((c, i) => <Reveal key={c.id} delay={(i % 4) * 60} className="h-full"><div className="h-full [&>div]:h-full"><CreatorCard creator={c} /></div></Reveal>)}</div>
         ) : (
           <Card className="mt-4"><EmptyState icon={<Users className="h-5 w-5" />} title={`No creators listed in ${city} yet`} body="Creators set their home city on their profile." /></Card>
         )}

@@ -8,7 +8,7 @@ import { pitchOverallStatus, useStore } from "@/lib/store";
 import { summarise, toCSV, toTransactions, weeklySeries, type TxType } from "@/lib/metrics";
 import { COMMISSION, pct } from "@/lib/pricing";
 import { Card, CardHeader } from "@/components/ui/Card";
-import { Container, PageHeader, Stat, Tabs } from "@/components/ui/Misc";
+import { Container, PageHero, Stat, Tabs } from "@/components/ui/Misc";
 import { Badge, SimulatedTag } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { Avatar } from "@/components/ui/Avatar";
@@ -55,11 +55,12 @@ function Admin() {
   const statusColors: Record<string, string> = { pending: "bg-amber-400", confirmed: "bg-brand-500", completed: "bg-teal-500", declined: "bg-red-400", cancelled: "bg-[#C9CEDA]" };
 
   return (
+    <>
+    <PageHero eyebrow="Admin console" title="Platform overview" description="Marketplace health, creator management and transaction oversight." actions={<SimulatedTag label="Simulated financials" />} />
     <Container className="py-10">
       <RoleNotice expected="admin" home="/admin" />
-      <PageHeader eyebrow="Admin console" title="Platform overview" description="Marketplace health, creator management and transaction oversight." actions={<SimulatedTag label="Simulated financials" />} />
 
-      <Tabs className="mt-8" value={tab} onChange={setTab} tabs={[
+      <Tabs value={tab} onChange={setTab} tabs={[
         { id: "overview", label: "Overview" },
         { id: "creators", label: "Creators", count: pendingCreators.length },
         { id: "transactions", label: "Transactions" },
@@ -278,7 +279,7 @@ function Admin() {
               </div>
             </Card>
 
-            <div className="grid gap-6 lg:grid-cols-[1.4fr_1fr]">
+            <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1.4fr_1fr]">
               <Card>
                 <CardHeader title="Regional events" description="Registrations include demo figures" />
                 <ul className="divide-y divide-line">
@@ -306,5 +307,6 @@ function Admin() {
         )}
       </div>
     </Container>
+    </>
   );
 }

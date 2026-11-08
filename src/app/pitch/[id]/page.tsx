@@ -96,7 +96,7 @@ function PitchDetail() {
           {averages.length > 0 && (
             <Card>
               <CardHeader title="Feedback summary" description={`Average across ${withFeedback.length} creator${withFeedback.length > 1 ? "s" : ""}`} action={<span className="text-2xl font-semibold text-ink">{(averages.reduce((s, a) => s + a.v, 0) / averages.length).toFixed(1)}<span className="text-sm text-ink-subtle">/5</span></span>} />
-              <div className="grid gap-3 p-5 sm:grid-cols-5">
+              <div className="grid grid-cols-1 gap-3 p-5 sm:grid-cols-5">
                 {averages.map((a) => (
                   <div key={a.k} className="rounded-xl bg-canvas p-3">
                     <p className="text-[11px] leading-tight text-ink-muted">{a.label}</p>

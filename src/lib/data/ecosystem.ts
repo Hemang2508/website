@@ -1,15 +1,15 @@
 import type { CollabApplication, Collaboration, Community, CreatorDuo, EventRegistration, RegionalEvent } from "../types";
-import { addDays, toISODate } from "../utils";
+import { addDays, seedClock, toISODate } from "../utils";
 
 /**
  * Ecosystem demo data (communities, regional events, creator duos, brand collaborations).
  * All brands, member counts, registrations and applicant numbers are illustrative sample data.
  */
 
-const d = (n: number) => toISODate(addDays(new Date(), n));
-const ago = (n: number) => addDays(new Date(), -n).toISOString();
+const d = (n: number) => toISODate(addDays(seedClock(), n));
+const ago = (n: number) => addDays(seedClock(), -n).toISOString();
 
-export const seedCommunities: Community[] = [
+export const seedCommunities = (): Community[] => [
   {
     id: "cm1", slug: "hyderabad-foodies", name: "Hyderabad Foodies", category: "Food", city: "Hyderabad", hue: 22, icon: "food",
     tagline: "Biryani debates, hidden gems and food walks across the city",
@@ -73,7 +73,7 @@ export const seedCommunities: Community[] = [
   },
 ];
 
-export const seedEvents: RegionalEvent[] = [
+export const seedEvents = (): RegionalEvent[] => [
   { id: "ev1", title: "Old City Biryani & Chai Food Walk", type: "Food walk", city: "Hyderabad", area: "Charminar, Old City", date: d(4), time: "18:30", durationMins: 150, price: 799, capacity: 25, baseRegistered: 18, creatorIds: ["c14"], communityId: "cm1", hue: 22,
     description: "Walk the lanes around Charminar with food creator Shreya Iyer — six stops covering Irani chai, kebabs, biryani and Hyderabadi desserts, with stories behind each kitchen.",
     agenda: ["Meet near Charminar, introductions", "Irani chai & Osmania biscuits", "Kebabs and biryani tasting", "Dessert stop and group photo"] },
@@ -109,7 +109,7 @@ export const seedEvents: RegionalEvent[] = [
     agenda: ["Welcome", "Panel: collaborations that work", "Speed networking"] },
 ];
 
-export const seedDuos: CreatorDuo[] = [
+export const seedDuos = (): CreatorDuo[] => [
   { id: "d1", slug: "hyderabad-on-a-plate", title: "Hyderabad on a Plate", pairing: "Food + Travel", creatorIds: ["c14", "c15"], format: "In person · Hyderabad", durationMins: 180, price: 5999, maxGuests: 4, hue: 22,
     description: "A private half-day food and heritage trail with a food creator and a travel creator — the stories, kitchens and corners of Hyderabad most visitors never see. Ideal for visiting friends, family or a small team outing.",
     includes: ["Curated 5-stop food and heritage route", "Tastings at each stop (up to 4 guests)", "Photography tips along the way", "Personalised list of places to explore later"],
@@ -128,7 +128,7 @@ export const seedDuos: CreatorDuo[] = [
     availability: { 2: ["20:00"], 4: ["20:00"], 6: ["15:00"] } },
 ];
 
-export const seedCollaborations: Collaboration[] = [
+export const seedCollaborations = (): Collaboration[] => [
   { id: "cb1", brand: "Kosha Naturals", brandHue: 140, ownedByDemoUser: true, title: "Botanical face oil launch — creator partners", category: "Beauty & Personal Care", campaignType: "Product launch", compensation: "Paid + product",
     summary: "Honest reviews and a 30-day routine series for our new 15 ml face oil.",
     description: "Kosha Naturals is launching a 15 ml travel-size kumkumadi face oil for first-time Ayurveda users. We're looking for skincare and lifestyle creators who can test it for 30 days and share an honest review with their audience.",
@@ -170,7 +170,7 @@ export const seedCollaborations: Collaboration[] = [
     requirements: ["Trekking or travel content"], deliverables: ["1 field review video"], deadline: d(-6), status: "closed", baseApplicants: 34, createdAt: ago(30) },
 ];
 
-export const seedApplications: CollabApplication[] = [
+export const seedApplications = (): CollabApplication[] => [
   { id: "ap1", collabId: "cb1", creatorId: "c3", status: "shortlisted", proposedFee: 38000, portfolioLink: "instagram.com/meera.everyday", createdAt: ago(5), updatedAt: ago(2),
     message: "I've been testing Ayurvedic oils for my audience for two years — a 30-day honest review is exactly how I'd want to do this." },
   { id: "ap2", collabId: "cb1", creatorId: "c11", status: "submitted", proposedFee: 30000, portfolioLink: "instagram.com/tanvistyles", createdAt: ago(3), updatedAt: ago(3),
@@ -189,10 +189,10 @@ export const seedApplications: CollabApplication[] = [
     message: "I could cover the product and fintech angle.", brandNote: "Thank you — we're prioritising creators with a student audience for this series." },
 ];
 
-export const seedMemberships: Record<string, string[]> = {
+export const seedMemberships = (): Record<string, string[]> => ({
   user: ["cm5", "cm1"],
-};
+});
 
-export const seedRegistrations: EventRegistration[] = [
+export const seedRegistrations = (): EventRegistration[] => [
   { id: "rg1", eventId: "ev3", viewer: "user", name: "Aarav Mehta", createdAt: ago(2) },
 ];

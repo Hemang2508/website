@@ -16,6 +16,7 @@ import { PageSkeleton } from "@/components/ui/Visual";
 import { SlotPicker } from "@/components/booking/SlotPicker";
 import { PaymentModal } from "@/components/booking/PaymentModal";
 import { FeeBreakdown } from "@/components/booking/FeeBreakdown";
+import { JourneySteps } from "@/components/booking/JourneySteps";
 import { formatDate, formatINR, formatTime, isEmail, isIndianPhone } from "@/lib/utils";
 
 export default function DuoBookPage() {
@@ -53,7 +54,8 @@ export default function DuoBookPage() {
   return (
     <Container className="py-8 sm:py-10">
       <Link href={`/duos/${duo.slug}`} className="inline-flex items-center gap-1.5 text-[13px] font-medium text-ink-muted hover:text-ink"><ArrowLeft className="h-4 w-4" />Back to {duo.title}</Link>
-      <h1 className="mt-3 text-2xl font-semibold tracking-tight text-ink">Request a Creator Duo booking</h1>
+      <h1 className="mt-3 font-display text-display-md text-ink">Request a Creator Duo booking</h1>
+      <div className="mt-6"><JourneySteps label="Duo booking progress" current={date && time ? 2 : 1} steps={["Duo", "Joint time slot", "Your details", "Payment", "Confirmation"]} /></div>
       <div className="mt-8 grid grid-cols-1 gap-8 lg:grid-cols-[1fr_380px]">
         <div className="min-w-0 space-y-6">
           <Card className="p-5 sm:p-6">
@@ -63,7 +65,7 @@ export default function DuoBookPage() {
           </Card>
           <Card className="p-5 sm:p-6">
             <h2 className="text-base font-semibold text-ink">2. Your details</h2>
-            <div className="mt-4 grid gap-4 sm:grid-cols-2">
+            <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
               <Field label="Full name" htmlFor="dn" required error={errors.name}><Input id="dn" value={form.name} onChange={set("name")} invalid={!!errors.name} /></Field>
               <Field label="Email" htmlFor="de" required error={errors.email}><Input id="de" type="email" value={form.email} onChange={set("email")} invalid={!!errors.email} /></Field>
               <Field label="Mobile number" htmlFor="dp" required error={errors.phone} className="sm:col-span-2"><Input id="dp" value={form.phone} onChange={set("phone")} invalid={!!errors.phone} /></Field>
@@ -71,7 +73,7 @@ export default function DuoBookPage() {
               <Field label="Notes for both creators" htmlFor="dno" hint={`Optional · up to ${duo.maxGuests} guest${duo.maxGuests > 1 ? "s" : ""}`} className="sm:col-span-2"><Textarea id="dno" value={form.notes} onChange={set("notes")} /></Field>
             </div>
             <label className="mt-5 flex items-start gap-2.5 text-[13px] text-ink-muted">
-              <input type="checkbox" checked={form.agree} onChange={set("agree")} className="mt-0.5 h-4 w-4 accent-[#6657CE]" />
+              <input type="checkbox" checked={form.agree} onChange={set("agree")} className="mt-0.5 h-4 w-4 accent-[#6558E8]" />
               <span>I understand either creator may confirm or decline this request, and declined requests are refunded in full (simulated).</span>
             </label>
             {errors.agree && <p className="mt-1.5 text-xs font-medium text-red-600">{errors.agree}</p>}

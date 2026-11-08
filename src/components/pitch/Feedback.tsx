@@ -52,7 +52,7 @@ export function FeedbackView({ f }: { f: PitchFeedback }) {
           </div>
         ))}
       </div>
-      <div className="grid gap-3 md:grid-cols-3">
+      <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
         <FeedbackBlock title="What works" body={f.strengths} />
         <FeedbackBlock title="What to improve" body={f.improvements} />
         <FeedbackBlock title="Audience fit" body={f.audienceFit} />
@@ -106,7 +106,7 @@ export function FeedbackFormModal({
                 <div className="flex gap-1.5" role="radiogroup" aria-label={SCORE_LABELS[k]}>
                   {[1, 2, 3, 4, 5].map((n) => (
                     <button key={n} type="button" role="radio" aria-checked={scores[k] === n} onClick={() => setScores((s) => ({ ...s, [k]: n }))}
-                      className={cn("h-9 w-9 rounded-lg border text-sm font-semibold transition", scores[k] === n ? "border-teal-500 bg-teal-500 text-white" : "border-line text-ink-muted hover:border-teal-300")}>
+                      className={cn("h-9 w-9 rounded-lg border text-sm font-semibold transition", scores[k] === n ? "border-teal-500 bg-teal-600 text-white" : "border-line text-ink-muted hover:border-teal-300")}>
                       {n}
                     </button>
                   ))}
@@ -121,7 +121,7 @@ export function FeedbackFormModal({
         <Field label="How well does it fit your audience?" required error={errors.audienceFit} htmlFor="fb-a"><Textarea id="fb-a" value={audienceFit} onChange={(e) => setAudienceFit(e.target.value)} invalid={!!errors.audienceFit} className="min-h-[72px]" /></Field>
         <div>
           <p className="mb-2 text-[13px] font-medium text-ink">Recommendation <span className="text-red-500">*</span></p>
-          <div className="grid gap-2 sm:grid-cols-3">
+          <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
             {(Object.keys(RECS) as PitchFeedback["recommendation"][]).map((k) => (
               <button key={k} type="button" onClick={() => setRec(k)} aria-pressed={recommendation === k}
                 className={cn("rounded-xl border p-3 text-left transition", recommendation === k ? "border-brand-500 bg-brand-50/50 ring-2 ring-brand-100" : "border-line hover:border-[#D5D9E4]")}>

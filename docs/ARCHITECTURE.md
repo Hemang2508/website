@@ -3,7 +3,7 @@
 ## Stack
 - **Next.js 14 (App Router) · React 18 · TypeScript · Tailwind CSS 3**
 - `lucide-react` icons, self-hosted Inter Variable (`@fontsource-variable/inter`), so there are no external font or CDN requests
-- Demo state: a typed React context store (`src/lib/store.tsx`) persisted to localStorage
+- Demo state: a typed React context store (`src/lib/store.tsx`) persisted to localStorage. The server renders the shell (navigation, footer and a skeleton); page content renders once the store has loaded (`components/layout/HydrationGate.tsx`), which avoids timezone/date hydration mismatches and flashes of seed data
 
 ## Folder structure
 ```

@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useMemo, useState } from "react";
 import { Briefcase, FlaskConical, Handshake, Inbox, Lightbulb, Plus, Sparkles } from "lucide-react";
 import { useStore } from "@/lib/store";
-import { Container, EmptyState, PageHeader, Tabs } from "@/components/ui/Misc";
+import { Container, EmptyState, PageHero, Tabs } from "@/components/ui/Misc";
 import { Chip, Select, Toggle } from "@/components/ui/Field";
 import { Badge } from "@/components/ui/Badge";
 import { ButtonLink } from "@/components/ui/Button";
@@ -36,15 +36,16 @@ export default function CollaboratePage() {
   const mineTab = role === "user" ? { id: "mine" as Tab, label: "My briefs", count: myBriefs.length } : role === "creator" ? { id: "mine" as Tab, label: "My applications", count: myApps.length } : null;
 
   return (
-    <Container className="py-10">
-      <PageHeader
+    <>
+    <PageHero
         eyebrow={<span className="inline-flex items-center gap-1.5"><Handshake className="h-4 w-4" />RTG Collaborate · Beta</span>}
         title="Brand collaborations"
         description="Brands post campaign briefs, creators apply with a proposal, and both sides track every application from submitted to accepted."
         actions={role === "user" ? <ButtonLink href="/collaborate/new"><Plus className="h-4 w-4" />Post a brief</ButtonLink> : role === "creator" ? <ButtonLink href="/creator?tab=collabs" variant="secondary">Track my applications</ButtonLink> : undefined}
       />
+    <Container className="py-10">
 
-      {mineTab && <Tabs className="mt-8" value={tab} onChange={setTab} tabs={[{ id: "all", label: "Opportunities", count: collaborations.filter((c) => c.status === "open").length }, mineTab]} />}
+      {mineTab && <Tabs className="mb-2" value={tab} onChange={setTab} tabs={[{ id: "all", label: "Opportunities", count: collaborations.filter((c) => c.status === "open").length }, mineTab]} />}
 
       {tab === "all" && (
         <>
@@ -57,7 +58,7 @@ export default function CollaboratePage() {
             </div>
           </div>
           {filtered.length ? (
-            <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">{filtered.map((c) => <CollabCard key={c.id} collab={c} />)}</div>
+            <div className="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">{filtered.map((c) => <CollabCard key={c.id} collab={c} />)}</div>
           ) : (
             <Card className="mt-6"><EmptyState icon={<Briefcase className="h-5 w-5" />} title="No collaborations match these filters" action={<button className="text-sm font-medium text-brand-600" onClick={() => { setCat("All"); setComp("All"); setCity("All"); setOpenOnly(false); }}>Show all briefs</button>} /></Card>
           )}
@@ -66,7 +67,7 @@ export default function CollaboratePage() {
 
       {tab === "mine" && role === "user" && (
         <div className="mt-6 space-y-6">
-          {myBriefs.length ? <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">{myBriefs.map((c) => <CollabCard key={c.id} collab={c} />)}</div>
+          {myBriefs.length ? <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">{myBriefs.map((c) => <CollabCard key={c.id} collab={c} />)}</div>
             : <Card><EmptyState icon={<Briefcase className="h-5 w-5" />} title="You haven't posted a brief yet" action={<ButtonLink href="/collaborate/new" size="sm">Post a brief</ButtonLink>} /></Card>}
           {leads.length > 0 && (
             <Card className="p-5">
@@ -107,10 +108,10 @@ export default function CollaboratePage() {
         </Card>
       )}
 
-      <div className="mt-12 grid gap-5 lg:grid-cols-[1.4fr_1fr]">
+      <div className="mt-12 grid grid-cols-1 gap-5 lg:grid-cols-[1.4fr_1fr]">
         <Card className="p-6">
           <p className="text-sm font-semibold text-ink">How RTG Collaborate works</p>
-          <ol className="mt-4 grid gap-4 sm:grid-cols-3">
+          <ol className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-3">
             {[["Brands post a brief", "Requirements, deliverables, budget and timeline in one place."], ["Creators apply", "A short proposal with fee and portfolio. Eligibility is shown upfront."], ["Track to acceptance", "Submitted → shortlisted → accepted, with notifications at each step."]].map(([t, d], i) => (
               <li key={t}><span className="flex h-7 w-7 items-center justify-center rounded-full bg-brand-50 text-xs font-semibold text-brand-700">{i + 1}</span><p className="mt-2 text-sm font-semibold text-ink">{t}</p><p className="mt-0.5 text-[13px] text-ink-muted">{d}</p></li>
             ))}
@@ -125,5 +126,6 @@ export default function CollaboratePage() {
         </div>
       </div>
     </Container>
+    </>
   );
 }

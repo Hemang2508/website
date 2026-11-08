@@ -1,11 +1,13 @@
 "use client";
 
 import Link from "next/link";
+import { cn } from "@/lib/utils";
+import { cardInteractive } from "@/components/ui/Card";
 import { useState } from "react";
 import { Info, UsersRound } from "lucide-react";
 import { useStore } from "@/lib/store";
 import type { Community } from "@/lib/types";
-import { Container, EmptyState, PageHeader } from "@/components/ui/Misc";
+import { Container, EmptyState, PageHero } from "@/components/ui/Misc";
 import { Chip } from "@/components/ui/Field";
 import { Badge } from "@/components/ui/Badge";
 import { Avatar } from "@/components/ui/Avatar";
@@ -23,10 +25,11 @@ export default function CommunityPage() {
   const joinedCount = hydrated ? communities.filter((c) => isMember(c.id)).length : 0;
 
   return (
+    <>
+    <PageHero eyebrow="RTG Community" title="Find your people" description="Join creator-hosted communities to learn, share recommendations and meet in person at regional events." actions={<ButtonLink href="/regional" variant="secondary">Browse regional events</ButtonLink>} />
     <Container className="py-10">
-      <PageHeader eyebrow="RTG Community" title="Find your people" description="Join creator-hosted communities to learn, share recommendations and meet in person at regional events." actions={<ButtonLink href="/regional" variant="secondary">Browse regional events</ButtonLink>} />
 
-      <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex flex-wrap gap-2">
           {CATS.map((c) => <Chip key={c} active={cat === c} onClick={() => setCat(c)}>{c === "All" ? "All communities" : c}</Chip>)}
         </div>
@@ -38,12 +41,12 @@ export default function CommunityPage() {
           <EmptyState icon={<UsersRound className="h-5 w-5" />} title={mine ? "You haven't joined any communities yet" : "No communities in this category"} body="Join a community to see its discussions and upcoming events." action={<button onClick={() => { setMine(false); setCat("All"); }} className="text-sm font-medium text-brand-600">Show all communities</button>} />
         </div>
       ) : (
-        <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {list.map((c) => {
             const hosts = c.hostCreatorIds.map((id) => creators.find((x) => x.id === id)).filter(Boolean);
             const upcoming = events.filter((e) => e.communityId === c.id).length;
             return (
-              <div key={c.id} className="group relative flex flex-col overflow-hidden rounded-2xl border border-line bg-white shadow-card transition hover:-translate-y-0.5 hover:shadow-lift">
+              <div key={c.id} className={cn("group relative flex flex-col overflow-hidden", cardInteractive)}>
                 <Visual hue={c.hue} icon={c.icon} className="h-32">
                   <div className="flex gap-2 p-3.5">
                     <Badge tone="neutral" className="bg-white">{c.category}</Badge>
@@ -74,5 +77,6 @@ export default function CommunityPage() {
 
       <p className="mt-8 flex items-center gap-2 text-xs text-ink-subtle"><Info className="h-3.5 w-3.5" />Member counts, discussions and posts are sample data for this demo. Membership is saved in this browser only.</p>
     </Container>
+    </>
   );
 }

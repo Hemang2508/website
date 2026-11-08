@@ -41,7 +41,7 @@ export function FeeCalculator() {
         </div>
         <label htmlFor="price" className="mt-5 block text-[13px] text-ink-muted">Session price</label>
         <p className="text-3xl font-semibold tracking-tight text-ink">{formatINR(price)}</p>
-        <input id="price" type="range" min={500} max={20000} step={100} value={price} onChange={(e) => setPrice(Number(e.target.value))} className="mt-3 w-full accent-[#6657CE]" />
+        <input id="price" type="range" min={500} max={20000} step={100} value={price} onChange={(e) => setPrice(Number(e.target.value))} className="mt-3 w-full accent-[#6558E8]" />
         <div className="mt-1 flex justify-between text-xs text-ink-subtle"><span>₹500</span><span>₹20,000</span></div>
         <div className="mt-6 overflow-hidden rounded-full bg-canvas">
           <div className="flex h-3">

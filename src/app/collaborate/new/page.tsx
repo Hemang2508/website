@@ -9,7 +9,7 @@ import { PITCH_CATEGORIES } from "@/lib/data/creators";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { Chip, Field, Input, Select, Textarea } from "@/components/ui/Field";
-import { Container, PageHeader } from "@/components/ui/Misc";
+import { Container, PageHero } from "@/components/ui/Misc";
 import { RoleNotice } from "@/components/dashboard/RoleNotice";
 import { addDays, toISODate } from "@/lib/utils";
 
@@ -77,11 +77,12 @@ export default function NewBriefPage() {
   };
 
   return (
+    <>
+    <PageHero eyebrow={<span className="inline-flex items-center gap-1.5"><Handshake className="h-4 w-4" />RTG Collaborate</span>} title="Post a collaboration brief" description="Describe your campaign — creators who fit will apply with a proposal." />
     <Container className="max-w-3xl py-10">
       <RoleNotice expected="user" home="/collaborate/new" />
-      <PageHeader eyebrow={<span className="inline-flex items-center gap-1.5"><Handshake className="h-4 w-4" />RTG Collaborate</span>} title="Post a collaboration brief" description="Describe your campaign — creators who fit will apply with a proposal." />
-      <Card className="mt-8 p-5 sm:p-6">
-        <div className="grid gap-4 sm:grid-cols-2">
+      <Card className="p-5 sm:p-6">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <Field label="Brand" required error={errors.brand} htmlFor="b-brand"><Input id="b-brand" value={f.brand} onChange={(e) => set("brand", e.target.value)} invalid={!!errors.brand} /></Field>
           <Field label="Category" required error={errors.category} htmlFor="b-cat"><Select id="b-cat" value={f.category} onChange={(e) => set("category", e.target.value)} invalid={!!errors.category}><option value="">Select a category</option>{PITCH_CATEGORIES.map((c) => <option key={c}>{c}</option>)}<option>Travel</option></Select></Field>
           <Field label="Campaign title" required error={errors.title} htmlFor="b-title" className="sm:col-span-2"><Input id="b-title" value={f.title} onChange={(e) => set("title", e.target.value)} invalid={!!errors.title} placeholder="e.g. Rose mist launch — creator partners" /></Field>
@@ -111,5 +112,6 @@ export default function NewBriefPage() {
         <div className="mt-5 flex justify-end gap-2"><Button variant="secondary" onClick={() => router.back()}>Cancel</Button><Button onClick={submit}>Publish brief</Button></div>
       </Card>
     </Container>
+    </>
   );
 }

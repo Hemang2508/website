@@ -59,3 +59,13 @@ export function timeAgo(iso: string) {
 
 export const isEmail = (s: string) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(s.trim());
 export const isIndianPhone = (s: string) => /^(\+91[\s-]?)?[6-9]\d{9}$/.test(s.replace(/\s/g, ""));
+
+/**
+ * Clock used to generate relative demo data. Anchored to the start of the current hour so a
+ * server render and the client hydration a moment later produce identical timestamps.
+ */
+export function seedClock() {
+  const d = new Date();
+  d.setMinutes(0, 0, 0);
+  return d;
+}

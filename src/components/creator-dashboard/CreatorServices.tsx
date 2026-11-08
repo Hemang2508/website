@@ -48,7 +48,7 @@ function ServiceRow({ creatorId, s }: { creatorId: string; s: Service }) {
         </div>
         <label className="flex items-center gap-2 text-[13px] text-ink-muted">Visible on profile <Toggle checked={s.active} onChange={(v) => { updateService(creatorId, s.id, { active: v }); toast({ title: v ? "Service is now visible" : "Service hidden", tone: "info" }); }} label="Visible on profile" /></label>
       </div>
-      <div className="mt-4 grid gap-4 sm:grid-cols-[1fr_140px_120px]">
+      <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-[1fr_140px_120px]">
         <Field label="Service name" error={errors.title}><Input value={draft.title} onChange={(e) => setDraft({ ...draft, title: e.target.value })} invalid={!!errors.title} /></Field>
         <Field label="Price (₹)" error={errors.price}><Input type="number" inputMode="numeric" min={MIN} max={MAX} step={100} value={draft.price} onChange={(e) => setDraft({ ...draft, price: e.target.value })} invalid={!!errors.price} /></Field>
         {s.type !== "pitch" ? (
@@ -100,7 +100,7 @@ export function CreatorServices({ creator }: { creator: Creator }) {
       {adding ? (
         <Card className="p-5">
           <p className="text-sm font-semibold text-ink">New service</p>
-          <div className="mt-4 grid gap-4 sm:grid-cols-2">
+          <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
             <Field label="Type">
               <Select value={n.type} onChange={(e) => setN({ ...n, type: e.target.value as ServiceType })}>
                 <option value="call">1:1 video call</option>
