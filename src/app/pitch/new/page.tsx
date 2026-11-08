@@ -9,7 +9,9 @@ import { COMMISSION, pct, splitAmount } from "@/lib/pricing";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { Chip, Field, Input, Select, Textarea } from "@/components/ui/Field";
-import { Container, PageHero } from "@/components/ui/Misc";
+import { Container } from "@/components/ui/Misc";
+import { SplitWords } from "@/components/creative/SplitWords";
+import { PitchSlide } from "@/components/pitch/PitchSlide";
 import { Badge, SimulatedTag } from "@/components/ui/Badge";
 import { Avatar } from "@/components/ui/Avatar";
 import { ImageUploader } from "@/components/pitch/ImageUploader";
@@ -89,7 +91,15 @@ function NewPitch() {
 
   return (
     <>
-    <PageHero eyebrow={<span className="inline-flex items-center gap-1.5"><PackageSearch className="h-4 w-4" />RTG Pitch</span>} title="Pitch your product to creators" description="Submit once, match with relevant creators and receive structured, comparable feedback." />
+    <section className="border-b border-line bg-white">
+      <Container className="max-w-5xl py-10 sm:py-14">
+        <p className="eyebrow flex items-center gap-1.5 text-brand-600"><PackageSearch className="h-4 w-4" />RTG Pitch · new deck</p>
+        <h1 className="mt-4 max-w-3xl font-display text-[clamp(2.4rem,6vw,4.75rem)] font-bold leading-[0.95] tracking-[-0.05em] text-ink">
+          <SplitWords items={["Pitch", "your", "product", "to", <em key="c" className="font-serif font-normal italic text-brand-600">creators.</em>]} label="Pitch your product to creators." />
+        </h1>
+        <p className="mt-4 max-w-xl text-[16px] text-ink-muted">Submit once, match with relevant creators and receive structured, comparable feedback. Your pitch builds itself as you type.</p>
+      </Container>
+    </section>
     <Container className="max-w-5xl py-10">
 
       {preCreator && (
@@ -217,7 +227,9 @@ function NewPitch() {
         </div>
 
         <aside>
-          <div className="sticky top-24 rounded-2xl border border-line bg-white p-5 shadow-card">
+          <div className="space-y-4 lg:sticky lg:top-24">
+          <PitchSlide name={form.productName} company={form.company} tagline={form.tagline} category={form.category} stage={form.stage} price={form.priceRange} image={form.images[0]} audience={form.targetAudience} goals={form.goals} slide={step + 1} total={4} className="hidden lg:block" />
+          <div className="rounded-2xl border border-line bg-white p-5 shadow-card">
             <p className="text-sm font-semibold text-ink">Pitch summary</p>
             <dl className="mt-4 space-y-2 text-[13px]">
               <div className="flex justify-between"><dt className="text-ink-muted">Creators selected</dt><dd className="font-medium text-ink">{selected.length}</dd></div>
@@ -228,6 +240,7 @@ function NewPitch() {
               <div className="mt-1.5 flex justify-between"><span className="flex items-center gap-1.5 text-ink-muted"><span className="h-2 w-2 rounded-full bg-brand-500" />Platform fee · {pct(COMMISSION.pitch)}</span><span className="font-medium text-ink">{formatINR(platformFee)}</span></div>
             </div>
             <p className="mt-3 text-[11px] leading-snug text-ink-subtle">Proposed pitch commission of {pct(COMMISSION.pitch)} — a business assumption, not a confirmed rate.</p>
+          </div>
           </div>
         </aside>
       </div>

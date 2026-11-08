@@ -1,10 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { Sparkles, Users } from "lucide-react";
+import { Plus, Sparkles, Users } from "lucide-react";
 import { useStore } from "@/lib/store";
 import type { CreatorDuo } from "@/lib/types";
-import { Container, EmptyState, PageHero } from "@/components/ui/Misc";
+import { Container, EmptyState } from "@/components/ui/Misc";
 import { Chip } from "@/components/ui/Field";
 import { Card } from "@/components/ui/Card";
 import { DuoCard } from "@/components/ecosystem/DuoCard";
@@ -19,7 +19,18 @@ export default function DuosPage() {
   const list = duos.filter((d) => (p === "All" || d.pairing === p) && (format === "All" || d.format === format));
   return (
     <>
-    <PageHero eyebrow={<span className="inline-flex items-center gap-1.5"><Sparkles className="h-4 w-4" />RTG Creator Duos</span>} title="Two creators. One experience." description="Joint sessions and experiences where two creators combine their expertise — booked in a single request." />
+    <section className="relative grid grid-cols-1 overflow-hidden border-b border-line md:grid-cols-2">
+      <div className="relative bg-brand-50 px-6 pb-10 pt-12 sm:px-10 md:py-20 md:pl-[max(2rem,calc((100vw-80rem)/2+2rem))]">
+        <p className="eyebrow flex items-center gap-1.5 text-brand-700"><Sparkles className="h-4 w-4" />RTG Creator Duos</p>
+        <p className="mt-4 font-display text-[clamp(2.6rem,6vw,5.25rem)] font-bold leading-[0.92] tracking-[-0.05em] text-ink animate-[meet-l_700ms_cubic-bezier(0.22,1,0.36,1)_both]" aria-hidden>Two<br />creators.</p>
+      </div>
+      <div className="relative bg-teal-50 px-6 pb-12 pt-10 sm:px-10 md:py-20 md:pr-[max(2rem,calc((100vw-80rem)/2+2rem))]">
+        <p className="font-display text-[clamp(2.6rem,6vw,5.25rem)] font-bold leading-[0.92] tracking-[-0.05em] text-ink animate-[meet-r_700ms_cubic-bezier(0.22,1,0.36,1)_both] md:mt-8" aria-hidden><em className="font-serif font-normal italic text-teal-700">One</em><br />experience.</p>
+        <p className="mt-6 max-w-sm text-[15px] leading-relaxed text-ink-muted">Joint sessions and experiences where two creators combine their expertise — booked in a single request.</p>
+      </div>
+      <h1 className="sr-only">Two creators. One experience.</h1>
+      <span className="absolute left-1/2 top-[80%] hidden h-16 w-16 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-ink text-white shadow-pop animate-scale-in [animation-delay:500ms] md:flex" aria-hidden><Plus className="h-7 w-7" /></span>
+    </section>
     <Container className="py-10">
       <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
         <div className="flex flex-wrap gap-2">{PAIRINGS.map((x) => <Chip key={x} active={p === x} onClick={() => setP(x)}>{x === "All" ? "All pairings" : x}</Chip>)}</div>

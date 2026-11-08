@@ -16,9 +16,9 @@ export default function PitchManagementPage() {
     const c = creators.find((x) => x.id === activeCreatorId);
     return (
       <>
-      <PageHero eyebrow="RTG Pitch" title="Pitch requests" description={`Product pitches sent to ${c?.name}. Accept or decline, then submit structured feedback.`} />
+      <PageHero tone="light" eyebrow="RTG Pitch" title={<>Pitch <em className="font-serif font-normal italic text-brand-600">requests</em></>} description={`Product pitches sent to ${c?.name}. Accept or decline, then submit structured feedback.`} />
       <Container className="py-10">
-        <div className="mt-8"><IncomingPitches creatorId={activeCreatorId} /></div>
+        <div><IncomingPitches creatorId={activeCreatorId} /></div>
       </Container>
       </>
     );
@@ -33,8 +33,9 @@ export default function PitchManagementPage() {
   return (
     <>
     <PageHero
+        tone="light"
         eyebrow="RTG Pitch"
-        title={role === "admin" ? "All product pitches" : "My product pitches"}
+        title={<>{role === "admin" ? "All product" : "My product"} <em className="font-serif font-normal italic text-brand-600">pitches</em></>}
         description="Track each creator's response and compare structured feedback."
         actions={role === "user" && <ButtonLink href="/pitch/new"><Plus className="h-4 w-4" />New pitch</ButtonLink>}
       />

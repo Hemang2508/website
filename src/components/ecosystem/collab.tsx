@@ -39,36 +39,50 @@ export function eligibility(c: Collaboration, creator: Creator) {
   return { followers, city, ok: followers && city };
 }
 
+export function daysLeft(c: Collaboration) {
+  const ms = new Date(c.deadline + "T23:59:59").getTime() - Date.now();
+  return Math.ceil(ms / 86400000);
+}
+
+/** Campaign brief "poster": brand monogram inside a lens, budget as the headline number, deadline bar. */
 export function CollabCard({ collab: c }: { collab: Collaboration }) {
   const { applications } = useStore();
   const count = c.baseApplicants + applications.filter((a) => a.collabId === c.id && !["withdrawn"].includes(a.status)).length;
   const [label, tone] = COLLAB_STATUS[c.status];
+  const left = daysLeft(c);
+  const span = Math.max(1, Math.round((new Date(c.deadline).getTime() - new Date(c.createdAt).getTime()) / 86400000));
+  const pctLeft = Math.max(0, Math.min(100, (left / span) * 100));
   return (
-    <Link href={`/collaborate/${c.id}`} className={cn("group flex h-full flex-col p-5", cardInteractive)}>
-      <div className="flex flex-wrap items-start justify-between gap-x-3 gap-y-2">
-        <div className="flex min-w-0 items-center gap-3">
-          <Visual hue={c.brandHue} icon="brand" size="sm" className="h-11 w-11 shrink-0 rounded-xl" />
-          <div className="min-w-0">
-            <p className="truncate text-[13px] font-semibold text-ink">{c.brand}</p>
-            <p className="text-xs text-ink-subtle">{c.category}</p>
-          </div>
-        </div>
+    <Link href={`/collaborate/${c.id}`} className={cn("group flex h-full flex-col overflow-hidden", cardInteractive)}>
+      <div className="relative flex items-start justify-between p-5 pb-0">
+        <span className="relative flex h-16 w-24 items-center" aria-hidden>
+          <span className="absolute left-0 h-16 w-16 rounded-full transition-transform duration-base ease-out group-hover:-translate-x-1" style={{ background: `hsl(${c.brandHue} 60% 86%)` }} />
+          <span className="absolute left-8 h-16 w-16 rounded-full mix-blend-multiply transition-transform duration-base ease-out group-hover:translate-x-1" style={{ background: `hsl(${(c.brandHue + 35) % 360} 60% 78%)` }} />
+          <span className="relative ml-[1.15rem] font-serif text-[42px] italic leading-none text-ink">{c.brand.slice(0, 1)}</span>
+        </span>
         <Badge tone={tone} dot>{label}</Badge>
       </div>
-      <p className="mt-4 font-semibold leading-snug text-ink group-hover:text-brand-600">{c.title}</p>
-      <p className="mt-1.5 line-clamp-2 text-[13px] text-ink-muted">{c.summary}</p>
-      <div className="mt-4 flex flex-wrap gap-1.5">
-        <Badge>{c.campaignType}</Badge>
-        <Badge tone="brand">{c.compensation}</Badge>
+      <div className="flex flex-1 flex-col p-5">
+        <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-ink-muted">{c.brand} · {c.campaignType}</p>
+        <p className="mt-1.5 font-display text-[19px] font-bold leading-snug tracking-[-0.02em] text-ink group-hover:text-brand-600">{c.title}</p>
+        <p className="mt-1.5 line-clamp-2 text-[13px] text-ink-muted">{c.summary}</p>
+        <div className="flex-1" />
+        <div className="mt-5 flex items-end justify-between gap-3 border-t border-line pt-4">
+          <div>
+            <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-ink-subtle">Budget · {c.compensation}</p>
+            <p className="font-display text-lg font-bold tracking-[-0.02em] text-ink">{budgetLabel(c)}</p>
+          </div>
+          <p className="text-right text-[12px] text-ink-muted"><Users className="mb-0.5 inline h-3.5 w-3.5" /> {compact(c.minFollowers)}+<br />{count} applied · {c.slots} slot{c.slots > 1 ? "s" : ""}</p>
+        </div>
+        <div className="mt-4">
+          <div className="flex items-center justify-between text-[11.5px] text-ink-muted">
+            <span className="flex items-center gap-1"><MapPin className="h-3.5 w-3.5" />{c.cities.join(", ")}</span>
+            <span className="flex items-center gap-1 font-semibold text-ink"><CalendarClock className="h-3.5 w-3.5" />{isPastDeadline(c) ? "Closed" : left <= 1 ? "Last day" : `${left} days left`}</span>
+          </div>
+          <div className="mt-1.5 h-1 overflow-hidden rounded-full bg-canvas" aria-hidden><div className="h-full rounded-full bg-ink transition-[width] duration-slow" style={{ width: `${isPastDeadline(c) ? 0 : pctLeft}%` }} /></div>
+          <p className="sr-only">Apply by {formatDate(c.deadline)}</p>
+        </div>
       </div>
-      <div className="flex-1" />
-      <div className="mt-4 grid grid-cols-2 gap-2 border-t border-line pt-4 text-xs text-ink-muted">
-        <span className="flex items-center gap-1.5"><MapPin className="h-3.5 w-3.5" />{c.cities.join(", ")}</span>
-        <span className="flex items-center gap-1.5"><Users className="h-3.5 w-3.5" />{compact(c.minFollowers)}+ followers</span>
-        <span className="flex items-center gap-1.5"><CalendarClock className="h-3.5 w-3.5" />{isPastDeadline(c) ? "Deadline passed" : `Apply by ${formatDate(c.deadline, { day: "numeric", month: "short" })}`}</span>
-        <span className="text-right font-semibold text-ink">{budgetLabel(c)}</span>
-      </div>
-      <p className="mt-2 text-[11px] text-ink-subtle">{count} applicants · {c.slots} creator slot{c.slots > 1 ? "s" : ""}</p>
     </Link>
   );
 }

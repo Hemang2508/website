@@ -39,7 +39,7 @@ export default function CollaboratePage() {
     <>
     <PageHero
         eyebrow={<span className="inline-flex items-center gap-1.5"><Handshake className="h-4 w-4" />RTG Collaborate · Beta</span>}
-        title="Brand collaborations"
+        title={<>Brand briefs, <em className="font-serif font-normal italic text-teal-400">organised</em>.</>}
         description="Brands post campaign briefs, creators apply with a proposal, and both sides track every application from submitted to accepted."
         actions={role === "user" ? <ButtonLink href="/collaborate/new"><Plus className="h-4 w-4" />Post a brief</ButtonLink> : role === "creator" ? <ButtonLink href="/creator?tab=collabs" variant="secondary">Track my applications</ButtonLink> : undefined}
       />
@@ -52,7 +52,7 @@ export default function CollaboratePage() {
           <div className="mt-6 flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
             <div className="flex flex-wrap gap-2">{cats.map((c) => <Chip key={c} active={cat === c} onClick={() => setCat(c)}>{c === "All" ? "All categories" : c}</Chip>)}</div>
             <div className="grid grid-cols-2 gap-2 sm:flex sm:items-center">
-              <Select value={comp} onChange={(e) => setComp(e.target.value)} aria-label="Compensation" className="sm:w-44"><option value="All">Any compensation</option><option>Paid</option><option>Paid + product</option><option>Product only</option></Select>
+              <Select value={comp} onChange={(e) => setComp(e.target.value)} aria-label="Compensation" className="sm:w-52"><option value="All">Any compensation</option><option>Paid</option><option>Paid + product</option><option>Product only</option></Select>
               <Select value={city} onChange={(e) => setCity(e.target.value)} aria-label="City" className="sm:w-40">{cities.map((c) => <option key={c} value={c}>{c === "All" ? "Any city" : c}</option>)}</Select>
               <label className="col-span-2 flex items-center gap-2 whitespace-nowrap text-[13px] font-medium text-ink">Open only <Toggle checked={openOnly} onChange={setOpenOnly} label="Open only" /></label>
             </div>

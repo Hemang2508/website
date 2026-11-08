@@ -77,12 +77,12 @@ function PitchDetail() {
       )}
 
       <div className="mt-6 flex flex-col gap-6 sm:flex-row sm:items-start">
-        <div className="flex h-24 w-24 shrink-0 items-center justify-center overflow-hidden rounded-2xl border border-line bg-white text-3xl font-semibold text-ink-muted">
+        <div className="flex h-28 w-28 shrink-0 items-center justify-center overflow-hidden rounded-3xl bg-ink text-4xl font-semibold text-white shadow-lift sm:h-36 sm:w-36">
           {p.images[0] ? <img src={p.images[0]} alt="" className="h-full w-full object-cover" /> : p.productName.slice(0, 1)}
         </div>
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-2">
-            <h1 className="text-2xl font-semibold tracking-tight text-ink">{p.productName}</h1>
+            <h1 className="font-display text-[clamp(2rem,4.5vw,3.5rem)] font-bold leading-[0.98] tracking-[-0.045em] text-ink">{p.productName}</h1>
             <Badge tone={status.tone} dot>{status.label}</Badge>
           </div>
           <p className="mt-1 text-[15px] text-ink-muted">{p.tagline}</p>

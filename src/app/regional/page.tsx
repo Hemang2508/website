@@ -7,7 +7,7 @@ import { CalendarX2, Coffee, Handshake, MapPin, Presentation, ShieldCheck, Users
 import { useStore } from "@/lib/store";
 import { CITIES, cityInfo } from "@/lib/data/cities";
 import type { EventType } from "@/lib/types";
-import { Container, EmptyState, PageHero } from "@/components/ui/Misc";
+import { Container, EmptyState } from "@/components/ui/Misc";
 import { Reveal } from "@/components/ui/Reveal";
 import { Chip, Select, Toggle } from "@/components/ui/Field";
 import { Badge } from "@/components/ui/Badge";
@@ -47,27 +47,36 @@ function Regional() {
 
   return (
     <>
-      <PageHero
-        eyebrow={<><MapPin className="h-4 w-4" />Regional Connect</>}
-        title={<>Creators and experiences in <span className="text-gradient">{city}</span></>}
-        description="Discover local creators, meetups, Coffee with Creators sessions, food walks, founder networking and workshops near you."
-        actions={
-          <div className="w-full min-w-[260px] max-w-xs">
-            <label htmlFor="city" className="mb-1.5 block text-[13px] font-semibold text-white/80">Your city</label>
-            <Select id="city" value={city} onChange={(e) => { setCity(e.target.value); setCreatorCat("All"); }}>
-              {CITIES.map((c) => <option key={c.name} value={c.name}>{c.name}{c.pilot ? " · Pilot city" : ""}</option>)}
-            </Select>
-            <p className="mt-1.5 flex items-center gap-1 text-[11.5px] text-white/50"><ShieldCheck className="h-3.5 w-3.5" />Chosen manually — we never request your device location.</p>
-          </div>
-        }
-      >
-        <div className="flex flex-wrap items-center gap-2 text-[13px]">
-          {info.pilot ? <Badge tone="teal" dot>Pilot city</Badge> : <Badge tone="amber" dot>Launching soon</Badge>}
-          <span className="text-white/60">{info.state} · {info.region}</span>
-          <span className="text-white/30">·</span>
-          <span className="text-white/60"><b className="text-white">{cityCreators.length}</b> creators · <b className="text-white">{cityEvents.length}</b> upcoming events · <b className="text-white">{cityCommunities.length}</b> communities</span>
+      <section className="relative overflow-hidden border-b border-line bg-canvas">
+        {/* concentric "ring road" lines — the city as a set of rings */}
+        <div className="pointer-events-none absolute -right-40 top-1/2 h-[46rem] w-[46rem] -translate-y-1/2" aria-hidden>
+          {[1, 0.78, 0.56, 0.34].map((k) => <span key={k} className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border border-dashed border-ink/15" style={{ width: `${k * 100}%`, height: `${k * 100}%` }} />)}
+          <span className="absolute left-[38%] top-[44%] h-24 w-24 rounded-full bg-brand-400/25" />
+          <span className="absolute left-[46%] top-[48%] h-24 w-24 rounded-full bg-teal-400/30" />
         </div>
-      </PageHero>
+        <Container className="relative py-12 sm:py-16">
+          <p className="eyebrow flex items-center gap-2 text-ink-muted"><MapPin className="h-4 w-4 text-teal-600" />Regional Connect</p>
+          <h1 className="mt-4 text-ink">
+            <span className="block text-[clamp(1.1rem,2vw,1.5rem)] font-medium text-ink-muted">Creators and experiences in</span>{" "}
+            <span key={city} className="block font-display text-[clamp(3.4rem,11vw,9.5rem)] font-bold leading-[0.9] tracking-[-0.055em] animate-fade-up">{city}<span className="text-teal-600">.</span></span>
+          </h1>
+          <div className="mt-8 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+            <div className="flex flex-wrap items-center gap-2 text-[13px]">
+              {info.pilot ? <Badge tone="teal" dot>Pilot city</Badge> : <Badge tone="amber" dot>Launching soon</Badge>}
+              <span className="text-ink-muted">{info.state} · {info.region}</span>
+              <span className="text-ink-subtle">·</span>
+              <span className="text-ink-muted"><b className="text-ink">{cityCreators.length}</b> creators · <b className="text-ink">{cityEvents.length}</b> upcoming events · <b className="text-ink">{cityCommunities.length}</b> communities</span>
+            </div>
+            <div className="w-full max-w-xs">
+              <label htmlFor="city" className="mb-1.5 block text-[13px] font-semibold text-ink">Your city</label>
+              <Select id="city" value={city} onChange={(e) => { setCity(e.target.value); setCreatorCat("All"); }}>
+                {CITIES.map((c) => <option key={c.name} value={c.name}>{c.name}{c.pilot ? " · Pilot city" : ""}</option>)}
+              </Select>
+              <p className="mt-1.5 flex items-center gap-1 text-[11.5px] text-ink-subtle"><ShieldCheck className="h-3.5 w-3.5" />Chosen manually — we never request your device location.</p>
+            </div>
+          </div>
+        </Container>
+      </section>
 
       <Container className="py-10">
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">

@@ -16,6 +16,8 @@ import { SlotPicker } from "@/components/booking/SlotPicker";
 import { PaymentModal } from "@/components/booking/PaymentModal";
 import { FeeBreakdown } from "@/components/booking/FeeBreakdown";
 import { JourneySteps } from "@/components/booking/JourneySteps";
+import { CreatorFigure } from "@/components/creative/CreatorFigure";
+import { Ticket } from "@/components/creative/Ticket";
 import { cn, formatDate, formatINR, formatTime, isEmail, isIndianPhone } from "@/lib/utils";
 
 const STEPS = ["Service & time", "Your details", "Payment"];
@@ -107,7 +109,10 @@ function Booking() {
       <Link href={`/creators/${c.slug}${source === "creator" ? "?ref=creator" : ""}`} className="inline-flex items-center gap-1.5 text-[13px] font-medium text-ink-muted hover:text-ink">
         <ArrowLeft className="h-4 w-4" /> Back to {c.name}
       </Link>
-      <h1 className="mt-3 font-display text-display-md text-ink">Book a session with {c.name.split(" ")[0]}</h1>
+      <div className="mt-5 flex items-center gap-4">
+        <span className="h-16 w-14 shrink-0 overflow-hidden rounded-t-full rounded-b-xl ring-1 ring-black/5"><CreatorFigure creator={c} label="" /></span>
+        <h1 className="font-display text-[clamp(1.9rem,4vw,3.2rem)] font-bold leading-[1] tracking-[-0.04em] text-ink">Your session with <em className="font-serif font-normal italic text-brand-600">{c.name.split(" ")[0]}</em></h1>
+      </div>
 
       {/* Journey: profile → service & time → details → simulated payment → confirmation */}
       <div className="mt-6"><JourneySteps label="Booking progress" current={step + 1} steps={["Creator", ...STEPS, "Confirmation"]} /></div>
@@ -202,23 +207,25 @@ function Booking() {
         {/* Summary */}
         <aside>
           <div className="sticky top-24 space-y-4">
-            <Card className="p-5">
+            <Ticket top={
               <div className="flex items-center gap-3">
-                <Avatar creator={c} size="md" verified={c.verified} />
+                <span className="h-14 w-12 shrink-0 overflow-hidden rounded-t-full rounded-b-lg"><CreatorFigure creator={c} label="" /></span>
                 <div className="min-w-0">
-                  <p className="font-semibold text-ink">{c.name}</p>
-                  <p className="truncate text-xs text-ink-muted">{c.headline}</p>
+                  <p className="font-mono text-[10.5px] uppercase tracking-[0.18em] text-ink-subtle">RTG Connect · session</p>
+                  <p className="font-display text-lg font-bold text-ink">{service.title}</p>
+                  <p className="truncate text-xs text-ink-muted">with {c.name} · {service.durationMins} min · video call</p>
                 </div>
               </div>
-              <div className="mt-4 space-y-2 border-t border-line pt-4 text-[13px] text-ink-muted">
-                <p className="flex items-center gap-2"><Video className="h-4 w-4" />{service.title} · {service.durationMins} min</p>
-                <p className="flex items-center gap-2"><Calendar className="h-4 w-4" />{date && time ? `${formatDate(date, { weekday: "short", day: "numeric", month: "short" })}, ${formatTime(time)}` : "Select a time"}</p>
-                {source === "creator" && <p className="flex items-center gap-2 text-teal-700"><Link2 className="h-4 w-4" />Booked via creator&apos;s personal link</p>}
+            }>
+              <div className="grid grid-cols-2 gap-3 text-[13px]">
+                <div><p className="font-mono text-[10.5px] uppercase tracking-[0.16em] text-ink-subtle">Date</p><p className="mt-0.5 font-semibold text-ink">{date ? formatDate(date, { weekday: "short", day: "numeric", month: "short" }) : "—"}</p></div>
+                <div><p className="font-mono text-[10.5px] uppercase tracking-[0.16em] text-ink-subtle">Time (IST)</p><p className="mt-0.5 font-semibold text-ink">{time ? formatTime(time) : "—"}</p></div>
               </div>
+              {source === "creator" && <p className="mt-3 flex items-center gap-2 text-[13px] text-teal-700"><Link2 className="h-4 w-4" />Booked via creator&apos;s personal link</p>}
               <div className="mt-4 border-t border-line pt-4">
                 <FeeBreakdown amount={service.price} rate={rate} platformFee={platformFee} creatorEarning={creatorEarning} label={source === "creator" ? "Creator-originated booking" : "Marketplace booking"} />
               </div>
-            </Card>
+            </Ticket>
           </div>
         </aside>
       </div>

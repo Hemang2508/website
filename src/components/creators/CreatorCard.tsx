@@ -41,7 +41,7 @@ export function CreatorCard({ creator: c, href }: { creator: Creator; href?: str
         </Link>
         <p className="mt-1 line-clamp-2 text-[13px] leading-snug text-ink-muted">{c.headline}</p>
         <div className="flex-1" />
-        <div className="mt-4 flex items-center justify-between gap-2 border-t border-line pt-3">
+        <div className="mt-4 flex flex-wrap items-center justify-between gap-x-2 gap-y-2 border-t border-line pt-3">
           <p className="flex items-center gap-1 whitespace-nowrap text-[12.5px] text-ink-muted"><MapPin className="h-3.5 w-3.5" />{c.location} · from <b className="font-display text-[15px] text-ink">{formatINR(minPrice(c))}</b></p>
           <Link
             href={`/creators/${c.slug}/passport`}

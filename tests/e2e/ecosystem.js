@@ -51,7 +51,7 @@ const BASE = process.env.BASE_URL || "http://localhost:3100";
   if (before === after) throw new Error("member count did not change");
   await page.screenshot({ path: SHOTS + "03-community.png", fullPage: true });
   await page.click("text=My communities");
-  if (await page.locator("text=Gaming Zone").count()) throw new Error("my communities filter failed");
+  if (await page.locator("section[aria-label='Community list'] >> text=Gaming Zone").count()) throw new Error("my communities filter failed");
   await page.goto(BASE + "/community/gaming-zone");
   await page.waitForSelector("text=Join Gaming Zone to read all discussions");
   await page.locator("button:has-text('Join community')").first().click();

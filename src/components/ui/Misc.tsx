@@ -98,17 +98,23 @@ export function Container({ className, children }: { className?: string; childre
  * Duos, Collaborate, Pitch, dashboards). Renders full-bleed; place it outside <Container>.
  */
 export function PageHero({
-  eyebrow, title, description, actions, children, className, compact,
-}: { eyebrow?: ReactNode; title: ReactNode; description?: ReactNode; actions?: ReactNode; children?: ReactNode; className?: string; compact?: boolean }) {
+  eyebrow, title, description, actions, children, className, compact, tone = "dark",
+}: { eyebrow?: ReactNode; title: ReactNode; description?: ReactNode; actions?: ReactNode; children?: ReactNode; className?: string; compact?: boolean; tone?: "dark" | "light" }) {
+  const light = tone === "light";
   return (
-    <section className={cn("surface-dark relative overflow-hidden text-white", className)}>
-      <div className="grid-faint pointer-events-none absolute inset-0" aria-hidden />
+    <section className={cn("relative overflow-hidden", light ? "border-b border-line bg-white text-ink" : "surface-dark text-white", className)}>
+      {light ? (
+        <>
+          <div className="pointer-events-none absolute -right-16 top-1/2 h-72 w-72 -translate-y-1/2 rounded-full border border-ink/10" aria-hidden />
+          <div className="pointer-events-none absolute right-24 top-1/2 h-72 w-72 -translate-y-1/2 rounded-full border border-ink/10" aria-hidden />
+        </>
+      ) : <div className="grid-faint pointer-events-none absolute inset-0" aria-hidden />}
       <div className={cn("relative mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8", compact ? "py-10 sm:py-12" : "py-12 sm:py-16")}>
         <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
           <div className="min-w-0 max-w-3xl animate-fade-up">
-            {eyebrow && <div className="eyebrow mb-3 flex items-center gap-2 text-teal-400">{eyebrow}</div>}
-            <h1 className="font-display text-display-lg text-white">{title}</h1>
-            {description && <p className="mt-4 max-w-2xl text-[16px] leading-relaxed text-white/70">{description}</p>}
+            {eyebrow && <div className={cn("eyebrow mb-3 flex items-center gap-2", light ? "text-brand-600" : "text-teal-400")}>{eyebrow}</div>}
+            <h1 className={cn("font-display text-display-lg", light ? "text-ink" : "text-white")}>{title}</h1>
+            {description && <p className={cn("mt-4 max-w-2xl text-[16px] leading-relaxed", light ? "text-ink-muted" : "text-white/70")}>{description}</p>}
           </div>
           {actions && <div className="flex shrink-0 flex-wrap gap-2 animate-fade-up [animation-delay:120ms]">{actions}</div>}
         </div>

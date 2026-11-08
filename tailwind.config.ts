@@ -79,6 +79,8 @@ const config: Config = {
         "page-in": { from: { opacity: "0", transform: "translateY(10px)" }, to: { opacity: "1", transform: "none" } },
         "draw": { from: { strokeDashoffset: "var(--len, 1000)" }, to: { strokeDashoffset: "0" } },
         "pin-drop": { "0%": { opacity: "0", transform: "translateY(-14px) scale(0.6)" }, "70%": { opacity: "1", transform: "translateY(2px) scale(1.05)" }, "100%": { opacity: "1", transform: "none" } },
+        "meet-l": { from: { transform: "translateX(-28px)", opacity: "0" }, to: { transform: "none" } },
+        "meet-r": { from: { transform: "translateX(28px)", opacity: "0" }, to: { transform: "none" } },
         "ring": { from: { opacity: "0.6", transform: "scale(0.6)" }, to: { opacity: "0", transform: "scale(2.4)" } },
       },
       animation: {

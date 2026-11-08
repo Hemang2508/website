@@ -12,6 +12,7 @@ import { Container } from "@/components/ui/Misc";
 import { SimulatedTag } from "@/components/ui/Badge";
 import { BookingStatusBadge } from "@/components/ui/StatusBadge";
 import { FeeBreakdown } from "@/components/booking/FeeBreakdown";
+import { MeetingMark } from "@/components/creative/Ticket";
 import { cn, formatDate, formatTime } from "@/lib/utils";
 import type { Booking } from "@/lib/types";
 
@@ -61,9 +62,9 @@ function BookingDetail() {
   return (
     <Container className="max-w-5xl py-10">
       {isNew && (
-        <div className="mb-8 flex flex-col items-center rounded-2xl border border-line bg-white px-6 py-10 text-center shadow-card">
-          <span className="flex h-14 w-14 items-center justify-center rounded-full bg-teal-50"><CheckCircle2 className="h-8 w-8 text-teal-500" /></span>
-          <h1 className="mt-4 text-2xl font-semibold tracking-tight text-ink">Booking request sent</h1>
+        <div className="mb-8 flex flex-col items-center rounded-[2rem] bg-white px-6 py-12 text-center shadow-lift ring-1 ring-black/5">
+          <MeetingMark />
+          <h1 className="mt-6 font-display text-[clamp(2rem,4vw,3rem)] font-bold leading-none tracking-[-0.04em] text-ink">Booking request <em className="font-serif font-normal italic text-brand-600">sent</em></h1>
           <p className="mt-2 max-w-md text-ink-muted">Your simulated payment was successful. {partner ? `${c.name.split(" ")[0]} & ${partner.name.split(" ")[0]}` : c.name.split(" ")[0]} will confirm your session shortly — we&apos;ll notify you on your dashboard.</p>
           <div className="mt-6 flex flex-col gap-2 sm:flex-row">
             <ButtonLink href="/dashboard">Go to my dashboard <ArrowRight className="h-4 w-4" /></ButtonLink>

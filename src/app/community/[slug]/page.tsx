@@ -29,7 +29,7 @@ export default function CommunityDetailPage() {
 
   return (
     <>
-      <Visual hue={c.hue} icon={c.icon} size="lg" tone="dark" className="h-48 sm:h-64">
+      <Visual hue={c.hue} icon={c.icon} size="lg" className="h-48 sm:h-64">
         <Container className="pt-5">
           <Link href="/community" className="inline-flex items-center gap-1.5 rounded-xl bg-white/90 px-3 py-2 text-[13px] font-semibold text-ink shadow-sm backdrop-blur transition hover:bg-white"><ArrowLeft className="h-4 w-4" />All communities</Link>
         </Container>

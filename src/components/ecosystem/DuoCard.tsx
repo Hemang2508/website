@@ -4,7 +4,7 @@ import Link from "next/link";
 import { ArrowRight, Clock, Globe2, MapPin, Plus, Users } from "lucide-react";
 import { useStore } from "@/lib/store";
 import type { CreatorDuo } from "@/lib/types";
-import { Avatar, Portrait } from "@/components/ui/Avatar";
+import { Avatar } from "@/components/ui/Avatar";
 import { Badge } from "@/components/ui/Badge";
 import { cardInteractive } from "@/components/ui/Card";
 import { cn, formatINR } from "@/lib/utils";
@@ -17,8 +17,11 @@ export function DuoCard({ duo }: { duo: CreatorDuo }) {
   return (
     <Link href={`/duos/${duo.slug}`} className={cn("group flex h-full flex-col overflow-hidden", cardInteractive)}>
       <div className="relative grid h-28 grid-cols-2">
-        <Portrait initials={a.initials} hue={a.avatarHue} photo={a.photo} monogram={false} />
-        <Portrait initials={b.initials} hue={b.avatarHue} photo={b.photo} monogram={false} />
+        {[a, b].map((x, i) => (
+          <div key={x.id} className="relative overflow-hidden transition-transform duration-base ease-out" style={{ background: `hsl(${x.appearance?.backdrop ?? x.avatarHue} 55% 86%)` }}>
+            <span className={`absolute top-1/2 h-24 w-24 -translate-y-1/2 rounded-full mix-blend-multiply transition-transform duration-slow ease-out ${i === 0 ? "-right-10 group-hover:-translate-x-2" : "-left-10 group-hover:translate-x-2"}`} style={{ background: `hsl(${((x.appearance?.backdrop ?? x.avatarHue) + 40) % 360} 70% 70%)`, opacity: 0.55 }} />
+          </div>
+        ))}
         <div className="absolute inset-x-0 -bottom-7 flex items-center justify-center">
           <Avatar creator={a} size="lg" ring />
           <span className="z-10 -mx-2 flex h-7 w-7 items-center justify-center rounded-full bg-navy text-white ring-4 ring-white"><Plus className="h-3.5 w-3.5" /></span>

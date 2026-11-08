@@ -6,7 +6,8 @@ import { ArrowLeft, CalendarClock, Check, Clock, Globe2, MapPin, Plus, Star, Use
 import { useStore } from "@/lib/store";
 import { nextAvailable, WEEKDAYS } from "@/lib/availability";
 import { bookingRate, pct, splitAmount } from "@/lib/pricing";
-import { Avatar, Portrait } from "@/components/ui/Avatar";
+import { Avatar } from "@/components/ui/Avatar";
+import { CreatorFigure } from "@/components/creative/CreatorFigure";
 import { Badge } from "@/components/ui/Badge";
 import { ButtonLink } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
@@ -48,7 +49,7 @@ export default function DuoPage() {
           <div className="relative grid grid-cols-2 gap-3 animate-fade-up [animation-delay:120ms]">
             {pair.map((c) => (
               <div key={c.id} className="overflow-hidden rounded-3xl border border-white/10 bg-white/[0.04]">
-                <Portrait initials={c.initials} hue={c.avatarHue} photo={c.photo} className="aspect-[4/5]" />
+                <div className="aspect-[4/5]"><CreatorFigure creator={c} framed /></div>
                 <div className="p-3"><p className="truncate text-sm font-semibold text-white">{c.name}</p><p className="truncate text-xs text-white/55">{c.category}</p></div>
               </div>
             ))}

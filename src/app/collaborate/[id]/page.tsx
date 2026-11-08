@@ -62,7 +62,11 @@ export default function CollabDetailPage() {
       <Link href="/collaborate" className="inline-flex items-center gap-1.5 text-[13px] font-medium text-ink-muted hover:text-ink"><ArrowLeft className="h-4 w-4" />All collaborations</Link>
 
       <div className="mt-4 overflow-hidden rounded-2xl border border-line bg-white shadow-card">
-        <Visual hue={c.brandHue} icon="brand" tone="dark" className="h-28" />
+        <div className="relative h-32 overflow-hidden bg-ink" aria-hidden>
+          <span className="absolute -left-6 top-1/2 h-48 w-48 -translate-y-1/2 rounded-full opacity-90" style={{ background: `hsl(${c.brandHue} 55% 55%)` }} />
+          <span className="absolute left-24 top-1/2 h-48 w-48 -translate-y-1/2 rounded-full opacity-80 mix-blend-screen" style={{ background: `hsl(${(c.brandHue + 35) % 360} 55% 45%)` }} />
+          <span className="absolute bottom-3 right-6 max-w-[80%] truncate font-serif text-[clamp(2.25rem,7vw,4.5rem)] italic leading-none text-white/90">{c.brand}</span>
+        </div>
         <div className="p-5 sm:p-6">
           <div className="flex flex-wrap items-center gap-2"><Badge tone={statusTone} dot>{statusLabel}</Badge><Badge>{c.campaignType}</Badge><Badge tone="brand">{c.compensation}</Badge>{c.ownedByDemoUser && <Badge tone="teal">Your brief</Badge>}</div>
           <h1 className="mt-3 font-display text-display-md text-ink">{c.title}</h1>
@@ -79,16 +83,16 @@ export default function CollabDetailPage() {
       <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-[1fr_380px]">
         <div className="min-w-0 space-y-6">
           <Card className="p-5">
-            <h2 className="text-[15px] font-semibold text-ink">About the campaign</h2>
+            <h2 className="text-[15px] font-semibold text-ink"><span className="mr-2 font-mono text-[12px] text-ink-subtle">01</span>About the campaign</h2>
             <p className="mt-2 text-[14px] leading-relaxed text-ink-muted">{c.description}</p>
           </Card>
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
             <Card className="p-5">
-              <h2 className="text-[15px] font-semibold text-ink">Requirements</h2>
+              <h2 className="text-[15px] font-semibold text-ink"><span className="mr-2 font-mono text-[12px] text-ink-subtle">02</span>Requirements</h2>
               <ul className="mt-3 space-y-2">{c.requirements.map((r) => <li key={r} className="flex items-start gap-2 text-[13.5px] text-ink"><Check className="mt-0.5 h-4 w-4 shrink-0 text-teal-500" />{r}</li>)}</ul>
             </Card>
             <Card className="p-5">
-              <h2 className="text-[15px] font-semibold text-ink">Deliverables</h2>
+              <h2 className="text-[15px] font-semibold text-ink"><span className="mr-2 font-mono text-[12px] text-ink-subtle">03</span>Deliverables</h2>
               <ul className="mt-3 space-y-2">{c.deliverables.map((r, i) => <li key={r} className="flex items-start gap-2 text-[13.5px] text-ink"><span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-canvas text-[11px] font-semibold text-ink-muted">{i + 1}</span>{r}</li>)}</ul>
             </Card>
           </div>

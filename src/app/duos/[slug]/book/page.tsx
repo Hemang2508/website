@@ -17,6 +17,8 @@ import { SlotPicker } from "@/components/booking/SlotPicker";
 import { PaymentModal } from "@/components/booking/PaymentModal";
 import { FeeBreakdown } from "@/components/booking/FeeBreakdown";
 import { JourneySteps } from "@/components/booking/JourneySteps";
+import { CreatorFigure } from "@/components/creative/CreatorFigure";
+import { Ticket } from "@/components/creative/Ticket";
 import { formatDate, formatINR, formatTime, isEmail, isIndianPhone } from "@/lib/utils";
 
 export default function DuoBookPage() {
@@ -54,7 +56,7 @@ export default function DuoBookPage() {
   return (
     <Container className="py-8 sm:py-10">
       <Link href={`/duos/${duo.slug}`} className="inline-flex items-center gap-1.5 text-[13px] font-medium text-ink-muted hover:text-ink"><ArrowLeft className="h-4 w-4" />Back to {duo.title}</Link>
-      <h1 className="mt-3 font-display text-display-md text-ink">Request a Creator Duo booking</h1>
+      <h1 className="mt-3 font-display text-[clamp(1.9rem,4vw,3.2rem)] font-bold leading-none tracking-[-0.04em] text-ink">Two creators, <em className="font-serif font-normal italic text-brand-600">one</em> request</h1>
       <div className="mt-6"><JourneySteps label="Duo booking progress" current={date && time ? 2 : 1} steps={["Duo", "Joint time slot", "Your details", "Payment", "Confirmation"]} /></div>
       <div className="mt-8 grid grid-cols-1 gap-8 lg:grid-cols-[1fr_380px]">
         <div className="min-w-0 space-y-6">
@@ -83,20 +85,27 @@ export default function DuoBookPage() {
           </div>
         </div>
         <aside>
-          <Card className="sticky top-24 p-5">
-            <div className="flex items-center gap-3">
-              <div className="flex"><Avatar creator={a} size="md" ring /><Avatar creator={b} size="md" ring className="-ml-3" /></div>
-              <div className="min-w-0"><p className="font-semibold text-ink">{duo.title}</p><p className="truncate text-xs text-ink-muted">{a.name} & {b.name}</p></div>
-            </div>
-            <div className="mt-4 space-y-2 border-t border-line pt-4 text-[13px] text-ink-muted">
-              <p className="flex items-center gap-2"><Users className="h-4 w-4" />{duo.format} · {duo.durationMins} min</p>
-              <p className="flex items-center gap-2"><Calendar className="h-4 w-4" />{date && time ? `${formatDate(date, { weekday: "short", day: "numeric", month: "short" })}, ${formatTime(time)}` : "Select a time"}</p>
-            </div>
-            <div className="mt-4 border-t border-line pt-4">
-              <FeeBreakdown amount={duo.price} rate={rate} platformFee={platformFee} creatorEarning={creatorEarning} label="Creator Duo booking · creators split earnings 50/50" />
-            </div>
-            <p className="mt-3 flex items-center gap-2 text-[11px] text-ink-subtle"><SimulatedTag />No real payment is taken</p>
-          </Card>
+          <div className="sticky top-24">
+            <Ticket top={
+              <div>
+                <div className="flex justify-center -space-x-3">
+                  {[a, b].map((x) => <span key={x.id} className="h-20 w-16 overflow-hidden rounded-t-full rounded-b-xl ring-4 ring-white"><CreatorFigure creator={x} label="" /></span>)}
+                </div>
+                <p className="mt-3 text-center font-mono text-[10.5px] uppercase tracking-[0.18em] text-ink-subtle">Creator Duo · {duo.pairing}</p>
+                <p className="text-center font-display text-lg font-bold text-ink">{duo.title}</p>
+                <p className="text-center text-xs text-ink-muted">{a.name} & {b.name}</p>
+              </div>
+            }>
+              <div className="space-y-2 text-[13px] text-ink-muted">
+                <p className="flex items-center gap-2"><Users className="h-4 w-4" />{duo.format} · {duo.durationMins} min</p>
+                <p className="flex items-center gap-2"><Calendar className="h-4 w-4" />{date && time ? `${formatDate(date, { weekday: "short", day: "numeric", month: "short" })}, ${formatTime(time)}` : "Select a time"}</p>
+              </div>
+              <div className="mt-4 border-t border-line pt-4">
+                <FeeBreakdown amount={duo.price} rate={rate} platformFee={platformFee} creatorEarning={creatorEarning} label="Creator Duo booking · creators split earnings 50/50" />
+              </div>
+              <p className="mt-3 flex items-center gap-2 text-[11px] text-ink-subtle"><SimulatedTag />No real payment is taken</p>
+            </Ticket>
+          </div>
         </aside>
       </div>
       <PaymentModal open={payOpen} onClose={() => setPayOpen(false)} amount={duo.price} description={`${duo.title} · ${a.name} & ${b.name}`}
