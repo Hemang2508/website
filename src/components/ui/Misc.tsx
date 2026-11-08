@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 export function Stars({ value, size = "sm", className }: { value: number; size?: "sm" | "md"; className?: string }) {
   const s = size === "md" ? "h-4 w-4" : "h-3.5 w-3.5";
   return (
-    <span className={cn("inline-flex items-center gap-0.5", className)} aria-label={`${value} out of 5`}>
+    <span className={cn("inline-flex items-center gap-0.5", className)} role="img" aria-label={`${value} out of 5`}>
       {[1, 2, 3, 4, 5].map((i) => (
         <Star key={i} className={cn(s, i <= Math.round(value) ? "fill-amber-400 text-amber-400" : "fill-line text-line")} />
       ))}
@@ -37,14 +37,15 @@ export function EmptyState({ icon, title, body, action }: { icon: ReactNode; tit
 }
 
 export function Stat({ label, value, sub, icon, accent = "brand" }: { label: string; value: ReactNode; sub?: ReactNode; icon?: ReactNode; accent?: "brand" | "teal" | "navy" | "amber" }) {
-  const accents = { brand: "bg-brand-50 text-brand-600", teal: "bg-teal-50 text-teal-700", navy: "bg-navy text-white", amber: "bg-amber-50 text-amber-600" };
+  const accents = { brand: "bg-brand-500", teal: "bg-teal-500", navy: "bg-ink", amber: "bg-amber-400" };
   return (
-    <div className="group rounded-2xl border border-line bg-white p-5 shadow-card transition-shadow duration-base hover:shadow-lift">
+    <div className="group relative overflow-hidden rounded-2xl border border-line bg-white p-5">
+      <span className={cn("absolute left-0 top-5 h-6 w-1 rounded-r-full", accents[accent])} aria-hidden />
       <div className="flex items-center justify-between gap-3">
-        <p className="text-[13px] font-medium text-ink-muted">{label}</p>
-        {icon && <span className={cn("flex h-9 w-9 items-center justify-center rounded-xl", accents[accent])}>{icon}</span>}
+        <p className="text-[12.5px] font-medium uppercase tracking-[0.08em] text-ink-muted">{label}</p>
+        {icon && <span className="text-ink-subtle">{icon}</span>}
       </div>
-      <p className="mt-3 font-display text-[26px] font-bold leading-none tracking-[-0.02em] text-ink">{value}</p>
+      <p className="mt-4 font-display text-[30px] font-bold leading-none tracking-[-0.03em] text-ink">{value}</p>
       {sub && <p className="mt-2 text-xs text-ink-subtle">{sub}</p>}
     </div>
   );

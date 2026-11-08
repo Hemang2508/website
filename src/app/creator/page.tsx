@@ -62,14 +62,15 @@ function CreatorDashboard() {
   return (
     <>
     <PageHero
+      tone="light"
       compact
       eyebrow="Creator dashboard"
-      title={<span className="flex items-center gap-4"><Avatar creator={c} size="lg" verified={c.verified} photo={c.photo} /><span>Welcome back, {c.name.split(" ")[0]}</span></span>}
+      title={<span className="flex items-center gap-4"><Avatar creator={c} size="lg" verified={c.verified} /><span>Welcome back, <em className="font-serif font-normal italic text-brand-600">{c.name.split(" ")[0]}</em></span></span>}
       description={c.headline}
       actions={<>
-        <ButtonLink href={`/creators/${c.slug}/passport`} variant="light" size="sm"><IdCard className="h-4 w-4" />My Creator Passport</ButtonLink>
-        <Button variant="outline" size="sm" className="border-white/25 text-white hover:border-white/60 hover:bg-white/[0.06]" onClick={copyLink}><Copy className="h-4 w-4" />Copy booking link</Button>
-        <ButtonLink href={`/creators/${c.slug}`} variant="outline" size="sm" className="border-white/25 text-white hover:border-white/60 hover:bg-white/[0.06]"><ExternalLink className="h-4 w-4" />Public profile</ButtonLink>
+        <ButtonLink href={`/creators/${c.slug}/passport`} variant="dark" size="sm"><IdCard className="h-4 w-4" />My Creator Passport</ButtonLink>
+        <Button variant="secondary" size="sm" onClick={copyLink}><Copy className="h-4 w-4" />Copy booking link</Button>
+        <ButtonLink href={`/creators/${c.slug}`} variant="secondary" size="sm"><ExternalLink className="h-4 w-4" />Public profile</ButtonLink>
       </>}
     />
     <Container className="py-10">
@@ -127,7 +128,7 @@ function CreatorDashboard() {
                     const p = pitches.find((x) => x.id === r.pitchId);
                     return (
                       <li key={r.id}><button onClick={() => setTab("pitches")} className="flex w-full items-center gap-3 px-5 py-3 text-left hover:bg-canvas">
-                        <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-teal-50 text-teal-600"><Megaphone className="h-4 w-4" /></span>
+                        <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-teal-50 text-teal-700"><Megaphone className="h-4 w-4" /></span>
                         <span className="min-w-0 flex-1"><span className="block truncate text-[13px] font-medium text-ink">{r.status === "pending" ? "New pitch" : "Feedback due"} · {p?.productName}</span><span className="block text-xs text-ink-muted">{p?.company} · earn {formatINR(r.creatorEarning)}</span></span>
                         <ArrowRight className="h-4 w-4 text-ink-subtle" />
                       </button></li>

@@ -26,11 +26,11 @@ export function Footer() {
           <div>
             <Logo dark />
             <p className="mt-4 max-w-xs text-sm leading-relaxed text-white/60">RTG Live is a proposed product concept prepared for discussion with Voyager Partners, Hyderabad. It is not an existing or approved Voyager Partners product.</p>
-            <p className="mt-4 text-xs text-white/40">Hyderabad, India · Pilot city</p>
+            <p className="mt-4 text-xs text-white/60">Hyderabad, India · Pilot city</p>
           </div>
           {COLS.map((c) => (
             <div key={c.title}>
-              <p className="eyebrow text-white/45">{c.title}</p>
+              <p className="eyebrow text-white/60">{c.title}</p>
               <ul className="mt-4 space-y-2.5">
                 {c.links.map(([l, h]) => (
                   <li key={l}><Link href={h} className="text-sm text-white/75 transition-colors duration-fast hover:text-white">{l}</Link></li>
@@ -39,7 +39,7 @@ export function Footer() {
             </div>
           ))}
         </div>
-        <div className="flex flex-col gap-2 border-t border-white/10 py-6 text-xs text-white/45 sm:flex-row sm:justify-between">
+        <div className="flex flex-col gap-2 border-t border-white/10 py-6 text-xs text-white/60 sm:flex-row sm:justify-between">
           <p>© {new Date().getFullYear()} RTG Live (concept). Demo build — no real transactions are processed.</p>
           <p>Commission rates shown are proposed assumptions, not confirmed commercial terms.</p>
         </div>

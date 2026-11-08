@@ -22,7 +22,7 @@ export function DemoBar() {
         </p>
         <button
           onClick={() => { if (confirm("Reset all demo data to the original sample state?")) { resetDemo(); toast({ title: "Demo data reset", tone: "info" }); } }}
-          className="inline-flex shrink-0 items-center gap-1 font-medium text-white/90 hover:text-white"
+          className="inline-flex shrink-0 items-center gap-1 font-medium text-white/90 hover:text-white" aria-label="Reset demo"
         >
           <RotateCcw className="h-3.5 w-3.5" /> <span className="hidden sm:inline">Reset demo</span>
         </button>

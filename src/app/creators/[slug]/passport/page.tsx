@@ -149,7 +149,7 @@ export default function PassportPage() {
             <ul className="divide-y divide-line">
               {c.services.filter((s) => s.active).map((s) => (
                 <li key={s.id} className="flex items-center gap-3 px-5 py-3.5">
-                  <span className={cn("flex h-8 w-8 shrink-0 items-center justify-center rounded-lg", s.type === "pitch" ? "bg-teal-50 text-teal-600" : "bg-brand-50 text-brand-600")}>{s.type === "pitch" ? <Megaphone className="h-4 w-4" /> : <Video className="h-4 w-4" />}</span>
+                  <span className={cn("flex h-8 w-8 shrink-0 items-center justify-center rounded-lg", s.type === "pitch" ? "bg-teal-50 text-teal-700" : "bg-brand-50 text-brand-600")}>{s.type === "pitch" ? <Megaphone className="h-4 w-4" /> : <Video className="h-4 w-4" />}</span>
                   <div className="min-w-0 flex-1"><p className="truncate text-sm font-medium text-ink">{s.title}</p><p className="text-xs text-ink-subtle">{s.type === "pitch" ? "Async · 5 days" : `${s.durationMins} min`}</p></div>
                   <span className="text-sm font-semibold text-ink">{formatINR(s.price)}</span>
                   <ButtonLink size="sm" variant={s.type === "pitch" ? "teal" : "primary"} href={s.type === "pitch" ? `/pitch/new?creator=${c.id}` : `/book/${c.slug}?service=${s.id}`}>{s.type === "pitch" ? "Pitch" : "Book"}</ButtonLink>

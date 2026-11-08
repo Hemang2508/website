@@ -45,7 +45,7 @@ export function Chapters() {
           <ol className="mt-10 hidden space-y-1 lg:block" aria-label="Chapters">
             {CHAPTERS.map((c, i) => (
               <li key={c.id}>
-                <a href={`#ch-${c.id}`} className={cn("group flex items-center gap-4 rounded-xl py-2.5 transition-colors duration-base", i === idx ? "text-white" : "text-white/35 hover:text-white/70")} aria-current={i === idx ? "step" : undefined}>
+                <a href={`#ch-${c.id}`} className={cn("group flex items-center gap-4 rounded-xl py-2.5 transition-colors duration-base", i === idx ? "text-white" : "text-white/60 hover:text-white/85")} aria-current={i === idx ? "step" : undefined}>
                   <span className="w-7 font-mono text-xs">{c.n}</span>
                   <span className={cn("h-px bg-current transition-[width] duration-slow ease-out", i === idx ? "w-14" : "w-6")} />
                   <span className="font-display text-lg font-bold tracking-[-0.01em]">{c.label}</span>
@@ -138,13 +138,13 @@ function Preview({ id, active }: { id: string; active: boolean }) {
         {communities.map((c, i) => (
           <Link key={c.id} href={`/community/${c.slug}`} className={cn("group rounded-3xl p-4 text-ink transition-transform duration-base hover:-rotate-1 hover:scale-[1.02]", i === 0 && "sm:row-span-2")} style={{ background: `hsl(${c.hue} 70% 88%)` }}>
             <p className="font-display text-[15px] font-bold leading-tight">{c.name}</p>
-            <p className="mt-1 text-[11.5px] text-ink/60">{memberCount(c).toLocaleString("en-IN")} members · demo</p>
+            <p className="mt-1 text-[11.5px] text-ink/75">{memberCount(c).toLocaleString("en-IN")} members · demo</p>
             {i === 0 && <p className="mt-6 hidden text-[13px] leading-snug text-ink/75 sm:block">“{c.posts[0].text}”</p>}
           </Link>
         ))}
         {ev && (
           <Link href={`/regional/events/${ev.id}`} className="col-span-2 flex items-center gap-3 rounded-3xl bg-white p-4 text-ink sm:col-span-1">
-            <MapPin className="h-5 w-5 shrink-0 text-teal-600" />
+            <MapPin className="h-5 w-5 shrink-0 text-teal-700" />
             <span className="min-w-0"><span className="block truncate text-[13px] font-bold">{ev.title}</span><span className="text-[11.5px] text-ink-muted">{ev.area}</span></span>
           </Link>
         )}

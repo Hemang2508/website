@@ -22,12 +22,12 @@ export function EventCard({ event: e, compact }: { event: RegionalEvent; compact
       {/* ticket stub */}
       <div className="relative flex items-end justify-between px-4 pb-4 pt-4" style={{ background: `hsl(${e.hue} 70% 91%)` }}>
         <div className="leading-none text-ink">
-          <p className="font-mono text-[10.5px] uppercase tracking-[0.18em] text-ink/60">{formatDate(e.date, { weekday: "short" })} · {formatDate(e.date, { month: "short" })}</p>
+          <p className="font-mono text-[10.5px] uppercase tracking-[0.18em] text-ink/75">{formatDate(e.date, { weekday: "short" })} · {formatDate(e.date, { month: "short" })}</p>
           <p className={cn("mt-1 font-display font-bold tracking-[-0.05em]", compact ? "text-4xl" : "text-5xl")}>{formatDate(e.date, { day: "numeric" })}</p>
         </div>
         <div className="flex flex-col items-end gap-2">
           {mine ? <Badge tone="teal">You&apos;re going</Badge> : full ? <Badge tone="red">Sold out</Badge> : null}
-          <Icon className="h-7 w-7 text-ink/70 transition-transform duration-base ease-out group-hover:-rotate-6 group-hover:scale-110" strokeWidth={1.5} aria-hidden />
+          <Icon className="h-7 w-7 text-ink/80 transition-transform duration-base ease-out group-hover:-rotate-6 group-hover:scale-110" strokeWidth={1.5} aria-hidden />
         </div>
       </div>
       <div className="relative h-0 border-t-2 border-dashed border-white" aria-hidden>

@@ -66,7 +66,7 @@ export function SlotPicker({
             >
               <span className={cn("text-[11px] font-medium uppercase", active ? "text-white/80" : "text-ink-subtle")}>{WEEKDAYS[d.getDay()]}</span>
               <span className="text-lg font-semibold leading-tight">{d.getDate()}</span>
-              <span className={cn("text-[10.5px]", active ? "text-white/80" : disabled ? "" : "text-teal-600")}>{disabled ? "—" : `${free.length} open`}</span>
+              <span className={cn("text-[10.5px]", active ? "text-white/80" : disabled ? "" : "text-teal-700")}>{disabled ? "—" : `${free.length} open`}</span>
             </button>
           );
         })}

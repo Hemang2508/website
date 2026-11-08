@@ -60,7 +60,7 @@ function PitchDetail() {
 
       {isNew && (
         <div className="mt-4 flex items-start gap-3 rounded-xl border border-teal-200 bg-teal-50 px-4 py-3">
-          <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-teal-600" />
+          <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-teal-700" />
           <div className="text-[13px] text-teal-800">
             <p className="font-semibold">Pitch submitted and sent</p>
             <p>Creators typically respond within 48 hours. Simulated payment recorded for {reqs.length} creator{reqs.length > 1 ? "s" : ""}.</p>

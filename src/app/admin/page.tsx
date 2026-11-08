@@ -56,7 +56,7 @@ function Admin() {
 
   return (
     <>
-    <PageHero eyebrow="Admin console" title="Platform overview" description="Marketplace health, creator management and transaction oversight." actions={<SimulatedTag label="Simulated financials" />} />
+    <PageHero tone="light" compact eyebrow="Admin console" title={<>Platform <em className="font-serif font-normal italic text-brand-600">overview</em></>} description="Marketplace health, creator management and transaction oversight." actions={<SimulatedTag label="Simulated financials" />} />
     <Container className="py-10">
       <RoleNotice expected="admin" home="/admin" />
 

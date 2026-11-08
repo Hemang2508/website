@@ -8,6 +8,10 @@
 
 Premium hybrid look: dark hero bands, a warm light canvas, Plus Jakarta Sans display type over Inter, a single interactive card system and balanced CSS motion. Details are in [`docs/redesign/DESIGN_SYSTEM.md`](docs/redesign/DESIGN_SYSTEM.md) and the plan in [`docs/REDESIGN_PLAN.md`](docs/REDESIGN_PLAN.md). Screenshots are in [`docs/redesign/screenshots`](docs/redesign/screenshots).
 
+## Creative experience (branch `rtg-creative-experience`)
+
+"The Meeting Point" creative direction — editorial typography, the two-circle lens motif, original illustrated creator figures (creator-chosen appearance, photo upload) and a distinct personality per module. See [`docs/creative/CREATIVE_DIRECTION.md`](docs/creative/CREATIVE_DIRECTION.md) and screenshots in [`docs/creative/final`](docs/creative/final).
+
 ## Run locally
 
 ```bash
@@ -22,7 +26,7 @@ No accounts, API keys or credentials are needed.
 ### Tests
 ```bash
 npm run build && npx next start -p 3100   # in one terminal
-npm run test:e2e                          # core journeys, ecosystem modules, responsive + reduced motion
+npm run test:e2e                          # core, ecosystem, appearance, responsive + reduced motion, accessibility (axe)
 ```
 The suites use the Playwright/Chromium available on the machine (`BASE_URL` overrides `http://localhost:3100`). `node scripts/screenshots.js` regenerates the screenshot set. Demo data is seeded on first load and saved in the browser (localStorage, key `rtg-live-demo-v2`; v1 data from the earlier build is ignored so the new sample data appears). Use **Reset demo** in the top bar to restore the original sample data.
 

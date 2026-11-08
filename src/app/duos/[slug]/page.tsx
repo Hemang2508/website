@@ -39,7 +39,7 @@ export default function DuoPage() {
           <div className="animate-fade-up">
             <Badge className="bg-white/10 text-white ring-white/15">{duo.pairing}</Badge>
             <h1 className="mt-4 font-display text-display-lg text-white">{duo.title}</h1>
-            <p className="mt-3 text-[16px] text-white/70">{pair[0].name} <span className="text-white/40">&</span> {pair[1].name}</p>
+            <p className="mt-3 text-[16px] text-white/70">{pair[0].name} <span className="text-white/70">&</span> {pair[1].name}</p>
             <div className="mt-5 flex flex-wrap gap-x-6 gap-y-2 text-[13.5px] text-white/70">
               <span className="flex items-center gap-1.5">{duo.format === "Online" ? <Globe2 className="h-4 w-4" /> : <MapPin className="h-4 w-4" />}{duo.format}</span>
               <span className="flex items-center gap-1.5"><Clock className="h-4 w-4" />{duo.durationMins} minutes</span>
@@ -93,7 +93,7 @@ export default function DuoPage() {
                 return (
                   <div key={d} className={cn("rounded-xl border p-2 text-center", slots.length ? "border-line bg-white" : "border-dashed border-line")}>
                     <p className="text-xs font-semibold text-ink">{WEEKDAYS[d]}</p>
-                    <p className={cn("mt-1 text-[11px]", slots.length ? "text-teal-600" : "text-ink-subtle")}>{slots.length ? slots.map(formatTime).join(", ") : "—"}</p>
+                    <p className={cn("mt-1 text-[11px]", slots.length ? "text-teal-700" : "text-ink-subtle")}>{slots.length ? slots.map(formatTime).join(", ") : "—"}</p>
                   </div>
                 );
               })}

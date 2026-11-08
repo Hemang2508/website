@@ -45,7 +45,33 @@ Rules: animate `transform`/`opacity` only; nothing loops continuously; no scroll
 ## Dependencies
 - `@fontsource/instrument-serif` (Latin 400 + italic, ~40 KB): the editorial accent face. No animation library or WebGL. Every effect is CSS, SVG and ~150 lines of hooks, because the effects chosen do not justify a 30–60 KB motion runtime or a 3D engine.
 
+## Stages 3–8 — module personalities
+Every module shares the system (paper canvas, ink, Plus Jakarta + Instrument Serif emphasis, the two-circle lens, ticket/arch shapes, 180/260/500 ms motion) but has its own composition:
+
+| Module | Personality | Signature elements |
+|---|---|---|
+| Explore | *The Index* | "Find your *person*." header, typographic category rail with live counts, Gallery ↔ Index views, arch cards with a quick-look service panel on hover/focus |
+| Creator profile | *Studio* | Split hero: large arch portrait meeting a lens circle, poster name, big-numeral stats |
+| Creator Passport | *Document* | Identity page + data page spread, monospace field labels, lens seal, badges as rotated stamps, machine-readable line; demo-verification disclosure kept |
+| RTG Connect (booking) | *Warm & personal* | "Your session with *Ananya*", ticket summary with perforation, confirmation where two circles (you + creator) meet |
+| RTG Pitch | *Product presentation* | Deck-style header; a live pitch slide that builds itself as you type; product-showcase detail title |
+| RTG Collaborate | *Campaign brief* | Brief posters (brand monogram in a lens, budget headline, deadline countdown), brand masthead, numbered brief document |
+| RTG Community | *Social energy* | Venn of clickable communities, colour-blocked bento cards with a member's voice |
+| Regional Connect | *Place* | City name at poster scale over ring-road lines; ticket-stub event cards with capacity meters; illustrative Hyderabad map on the homepage |
+| Creator Duos | *Split screen* | Two-tone hero split by a "+" seam; paired-portrait cards; side-by-side detail |
+| Dashboards | *Quiet data* | Light headers with a serif greeting, hairline stat tiles with accent markers, solid ink/teal charts |
+
+## Creator appearance (illustrations)
+- Personal attributes — hair, headwear, accessory, figure tone, backdrop — live in `creator.appearance` and are **chosen by the creator** (Creator dashboard → Profile → *How you appear*, with live preview).
+- Nothing is inferred from names, IDs or categories. Unset fields render a **neutral default** (no hair, headwear or accessory). Only non-personal composition (lens side, shoulder angle) varies by ID.
+- Creators can **upload a photo** (resized, stored in the browser for the demo); it replaces the figure everywhere (`Avatar` → photo › figure › monogram) and can be removed to fall back to the figure.
+- Figures are labelled as illustrations of demo creators for assistive technology; decorative copies are hidden from screen readers.
+
+## Quality gates
+`npm run test:e2e` runs five suites against a production build: core journeys (16 checks), ecosystem modules (11 checks + link crawl), creator appearance (4 checks), responsive (26 routes × 390/768/1280 px + reduced motion) and accessibility (axe-core WCAG 2.1 A/AA on 19 routes × desktop/mobile, plus keyboard skip-link/navigation/focus checks; fails on serious or critical issues).
+
 ## Status
 - **Stage 1** (this document) and **Stage 2** (homepage) are implemented on `rtg-creative-experience`. Review screenshots are in `docs/creative/stage2/` (`node scripts/creative-screens.js` regenerates them).
 - Global changes made in Stage 2: light navigation over the homepage, flat ink footer with an outlined wordmark, 280ms route entry motion (`app/template.tsx`), Instrument Serif accent font.
-- **Paused for review** before Stages 3–8 (discovery, Passport, Connect, Pitch, Collaborate, Community, Regional, Duos, dashboards).
+- Stage 2 was approved; **Stages 3–8 are complete** on `rtg-creative-experience`. Final screenshots (desktop 1440, tablet 834, mobile 390) are in `docs/creative/final/` (`node scripts/creative-final-screens.js`).
+- Not merged into `main` — awaiting approval.

@@ -55,10 +55,10 @@ function Regional() {
           <span className="absolute left-[46%] top-[48%] h-24 w-24 rounded-full bg-teal-400/30" />
         </div>
         <Container className="relative py-12 sm:py-16">
-          <p className="eyebrow flex items-center gap-2 text-ink-muted"><MapPin className="h-4 w-4 text-teal-600" />Regional Connect</p>
+          <p className="eyebrow flex items-center gap-2 text-ink-muted"><MapPin className="h-4 w-4 text-teal-700" />Regional Connect</p>
           <h1 className="mt-4 text-ink">
             <span className="block text-[clamp(1.1rem,2vw,1.5rem)] font-medium text-ink-muted">Creators and experiences in</span>{" "}
-            <span key={city} className="block font-display text-[clamp(3.4rem,11vw,9.5rem)] font-bold leading-[0.9] tracking-[-0.055em] animate-fade-up">{city}<span className="text-teal-600">.</span></span>
+            <span key={city} className="block font-display text-[clamp(3.4rem,11vw,9.5rem)] font-bold leading-[0.9] tracking-[-0.055em] animate-fade-up">{city}<span className="text-teal-700">.</span></span>
           </h1>
           <div className="mt-8 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
             <div className="flex flex-wrap items-center gap-2 text-[13px]">

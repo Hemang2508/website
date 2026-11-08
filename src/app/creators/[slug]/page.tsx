@@ -127,7 +127,7 @@ function Profile() {
                   const href = s.type === "pitch" ? `/pitch/new?creator=${c.id}` : `/book/${c.slug}?service=${s.id}${ref}`;
                   return (
                     <div key={s.id} className="flex flex-col gap-4 rounded-2xl border border-line bg-white p-5 shadow-card sm:flex-row sm:items-center">
-                      <span className={cn("flex h-10 w-10 shrink-0 items-center justify-center rounded-xl", s.type === "pitch" ? "bg-teal-50 text-teal-600" : "bg-brand-50 text-brand-600")}><I className="h-5 w-5" /></span>
+                      <span className={cn("flex h-10 w-10 shrink-0 items-center justify-center rounded-xl", s.type === "pitch" ? "bg-teal-50 text-teal-700" : "bg-brand-50 text-brand-600")}><I className="h-5 w-5" /></span>
                       <div className="min-w-0 flex-1">
                         <div className="flex flex-wrap items-center gap-2">
                           <p className="font-semibold text-ink">{s.title}</p>
@@ -169,7 +169,7 @@ function Profile() {
                   return (
                     <div key={d} className={cn("rounded-xl border p-2 text-center", slots.length ? "border-line bg-white" : "border-dashed border-line bg-transparent")}>
                       <p className="text-xs font-semibold text-ink">{WEEKDAYS[d]}</p>
-                      <p className={cn("mt-1 text-[11px]", slots.length ? "text-teal-600" : "text-ink-subtle")}>{slots.length ? `${slots.length} slot${slots.length > 1 ? "s" : ""}` : "Off"}</p>
+                      <p className={cn("mt-1 text-[11px]", slots.length ? "text-teal-700" : "text-ink-subtle")}>{slots.length ? `${slots.length} slot${slots.length > 1 ? "s" : ""}` : "Off"}</p>
                     </div>
                   );
                 })}

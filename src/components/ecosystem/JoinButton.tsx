@@ -17,7 +17,7 @@ export function JoinButton({ community, size = "md", className }: { community: C
         onClick={(e) => { e.preventDefault(); e.stopPropagation(); if (confirm(`Leave ${community.name}?`)) { leaveCommunity(community.id); toast({ title: `You left ${community.name}`, tone: "info" }); } }}
         aria-label={`Leave ${community.name}`}
       >
-        <Check className="h-4 w-4 text-teal-600" />Joined
+        <Check className="h-4 w-4 text-teal-700" />Joined
       </Button>
     );
   }

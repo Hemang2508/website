@@ -49,7 +49,7 @@ export function NotificationBell({ dark }: { dark?: boolean }) {
                   onClick={() => { markRead(n.id); setOpen(false); if (n.href) router.push(n.href); }}
                   className={cn("flex w-full gap-3 border-b border-line/70 px-4 py-3 text-left last:border-0 hover:bg-canvas", !n.read && "bg-brand-50/40")}
                 >
-                  <span className={cn("mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg", n.kind === "payment" ? "bg-teal-50 text-teal-600" : "bg-brand-50 text-brand-600")}>
+                  <span className={cn("mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg", n.kind === "payment" ? "bg-teal-50 text-teal-700" : "bg-brand-50 text-brand-600")}>
                     <Icon className="h-4 w-4" />
                   </span>
                   <span className="min-w-0 flex-1">

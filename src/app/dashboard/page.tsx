@@ -43,10 +43,12 @@ export default function UserDashboard() {
   return (
     <>
     <PageHero
+        tone="light"
+        compact
         eyebrow={demoUser.title}
-        title={`${greeting}, ${demoUser.name.split(" ")[0]}`}
+        title={<>{greeting}, <em className="font-serif font-normal italic text-brand-600">{demoUser.name.split(" ")[0]}</em></>}
         description="Your sessions, pitches and activity in one place."
-        actions={<><ButtonLink href="/explore" variant="secondary">Book a creator</ButtonLink><ButtonLink href="/pitch/new">Pitch a product</ButtonLink></>}
+        actions={<><ButtonLink href="/explore" variant="secondary">Book a creator</ButtonLink><ButtonLink href="/pitch/new" variant="dark">Pitch a product</ButtonLink></>}
       />
     <Container className="py-10">
       <RoleNotice expected="user" home="/dashboard" />

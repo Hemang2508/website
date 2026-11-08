@@ -38,12 +38,12 @@ const config: Config = {
           200: "#93DED5",
           400: "#2FC8B6",
           500: "#19B8A6",
-          600: "#11907F", // used for white-text surfaces (AA contrast)
-          700: "#0D7366",
+          600: "#0B7A6D", // white-text surfaces (≥4.5:1)
+          700: "#08665B",
         },
         canvas: "#F5F3EF", // primary light background (warm)
         sand: "#EDE9E2",
-        ink: { DEFAULT: "#172033", muted: "#697386", subtle: "#737A89" },
+        ink: { DEFAULT: "#172033", muted: "#5A6275", subtle: "#5F6676" },
         line: "#E6E2DA",
       },
       fontFamily: {

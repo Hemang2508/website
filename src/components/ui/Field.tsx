@@ -1,4 +1,4 @@
-import { forwardRef, type InputHTMLAttributes, type ReactNode, type SelectHTMLAttributes, type TextareaHTMLAttributes } from "react";
+import { cloneElement, forwardRef, isValidElement, useId, type InputHTMLAttributes, type ReactElement, type ReactNode, type SelectHTMLAttributes, type TextareaHTMLAttributes } from "react";
 import { AlertCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -10,13 +10,21 @@ const invalidCls = "border-red-400 hover:border-red-400 focus:border-red-400 foc
 export function Field({
   label, htmlFor, error, hint, required, children, className,
 }: { label: string; htmlFor?: string; error?: string; hint?: ReactNode; required?: boolean; children: ReactNode; className?: string }) {
+  // Link the label to its control automatically when no explicit id is given.
+  const auto = useId();
+  let id = htmlFor;
+  let control = children;
+  if (!id && isValidElement(children) && typeof children.type !== "string" && !(children.props as { id?: string }).id && [Input, Textarea, Select].includes(children.type as never)) {
+    id = auto;
+    control = cloneElement(children as ReactElement<{ id?: string }>, { id });
+  }
   return (
     <div className={className}>
-      <label htmlFor={htmlFor} className="mb-1.5 block text-[13px] font-semibold text-ink">
+      <label htmlFor={id} className="mb-1.5 block text-[13px] font-semibold text-ink">
         {label}
         {required && <span className="ml-0.5 text-red-500" aria-hidden>*</span>}
       </label>
-      {children}
+      {control}
       {error ? (
         <p className="mt-1.5 flex items-center gap-1 text-xs font-medium text-red-600 animate-fade-in" role="alert"><AlertCircle className="h-3.5 w-3.5 shrink-0" />{error}</p>
       ) : hint ? (

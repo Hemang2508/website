@@ -42,14 +42,14 @@ export function ForCreators() {
           </Reveal>
           <ol className="grid grid-cols-1 gap-4">
             {steps.map(([I, t, d], i) => (
-              <Reveal key={t} delay={i * 90}>
-                <li className="group flex gap-5 rounded-3xl border border-ink/10 bg-white p-6 transition-[transform,box-shadow] duration-base ease-out hover:-translate-y-1 hover:shadow-lift">
-                  <span className="font-serif text-4xl italic leading-none text-ink/25 transition-colors group-hover:text-brand-500">0{i + 1}</span>
+              <Reveal key={t} delay={i * 90} as="li">
+                <div className="group flex gap-5 rounded-3xl border border-ink/10 bg-white p-6 transition-[transform,box-shadow] duration-base ease-out hover:-translate-y-1 hover:shadow-lift">
+                  <span className="font-serif text-4xl italic leading-none text-brand-600" aria-hidden>0{i + 1}</span>
                   <span>
                     <span className="flex items-center gap-2 font-display text-lg font-bold text-ink"><I className="h-4 w-4 text-brand-600" />{t}</span>
                     <span className="mt-1 block text-[14px] text-ink-muted">{d}</span>
                   </span>
-                </li>
+                </div>
               </Reveal>
             ))}
           </ol>

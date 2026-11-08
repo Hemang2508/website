@@ -9,7 +9,9 @@ import { cn } from "@/lib/utils";
 export function SplitWords({ items, label, delay = 0, stagger = 70, className, wordClassName }: { items: (string | ReactNode)[]; label: string; delay?: number; stagger?: number; className?: string; wordClassName?: string }) {
   let i = 0;
   return (
-    <span className={className} aria-label={label || undefined} aria-hidden={label ? undefined : true}>
+    <span className={className}>
+      {label && <span className="sr-only">{label}</span>}
+      <span aria-hidden>
       {items.map((item, idx) => {
         const words = typeof item === "string" ? item.split(" ").filter(Boolean) : [item];
         return (
@@ -27,6 +29,7 @@ export function SplitWords({ items, label, delay = 0, stagger = 70, className, w
           </Fragment>
         );
       })}
+      </span>
     </span>
   );
 }

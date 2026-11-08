@@ -16,7 +16,7 @@ export function BarChart({ data, color = "brand", height = 180 }: { data: { labe
             <div
               className={cn(
                 "w-full origin-bottom rounded-t-lg transition-colors duration-fast animate-grow-y",
-                d.future ? "bg-[repeating-linear-gradient(45deg,#E4E7EF,#E4E7EF_4px,#F5F6FA_4px,#F5F6FA_8px)]" : color === "teal" ? "bg-gradient-to-t from-teal-600 to-teal-400 group-hover:from-teal-700" : "bg-gradient-to-t from-brand-600 to-brand-400 group-hover:from-brand-700",
+                d.future ? "bg-[repeating-linear-gradient(45deg,#E4E7EF,#E4E7EF_4px,#F5F6FA_4px,#F5F6FA_8px)]" : color === "teal" ? "bg-teal-600 group-hover:bg-ink" : "bg-ink group-hover:bg-brand-600",
               )}
               style={{ height: `${Math.max(d.value ? 3 : 0, (d.value / nice) * 100)}%`, animationDelay: `${i * 50}ms` }}
             />
